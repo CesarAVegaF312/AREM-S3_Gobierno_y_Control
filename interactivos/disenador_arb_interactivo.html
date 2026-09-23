@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Diseñador de ARB — Arquitectura Empresarial</title>
+<style>
+:root {
+  --azul: #002060; --medio: #00387D; --claro: #EEF3FA;
+  --pale: #D9E1EF; --slate: #93AAC9; --gris: #4B5563; --gris-claro: #E5E7EB;
+  --verde: #137333; --verde-bg: #E6F4EA;
+  --ambar: #8A5300; --ambar-bg: #FFF4D6;
+  --rojo: #B3261E; --rojo-bg: #FCE8E6;
+  --coral: #C2622C; --coral-bg: #FBEDE3;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 17px; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #F0F4FB; color: #1a1a2e; line-height: 1.45; }
+button, input, textarea, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--medio); outline-offset: 3px; }
+.header :focus-visible { outline-color: #fff; }
+
+.header { background: var(--azul); color: #fff; padding: 18px 24px; }
+.header-in { max-width: 1140px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
+.header h1 { font-size: 1.4rem; font-weight: 700; line-height: 1.25; }
+.header p { font-size: .88rem; color: #C9D6EA; margin-top: 4px; max-width: 70ch; }
+.header-acciones { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn-header { background: transparent; border: 2px solid #C9D6EA; color: #fff; border-radius: 8px; padding: 6px 14px; font-size: .85rem; font-weight: 600; cursor: pointer; }
+.btn-header:hover, .btn-header[aria-pressed="true"] { background: var(--medio); }
+
+.wrap { max-width: 1140px; margin: 0 auto; padding: 20px 24px 48px; }
+.modo { font-size: .9rem; color: var(--gris); margin-bottom: 14px; }
+.modo strong { color: var(--azul); }
+
+.tablist { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.tab { flex: 1 1 220px; text-align: left; cursor: pointer; background: #fff; border: 2px solid var(--pale); border-radius: 12px; padding: 10px 16px; color: var(--azul); }
+.tab .tab-num { font-size: .75rem; font-weight: 800; color: var(--gris); letter-spacing: .04em; text-transform: uppercase; }
+.tab .tab-nom { display: block; font-size: 1.05rem; font-weight: 700; }
+.tab:hover { border-color: var(--slate); }
+.tab[aria-selected="true"] { background: var(--azul); border-color: var(--azul); color: #fff; }
+.tab[aria-selected="true"] .tab-num { color: #C9D6EA; }
+
+.panel { background: #fff; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,32,96,.08); padding: 24px 26px 28px; }
+.panel h2 { font-size: 1.4rem; color: var(--azul); line-height: 1.25; }
+.panel h3 { font-size: 1.12rem; color: var(--azul); margin: 22px 0 10px; }
+.intro { font-size: .98rem; color: #333; margin: 8px 0 16px; max-width: 78ch; }
+.instrumento { display: inline-block; background: var(--claro); border: 1px solid var(--pale); color: var(--medio); border-radius: 20px; padding: 2px 12px; font-size: .78rem; font-weight: 700; margin-left: 8px; vertical-align: middle; }
+
+.btn { border-radius: 10px; padding: 9px 18px; font-size: .95rem; font-weight: 700; cursor: pointer; border: 2px solid var(--medio); }
+.btn-primario { background: var(--medio); color: #fff; }
+.btn-primario:hover:not(:disabled) { background: var(--azul); border-color: var(--azul); }
+.btn-secundario { background: #fff; color: var(--medio); }
+.btn-secundario:hover { background: var(--claro); }
+.btn-pequeno { padding: 4px 11px; font-size: .82rem; border-width: 1.5px; border-radius: 8px; }
+.btn-peligro { background: #fff; color: var(--rojo); border-color: var(--rojo); }
+.btn:disabled { background: var(--gris-claro); border-color: #C4C9D1; color: #6B7280; cursor: not-allowed; }
+.fila-botones { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+
+.aviso { font-size: .95rem; border-radius: 10px; padding: 10px 14px; margin-top: 10px; }
+.aviso:empty { display: none; }
+.aviso-bloqueo { background: var(--rojo-bg); border-left: 5px solid var(--rojo); color: #5C1510; }
+.aviso-info { background: var(--claro); border-left: 5px solid var(--medio); color: #1F2F4F; }
+.aviso-ok { background: var(--verde-bg); border-left: 5px solid var(--verde); color: #0B3D1C; }
+.aviso-advertencia { background: var(--ambar-bg); border-left: 5px solid #D69E00; color: #4A2D00; }
+.aviso ul { margin: 4px 0 0 20px; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+.campo { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.campo.ancho { grid-column: 1 / -1; }
+.campo label, .etiqueta { font-size: .86rem; font-weight: 700; color: var(--azul); }
+.campo .ayuda { font-size: .8rem; color: var(--gris); }
+.campo input, .campo textarea, .campo select { border: 2px solid #B8C4D8; border-radius: 8px; padding: 7px 10px; font-size: .95rem; background: #fff; width: 100%; }
+.campo textarea { resize: vertical; min-height: 2.6em; }
+.campo input:focus, .campo textarea:focus, .campo select:focus { border-color: var(--medio); }
+.campo.obligatorio label::after { content: " *"; color: var(--rojo); }
+.campo.mal input, .campo.mal textarea { border-color: var(--rojo); background: #FFF8F7; }
+.estado-campo { font-size: .82rem; font-weight: 600; min-height: 1.2em; }
+.estado-campo.ok { color: var(--verde); }
+.estado-campo.mal { color: var(--rojo); }
+
+table.t { width: 100%; border-collapse: collapse; font-size: .9rem; }
+table.t th { background: var(--claro); color: var(--azul); text-align: left; padding: 8px 10px; border-bottom: 2px solid var(--pale); font-size: .82rem; text-transform: uppercase; letter-spacing: .03em; }
+table.t td { padding: 8px 10px; border-bottom: 1px solid var(--pale); vertical-align: top; }
+.tabla-scroll { overflow-x: auto; }
+
+.chip { display: inline-block; border-radius: 12px; padding: 1px 9px; font-size: .78rem; font-weight: 700; background: var(--claro); color: var(--medio); border: 1px solid var(--pale); margin: 1px 2px; }
+.chip.coral { background: var(--coral-bg); color: var(--coral); border-color: #F0C9AE; }
+.chip.verde { background: var(--verde-bg); color: var(--verde); border-color: #B7DFC2; }
+.chip.rojo { background: var(--rojo-bg); color: var(--rojo); border-color: #F2B8B3; }
+.chip.ambar { background: var(--ambar-bg); color: var(--ambar); border-color: #F0D78A; }
+
+.salida { background: #F8FAFD; border: 2px dashed var(--slate); border-radius: 10px; padding: 14px 16px; font-size: .92rem; white-space: pre-wrap; max-height: 420px; overflow: auto; }
+.nota-pie { font-size: .8rem; color: var(--gris); margin-top: 24px; border-top: 1px solid var(--pale); padding-top: 12px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+@media (max-width: 760px) {
+  html { font-size: 16px; }
+  .wrap { padding: 16px; }
+  .panel { padding: 18px 16px; }
+  .form-grid { grid-template-columns: 1fr; }
+}
+@media print {
+  .header-acciones, .tablist, .fila-botones, .btn { display: none !important; }
+  body { background: #fff; }
+  .panel { box-shadow: none; }
+}
+
+.capacidad { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 20px; background: var(--claro); border-radius: 12px; padding: 14px 16px; }
+.silla { border: 2px solid var(--pale); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; background: #fff; }
+.silla-cab { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
+.silla-cab b { color: var(--azul); }
+.silla-grid { display: grid; grid-template-columns: 1.2fr 1.2fr 2fr .9fr .9fr .6fr; gap: 8px 10px; align-items: start; }
+.costo { margin-top: 10px; }
+.barra { height: 22px; border-radius: 11px; background: var(--gris-claro); overflow: hidden; position: relative; }
+.barra > span { display: block; height: 100%; background: var(--medio); transition: width .2s; }
+.barra.alta > span { background: var(--rojo); }
+.barra.media > span { background: #D69E00; }
+.cifra { font-size: 1.6rem; font-weight: 800; color: var(--azul); }
+.resumen { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 12px 0; }
+.dato { background: var(--claro); border-radius: 10px; padding: 10px 12px; }
+.dato span { display: block; font-size: .78rem; color: var(--gris); font-weight: 700; text-transform: uppercase; letter-spacing: .03em; }
+.organo { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 14px 0; }
+.nivel-org { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.caja-org { border: 2px solid var(--medio); border-radius: 10px; padding: 6px 12px; font-size: .88rem; background: #fff; text-align: center; max-width: 260px; }
+.caja-org.arb { background: var(--azul); color: #fff; border-color: var(--azul); font-weight: 700; }
+.caja-org.neg { border-color: var(--coral); }
+.caja-org.inv { border-style: dashed; color: var(--gris); }
+.flecha { color: var(--slate); font-weight: 800; }
+@media (max-width: 900px) { .silla-grid { grid-template-columns: 1fr 1fr; } .capacidad, .resumen { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="header"><div class="header-in">
+  <div>
+    <h1>Diseñador de ARB</h1>
+    <p>Arme el Architecture Review Board silla por silla y vea cuánto le cuesta a su área. Unidad 3 · Formato F-22.</p>
+  </div>
+  <div class="header-acciones">
+    <button class="btn-header" id="btn-caso" aria-pressed="true">Caso Red Salud Andina</button>
+    <button class="btn-header" id="btn-grupo" aria-pressed="false">Empezar con el caso del grupo</button>
+  </div>
+</div></div>
+
+<div class="wrap">
+  <p class="modo" id="modo"></p>
+
+  <div class="panel">
+    <h2>1 · La capacidad real del área <span class="instrumento">F-22</span></h2>
+    <p class="intro">El ARB se paga con horas de personas que ya tienen trabajo. Empiece por lo que su organización tiene, no por lo que le gustaría tener.</p>
+    <div class="capacidad">
+      <div class="campo"><label for="c-org">Organización</label><input id="c-org"/></div>
+      <div class="campo"><label for="c-pers">Personas en el área de TI</label><input id="c-pers" type="number" min="1"/></div>
+      <div class="campo"><label for="c-horas">Horas al mes por persona</label><input id="c-horas" type="number" min="1"/></div>
+    </div>
+
+    <h3>2 · Nombre y mandato</h3>
+    <div class="form-grid">
+      <div class="campo obligatorio"><label for="a-nombre">Nombre del órgano</label><input id="a-nombre"/></div>
+      <div class="campo"><label for="a-autoridad">Quién le da la autoridad</label><input id="a-autoridad" placeholder="p. ej., acta del consejo directivo (EDM01 de COBIT)"/></div>
+      <div class="campo ancho obligatorio"><label for="a-mandato">Mandato: qué decide y qué no</label><textarea id="a-mandato" rows="3"></textarea></div>
+    </div>
+
+    <h3>3 · Las sillas</h3>
+    <p class="intro">Cada silla con el cargo real que la ocupa en su organización. Si la respuesta es «contrataremos», la silla no existe.</p>
+    <div id="sillas"></div>
+    <div class="fila-botones"><button class="btn btn-secundario" id="btn-silla">+ Agregar silla</button></div>
+
+    <div class="costo">
+      <h3>4 · Lo que cuesta</h3>
+      <div class="resumen">
+        <div class="dato"><span>Horas al mes</span><b class="cifra" id="r-horas">0</b></div>
+        <div class="dato"><span>Capacidad del área</span><b class="cifra" id="r-cap">0</b></div>
+        <div class="dato"><span>% de la capacidad</span><b class="cifra" id="r-pct">0 %</b></div>
+        <div class="dato"><span>Votantes</span><b class="cifra" id="r-vot">0</b></div>
+      </div>
+      <div class="barra" id="barra" role="img" aria-label="Porcentaje de la capacidad"><span id="barra-v" style="width:0"></span></div>
+      <p class="campo ayuda" style="margin-top:6px">Referencia del caso: 108 h al mes, el 1,8 % de un área de 38 personas. Por encima del 5 % es difícil sostenerlo sin crecer el área.</p>
+    </div>
+
+    <h3>5 · Cómo decide</h3>
+    <div class="form-grid">
+      <div class="campo obligatorio"><label for="o-frec">Frecuencia</label><textarea id="o-frec" rows="2" placeholder="Ordinaria y extraordinaria. ¿Qué pasa si el negocio no puede esperar?"></textarea></div>
+      <div class="campo obligatorio"><label for="o-quorum">Quórum</label><textarea id="o-quorum" rows="2"></textarea></div>
+      <div class="campo obligatorio"><label for="o-regla">Regla de decisión</label><textarea id="o-regla" rows="3" placeholder="Consenso, mayoría, desempate, veto. ¿Qué pasa si no hay acuerdo?"></textarea></div>
+      <div class="campo obligatorio"><label for="o-escala">Escalamiento</label><textarea id="o-escala" rows="3" placeholder="Ante quién y en qué plazo"></textarea></div>
+    </div>
+
+    <h3>6 · El ARB en la organización</h3>
+    <div class="organo" id="organo" aria-live="polite"></div>
+
+    <h3>7 · Revisión</h3>
+    <div id="revision" aria-live="polite"></div>
+
+    <h3>8 · Texto para el documento</h3>
+    <p class="intro">Se genera con lo que llenó. Cópielo en la sección 2 de su documento y ajústelo a su redacción.</p>
+    <div class="salida" id="salida"></div>
+    <div class="fila-botones">
+      <button class="btn btn-primario" id="btn-copiar">Copiar texto</button>
+      <button class="btn btn-secundario" onclick="window.print()">Imprimir</button>
+    </div>
+    <p class="nota-pie">Basado en TOGAF® Standard, 10th Edition, <i>Enterprise Architecture Capability and Governance</i> (The Open Group, 2022): se sugiere un ARB de 4 o 5 miembros permanentes y nunca más de 10. Red Salud Andina es una organización simulada. Lo que escribe se guarda solo en este navegador.</p>
+  </div>
+</div>
+
+<script>
+const CASO = {
+ "arb": {
+  "nombre": "Consejo de Arquitectura de Red Salud Andina (ARB)",
+  "mandato": "Dictaminar si las iniciativas tipo A y B son conformes con los principios y la arquitectura objetivo, otorgar o negar excepciones con vencimiento y reportar al Comité de TI. El ARB decide sobre diseño; el Comité de TI sigue decidiendo sobre inversión. Ningún caso de negocio tipo A llega al Comité de TI sin dictamen del ARB.",
+  "dimensionado": "Costo del ARB: unas 108 horas-persona al mes (80 del arquitecto líder y 28 de los demás). Es el 1,8 % de la capacidad del área de TI (38 personas × 160 h = 6.080 h). Solo el 0,5 % sale de personas distintas al arquitecto. Cabe dentro de la restricción de que TI no crece, siempre que se libere la mitad del tiempo del arquitecto (supuesto 1).",
+  "roles": [
+   {
+    "rol": "Presidente del ARB",
+    "cargo": "Gerente de tecnología (CIO)",
+    "resp": "Convoca, desempata, firma los dictámenes y lleva al Comité de TI las excepciones vencidas y los desacuerdos",
+    "voto": "Voz y voto; voto de desempate",
+    "horas": 6
+   },
+   {
+    "rol": "Arquitecto líder y secretario técnico",
+    "cargo": "El arquitecto de soluciones actual, liberado al 50 % (supuesto)",
+    "resp": "Clasifica las solicitudes, prepara el análisis previo, emite el concepto técnico, mantiene el registro de excepciones y el repositorio de arquitectura",
+    "voto": "Voz y voto; veto técnico solo sobre principios no negociables (P1 y P6)",
+    "horas": 80
+   },
+   {
+    "rol": "Representante clínico",
+    "cargo": "Delegado de la Dirección médica",
+    "resp": "Evalúa el impacto en la continuidad y la seguridad de la atención; es quien defiende P1",
+    "voto": "Voz y voto",
+    "horas": 6
+   },
+   {
+    "rol": "Representante del ciclo de ingresos",
+    "cargo": "Delegado de la Dirección financiera",
+    "resp": "Evalúa el impacto en facturación, glosa y cartera; conecta el dictamen con el presupuesto",
+    "voto": "Voz y voto",
+    "horas": 6
+   },
+   {
+    "rol": "Líder de infraestructura y seguridad",
+    "cargo": "Uno de los 7 profesionales de infraestructura",
+    "resp": "Evalúa nube, seguridad de la información y protección de datos personales (Ley 1581 de 2012)",
+    "voto": "Voz y voto",
+    "horas": 8
+   },
+   {
+    "rol": "Invitados",
+    "cargo": "Líder del proyecto revisado; líder de datos y analítica; gerencia de laboratorio cuando aplique",
+    "resp": "Presentan la iniciativa y responden; no deciden",
+    "voto": "Voz sin voto",
+    "horas": 2
+   }
+  ],
+  "operacion": [
+   {
+    "aspecto": "Frecuencia",
+    "texto": "Sesión ordinaria quincenal de 90 minutos. Sesión extraordinaria en 72 horas para la vía rápida. Revisión trimestral del registro de excepciones con el Comité de TI."
+   },
+   {
+    "aspecto": "Quórum",
+    "texto": "Tres de los cinco votantes, uno de ellos el arquitecto líder."
+   },
+   {
+    "aspecto": "Regla de decisión",
+    "texto": "Consenso; si no lo hay, mayoría simple de los votantes presentes y el CIO desempata. El veto técnico del arquitecto líder solo aplica a P1 y P6 y es apelable ante el Comité de TI en 5 días hábiles."
+   },
+   {
+    "aspecto": "Qué produce",
+    "texto": "Un dictamen escrito por iniciativa: conforme, conforme con condiciones, excepción con vencimiento o no conforme. Toda excepción queda en el registro y, si deja deuda, en el F-18."
+   },
+   {
+    "aspecto": "Relación con otros órganos",
+    "texto": "Recibe mandato de la Presidencia (acta del consejo directivo). Reporta al Comité de TI. El comité de cambios de la mesa de servicio no aprueba cambios tipo A sin dictamen."
+   }
+  ]
+ },
+ "principios": [
+  {
+   "cod": "P1",
+   "nombre": "La continuidad de la atención prevalece",
+   "enunciado": "Ninguna decisión de arquitectura puede introducir un punto único de falla en un proceso asistencial sin una ruta de operación degradada probada.",
+   "motivacion": "Urgencias opera en papel durante la ventana dominical y el registro se digitó 26 horas después. La dirección médica: «si el sistema se cae en urgencias, el problema no es informático».",
+   "implicaciones": "Todo proyecto que toque atención declara su modo degradado y lo prueba antes de producción. Es no negociable: no admite excepción.",
+   "origen": "Episodio «Domingo de mantenimiento» (§12)"
+  },
+  {
+   "cod": "P2",
+   "nombre": "Un solo paciente, una sola identidad",
+   "enunciado": "La identidad del paciente se gestiona en un único servicio maestro; ningún sistema crea pacientes por su cuenta.",
+   "motivacion": "Hay cuatro maestros de paciente y un 6 % de error en la conciliación; un paciente figuró como dos personas.",
+   "implicaciones": "Los sistemas nuevos consumen la identidad del índice maestro (MPI) desde el primer día. Mientras el MPI no exista, se declara como excepción y deuda.",
+   "origen": "Episodio «Paciente duplicado» (§12); apuesta 1 de Andina 2029"
+  },
+  {
+   "cod": "P3",
+   "nombre": "Se integra por contrato, nunca por la base de datos",
+   "enunciado": "Toda integración entre sistemas usa una interfaz publicada y versionada (API o mensaje); se prohíbe leer o escribir la base de datos de otro sistema.",
+   "motivacion": "Un cambio de esquema en HIS-CORE dejó tres días sin facturar; PORTAL-B2B lee la base de LIS-LAB y bloquea su actualización.",
+   "implicaciones": "Las integraciones nuevas pasan por el bus o por API con contrato registrado. Las existentes que violan el principio entran al registro de deuda con fecha de retiro.",
+   "origen": "Episodios «Cambio de esquema» y «Actualización del laboratorio» (§12)"
+  },
+  {
+   "cod": "P4",
+   "nombre": "Reutilizar antes de comprar, comprar antes de construir",
+   "enunciado": "Antes de adquirir o construir una capacidad se verifica si ya existe en el portafolio; no se duplican capacidades.",
+   "motivacion": "Telemedicina trajo su propio módulo de agenda porque «venía incluido»: hoy hay dos agendas que no se hablan.",
+   "implicaciones": "Toda solicitud tipo A incluye la consulta al mapa de capacidades. Un módulo incluido que duplica una capacidad se desactiva o se justifica como excepción.",
+   "origen": "Episodio Telemedicina (§10)"
+  },
+  {
+   "cod": "P5",
+   "nombre": "La nube se elige por lineamiento, no por proveedor",
+   "enunciado": "Los servicios en la nube se despliegan en las plataformas aprobadas por la organización y bajo sus controles.",
+   "motivacion": "El portal del paciente se levantó en la nube del proveedor, distinta a la de la organización; nadie lo objetó porque no había lineamiento.",
+   "implicaciones": "Existe un catálogo de nubes aprobadas con sus controles. Un proveedor que exija su propia nube pasa por revisión completa y evaluación de datos personales.",
+   "origen": "Episodio Portal del paciente (§10)"
+  },
+  {
+   "cod": "P6",
+   "nombre": "Cumplimiento normativo desde el diseño",
+   "enunciado": "Los requisitos normativos de historia clínica interoperable, RIPS y protección de datos se diseñan desde el inicio, no se agregan al final.",
+   "motivacion": "Los plazos normativos no son negociables ni aplazables (§13); los datos de salud son datos sensibles (Ley 1581 de 2012).",
+   "implicaciones": "La lista de revisión incluye la verificación normativa. Es no negociable: no admite excepción.",
+   "origen": "Restricción del entorno (§13); presiones del sector (§2)"
+  },
+  {
+   "cod": "P7",
+   "nombre": "Todo sistema tiene dueño y documentación",
+   "enunciado": "Cada sistema en operación tiene un dueño de negocio, un responsable en TI y documentación suficiente para que no dependa de una sola persona.",
+   "motivacion": "PORTAL-B2B y la base de glosas se construyeron por fuera de TI; solo dos personas conocen el código de HIS-CORE y una se pensiona en 14 meses.",
+   "implicaciones": "Nada entra a producción sin dueño registrado. Los sistemas en la sombra se inventarían y se les asigna dueño o fecha de retiro.",
+   "origen": "§10 (dos sistemas por fuera de TI) y §11 (2 personas conocen HIS-CORE)"
+  },
+  {
+   "cod": "P8",
+   "nombre": "El dato se corrige donde nace",
+   "enunciado": "La calidad del dato se asegura en el sistema y el proceso donde se origina, no con conciliaciones posteriores.",
+   "motivacion": "La glosa inicial es del 9,4 % y el indicador oficial se calcula en una hoja de cálculo; la tarifa se valida a mano.",
+   "implicaciones": "Las validaciones van en el sistema de origen. Una conciliación manual nueva requiere excepción con vencimiento.",
+   "origen": "§11 (glosa 9,4 %); apuesta 5 de Andina 2029"
+  }
+ ],
+ "tipos": [
+  {
+   "tipo": "A",
+   "revision": "Revisión completa en sesión del ARB",
+   "criterio": "Toca datos clínicos o de paciente; integra con HIS, LIS o facturación; introduce un proveedor de nube o SaaS nuevo; crea una capacidad nueva; o supera 300 millones de COP (supuesto).",
+   "momentos": "R0 idea · R1 diseño · R2 salida a producción",
+   "respuesta": "10 días hábiles; vía rápida en 72 horas"
+  },
+  {
+   "tipo": "B",
+   "revision": "Revisión ligera, asíncrona",
+   "criterio": "Modifica un sistema existente cambiando una interfaz, un contrato o un modelo de datos.",
+   "momentos": "R1 diseño · R2 salida a producción",
+   "respuesta": "5 días hábiles; la hacen el arquitecto líder y un votante"
+  },
+  {
+   "tipo": "C",
+   "revision": "Autodeclaración con lista de revisión",
+   "criterio": "Mantenimiento o evolución sin cambio de interfaz, de datos ni de proveedor.",
+   "momentos": "Autodeclaración antes del cambio; auditoría de una muestra del 10 %",
+   "respuesta": "Sin espera"
+  }
+ ],
+ "momentos": [
+  {
+   "momento": "R0 · Idea",
+   "cuando": "Antes de escribir el caso de negocio",
+   "pregunta": "¿Esta capacidad ya existe? ¿Qué principios toca?"
+  },
+  {
+   "momento": "R1 · Diseño",
+   "cuando": "Antes de contratar o de construir",
+   "pregunta": "¿La solución cumple los principios y la arquitectura objetivo?"
+  },
+  {
+   "momento": "R2 · Salida a producción",
+   "cuando": "Antes del paso a producción",
+   "pregunta": "¿Lo construido es lo que se aprobó? ¿Hay dueño y modo degradado?"
+  }
+ ],
+ "checklist": [
+  {
+   "n": 1,
+   "pregunta": "¿Hay un dueño de negocio y un responsable de TI nombrados?",
+   "principio": "P7"
+  },
+  {
+   "n": 2,
+   "pregunta": "¿La capacidad ya existe en el portafolio? Si existe, ¿por qué no se reutiliza?",
+   "principio": "P4"
+  },
+  {
+   "n": 3,
+   "pregunta": "¿La solución consume la identidad del paciente del servicio maestro?",
+   "principio": "P2"
+  },
+  {
+   "n": 4,
+   "pregunta": "¿Todas las integraciones usan una interfaz publicada y versionada? ¿Alguna lee la base de otro sistema?",
+   "principio": "P3"
+  },
+  {
+   "n": 5,
+   "pregunta": "¿Se despliega en una nube aprobada? Si no, ¿qué datos salen de ella?",
+   "principio": "P5"
+  },
+  {
+   "n": 6,
+   "pregunta": "¿Se identificaron los requisitos de historia clínica interoperable, RIPS y datos personales que aplican?",
+   "principio": "P6"
+  },
+  {
+   "n": 7,
+   "pregunta": "¿Cuál es el modo degradado si falla, y cómo se probó?",
+   "principio": "P1"
+  },
+  {
+   "n": 8,
+   "pregunta": "¿Dónde se valida la calidad del dato que la solución produce?",
+   "principio": "P8"
+  },
+  {
+   "n": 9,
+   "pregunta": "¿Qué documentación queda para que no dependa de una persona?",
+   "principio": "P7"
+  },
+  {
+   "n": 10,
+   "pregunta": "¿Qué deuda arquitectónica deja, y quién la paga?",
+   "principio": "F-18"
+  }
+ ],
+ "niveles": [
+  {
+   "nivel": "Irrelevante",
+   "significa": "No tiene rasgos en común con la especificación de arquitectura",
+   "dictamen": "No aplica (tipo C)"
+  },
+  {
+   "nivel": "Consistente",
+   "significa": "Lo que tiene en común lo implementa conforme a la especificación, pero le faltan rasgos de ella y agrega otros que la especificación no cubre",
+   "dictamen": "Conforme con condiciones"
+  },
+  {
+   "nivel": "Cumple (compliant)",
+   "significa": "Le faltan rasgos de la especificación, pero todo lo que implementa está cubierto por ella y conforme a ella",
+   "dictamen": "Conforme con condiciones"
+  },
+  {
+   "nivel": "Conforme (conformant)",
+   "significa": "Implementa todos los rasgos de la especificación conforme a ella, pero agrega otros que no están conformes",
+   "dictamen": "Conforme con condiciones"
+  },
+  {
+   "nivel": "Totalmente conforme",
+   "significa": "Correspondencia completa: todo lo especificado está implementado conforme y no hay nada fuera de la especificación",
+   "dictamen": "Conforme"
+  },
+  {
+   "nivel": "No conforme",
+   "significa": "Cualquiera de los anteriores en el que algún rasgo de la especificación está implementado de forma no conforme",
+   "dictamen": "Excepción con vencimiento o no conforme"
+  }
+ ],
+ "dictamenes": [
+  {
+   "dictamen": "Conforme",
+   "consecuencia": "Sigue sin condiciones."
+  },
+  {
+   "dictamen": "Conforme con condiciones",
+   "consecuencia": "Sigue si cumple las condiciones escritas en el dictamen, que se verifican en R2."
+  },
+  {
+   "dictamen": "Excepción con vencimiento",
+   "consecuencia": "Se acepta una desviación de un principio por un tiempo acotado, con plan de retorno, dueño y registro. No aplica a P1 ni a P6."
+  },
+  {
+   "dictamen": "No conforme",
+   "consecuencia": "Se devuelve: no puede seguir hasta corregir."
+  }
+ ],
+ "camposExcepcion": [
+  "Principio del que se desvía",
+  "Por qué no se puede cumplir ahora (el hecho, no la preferencia)",
+  "Riesgo que se acepta y quién lo acepta",
+  "Costo de no aceptar la excepción",
+  "Plan de retorno: qué se hace para volver a cumplir",
+  "Vencimiento (máximo 6 meses; renovable una sola vez)",
+  "Dueño de la excepción",
+  "Partida de deuda que abre en el F-18, si deja deuda"
+ ],
+ "episodios": [
+  {
+   "id": "telemed",
+   "nombre": "Telemedicina",
+   "tipo": "A",
+   "hecho": "La plataforma de teleconsulta trae su propio módulo de agenda, que duplica la capacidad que presta AGENDA-WEB.",
+   "por_que_tipo": "Proveedor SaaS nuevo que maneja datos clínicos y crea una capacidad: tipo A.",
+   "momento": "R0 · Idea: se habría detectado antes de firmar, al consultar el mapa de capacidades.",
+   "checklist_falla": [
+    2,
+    3,
+    4
+   ],
+   "principios": [
+    "P4",
+    "P2",
+    "P3"
+   ],
+   "dictamen": "Conforme con condiciones",
+   "condiciones": "Se desactiva la agenda propia de la plataforma; la agenda maestra sigue siendo AGENDA-WEB y la plataforma la consume por API. La identidad del paciente viene del servicio maestro cuando exista; mientras tanto, del HIS.",
+   "nivel_togaf": "Consistente",
+   "sin_gobierno": "Se firmó porque «venía incluido». Hoy hay dos agendas que no se hablan."
+  },
+  {
+   "id": "b2b",
+   "nombre": "Laboratorio B2B",
+   "tipo": "A",
+   "hecho": "PORTAL-B2B consulta directamente la base de datos de LIS-LAB porque la interfaz formal tomaba seis semanas y el cliente empezaba en tres.",
+   "por_que_tipo": "Integra con el LIS y entrega resultados clínicos a terceros: tipo A.",
+   "momento": "R1 · Diseño, por vía rápida en 72 horas: la presión de plazo era real.",
+   "checklist_falla": [
+    1,
+    4,
+    9
+   ],
+   "principios": [
+    "P3",
+    "P7"
+   ],
+   "dictamen": "Excepción con vencimiento",
+   "condiciones": "Se acepta la consulta directa por 4 meses, solo lectura y sobre una vista dedicada, no sobre las tablas. Plan de retorno: API de resultados sobre el bus. Dueño: gerencia de laboratorio. Abre la partida de deuda «Acceso directo a LIS-LAB», con interés en horas de soporte y vencimiento en el mes 4.",
+   "nivel_togaf": "No conforme",
+   "sin_gobierno": "Nadie lo supo hasta 2024. La actualización mayor del LIS está aplazada porque nadie sabe qué se rompe."
+  },
+  {
+   "id": "portal",
+   "nombre": "Portal del paciente",
+   "tipo": "A",
+   "hecho": "El proveedor levantó el servicio en su propia nube, distinta a la que la organización ya usaba.",
+   "por_que_tipo": "Introduce un proveedor de nube nuevo con datos personales de salud: tipo A.",
+   "momento": "R1 · Diseño: antes de contratar.",
+   "checklist_falla": [
+    5,
+    6
+   ],
+   "principios": [
+    "P5",
+    "P6"
+   ],
+   "dictamen": "No conforme",
+   "condiciones": "Se devuelve: el servicio se despliega en la nube aprobada, o el proveedor demuestra los controles de protección de datos que exige la Ley 1581 de 2012. Como toca P6, no admite excepción.",
+   "nivel_togaf": "No conforme",
+   "sin_gobierno": "Nadie lo objetó: no había lineamiento que objetar. Hoy hay tres servicios en dos nubes distintas."
+  }
+ ],
+ "cobit": [
+  {
+   "codigo": "APO03",
+   "nombre": "Managed Enterprise Architecture (arquitectura empresarial gestionada)",
+   "tipo": "Objetivo de gestión · obligatorio en la 3.2",
+   "relacion": "Es el objetivo que el ARB opera. Sus cinco prácticas se asignan así: APO03.01 visión (Andina 2029 y principios); APO03.02 arquitectura de referencia (repositorio); APO03.03 selección de oportunidades (revisión R0); APO03.04 implementación (revisiones R1 y R2); APO03.05 servicios de arquitectura (el arquitecto líder como servicio a los proyectos).",
+   "actual": 1,
+   "objetivo": 2,
+   "plazo": "12 meses",
+   "justificacion": "Hoy hay actividades de arquitectura aisladas, sin proceso (nivel 1). En 12 meses el proceso estará definido y se ejecutará en todos los proyectos tipo A (nivel 2). El nivel 3 exige medición estable, que no existe antes de un año de métricas."
+  },
+  {
+   "codigo": "APO12",
+   "nombre": "Managed Risk (riesgo gestionado)",
+   "tipo": "Objetivo de gestión · el segundo que pide la 3.2",
+   "relacion": "Los tres riesgos arquitectónicos y cada excepción aceptada entran al registro de riesgos de la organización, con dueño y control. El ARB reporta el riesgo aceptado; no lo esconde.",
+   "actual": 1,
+   "objetivo": 2,
+   "plazo": "12 meses",
+   "justificacion": "Hoy el riesgo se gestiona por proyecto, sin registro común. El registro de excepciones es el primer insumo sistemático."
+  },
+  {
+   "codigo": "MEA03",
+   "nombre": "Managed Compliance With External Requirements (cumplimiento de requisitos externos)",
+   "tipo": "Objetivo de gestión · complementario",
+   "relacion": "La pregunta 6 de la lista de revisión (P6) conecta cada iniciativa con la normativa de historia clínica interoperable, RIPS y datos personales.",
+   "actual": 2,
+   "objetivo": 2,
+   "plazo": "Se mantiene",
+   "justificacion": "El cumplimiento normativo ya se gestiona, por obligación; lo nuevo es que entra al diseño."
+  },
+  {
+   "codigo": "EDM01",
+   "nombre": "Ensured Governance Framework Setting and Maintenance",
+   "tipo": "Objetivo de gobierno · da el mandato",
+   "relacion": "La Presidencia y el consejo directivo crean el ARB y le dan autoridad. Sin EDM01, el ARB es una reunión más. No cuenta como objetivo de gestión.",
+   "actual": 1,
+   "objetivo": 2,
+   "plazo": "6 meses",
+   "justificacion": "El mandato es un acta del consejo directivo; es lo primero que hay que conseguir."
+  }
+ ],
+ "nivelesCobit": [
+  {
+   "n": 0,
+   "texto": "Sin capacidad o capacidad incompleta"
+  },
+  {
+   "n": 1,
+   "texto": "El proceso logra más o menos su propósito con actividades incompletas"
+  },
+  {
+   "n": 2,
+   "texto": "El proceso logra su propósito con un conjunto básico y completo de actividades"
+  },
+  {
+   "n": 3,
+   "texto": "El proceso logra su propósito de forma organizada, con activos organizacionales"
+  },
+  {
+   "n": 4,
+   "texto": "El proceso logra su propósito, está bien definido y su desempeño se mide cuantitativamente"
+  },
+  {
+   "n": 5,
+   "texto": "El proceso logra su propósito, está bien definido, se mide y se mejora continuamente"
+  }
+ ],
+ "itil": [
+  {
+   "practica": "Architecture management (gestión de la arquitectura)",
+   "tipo": "Práctica general",
+   "conexion": "Es la práctica que el ARB institucionaliza: principios, estándares y arquitectura objetivo."
+  },
+  {
+   "practica": "Change enablement (habilitación del cambio)",
+   "tipo": "Práctica de gestión de servicios",
+   "conexion": "El comité de cambios no aprueba un cambio tipo A sin el dictamen del ARB. Es el punto de control operativo."
+  },
+  {
+   "practica": "Service configuration management (configuración del servicio)",
+   "tipo": "Práctica de gestión de servicios",
+   "conexion": "El inventario de interfaces pasa a la base de configuración; de ahí sale la métrica M3."
+  },
+  {
+   "practica": "Risk management (gestión del riesgo)",
+   "tipo": "Práctica general",
+   "conexion": "Recibe los riesgos y las excepciones del ARB (APO12)."
+  },
+  {
+   "practica": "Measurement and reporting (medición y reporte)",
+   "tipo": "Práctica general",
+   "conexion": "Publica las cinco métricas al Comité de TI."
+  }
+ ],
+ "metricas": [
+  {
+   "cod": "M1",
+   "nombre": "Cobertura de revisión",
+   "definicion": "Proporción de iniciativas tipo A y B aprobadas que tuvieron dictamen del ARB antes de su aprobación.",
+   "formula": "Iniciativas A y B con dictamen previo ÷ iniciativas A y B aprobadas en el periodo × 100",
+   "fuente": "Herramienta de gestión de proyectos (23 proyectos/año) cruzada con las actas del ARB",
+   "frecuencia": "Mensual",
+   "base": "0 % (no hay ARB)",
+   "meta": "≥ 90 % a los 12 meses",
+   "umbral": "< 80 % en dos meses seguidos",
+   "principio": "Todos"
+  },
+  {
+   "cod": "M2",
+   "nombre": "Excepciones vencidas",
+   "definicion": "Excepciones que superaron su vencimiento sin cerrarse ni renovarse.",
+   "formula": "Excepciones abiertas con fecha de vencimiento anterior al corte ÷ excepciones abiertas × 100",
+   "fuente": "Registro de excepciones del ARB",
+   "frecuencia": "Mensual",
+   "base": "No existe registro",
+   "meta": "0 %",
+   "umbral": "> 0 % durante más de 30 días, o cualquier excepción vencida sobre datos clínicos",
+   "principio": "Todos"
+  },
+  {
+   "cod": "M3",
+   "nombre": "Interfaces bajo contrato",
+   "definicion": "Proporción de interfaces en operación que usan un contrato publicado y versionado (bus o API).",
+   "formula": "Interfaces con contrato registrado ÷ interfaces totales (registradas + estimadas no registradas) × 100",
+   "fuente": "Inventario de interfaces (41 registradas; 10 no registradas, supuesto) y consola del bus (6 interfaces)",
+   "frecuencia": "Trimestral",
+   "base": "6 ÷ 51 = 11,8 %",
+   "meta": "≥ 35 % a los 12 meses",
+   "umbral": "Crecimiento < 3 puntos en un trimestre",
+   "principio": "P3"
+  },
+  {
+   "cod": "M4",
+   "nombre": "Capacidades duplicadas",
+   "definicion": "Capacidades de negocio prestadas por más de un sistema sin que exista una excepción aprobada.",
+   "formula": "Número de capacidades del mapa con dos o más sistemas que las prestan y sin excepción vigente",
+   "fuente": "Mapa de capacidades de la Unidad 1 cruzado con el mapa de aplicaciones (§6)",
+   "frecuencia": "Trimestral",
+   "base": "2 (agendamiento: AGENDA-WEB y TELEMED; identidad del paciente: cuatro maestros)",
+   "meta": "0 sin excepción",
+   "umbral": "Cualquier aumento",
+   "principio": "P4 y P2"
+  },
+  {
+   "cod": "M5",
+   "nombre": "Tiempo de dictamen",
+   "definicion": "Días hábiles entre la radicación completa de una solicitud tipo A y el dictamen del ARB.",
+   "formula": "Percentil 90 de (fecha de dictamen − fecha de radicación completa), en días hábiles, para solicitudes tipo A",
+   "fuente": "Registro de solicitudes del ARB (herramienta de mesa de servicio, que ya es la fuente más confiable del área, §8)",
+   "frecuencia": "Mensual",
+   "base": "No existe",
+   "meta": "p90 ≤ 10 días hábiles; vía rápida ≤ 3",
+   "umbral": "p90 > 10 días hábiles en un mes",
+   "principio": "Protege contra el gobierno lento"
+  }
+ ],
+ "riesgos": [
+  {
+   "cod": "RA-1",
+   "riesgo": "El gobierno se vuelve un trámite y los equipos lo evitan",
+   "causa": "Si el ARB tarda más que el plazo del negocio, los equipos repiten lo que hizo PORTAL-B2B: construyen por fuera.",
+   "consecuencia": "Aparece TI en la sombra y el ARB pierde legitimidad; se vuelve al estado actual con una reunión más.",
+   "p": 4,
+   "i": 4,
+   "controles": [
+    "Vía rápida con dictamen en 72 horas para plazos de negocio reales",
+    "Tipo C por autodeclaración: el ARB no revisa lo que no lo necesita",
+    "Catálogo de patrones preaprobados (por ejemplo, API sobre el bus): quien los usa pasa como conforme",
+    "Métrica M5 con umbral: si el ARB es lento, se entera por sus propias cifras"
+   ],
+   "vigila": "M5 y M1",
+   "dueno": "Presidente del ARB (CIO)"
+  },
+  {
+   "cod": "RA-2",
+   "riesgo": "Concentración del conocimiento de HIS-CORE en dos personas",
+   "causa": "Solo dos desarrolladores conocen HIS-CORE y uno se pensiona en 14 meses.",
+   "consecuencia": "Cualquier cambio normativo o falla en HIS-CORE queda sin quién lo atienda; la alternativa elegida en la Unidad 2 se detiene.",
+   "p": 5,
+   "i": 5,
+   "controles": [
+    "Todo cambio en HIS-CORE es tipo B como mínimo y exige documentar el contrato de datos que toca (P7)",
+    "Plan de transferencia con fecha: pareo obligatorio del segundo desarrollador en los próximos 12 meses",
+    "Riesgo registrado en APO12 con revisión mensual hasta que existan tres personas que conozcan el sistema"
+   ],
+   "vigila": "Pregunta 9 de la lista de revisión; seguimiento en APO12",
+   "dueno": "Líder de desarrollo y mantenimiento"
+  },
+  {
+   "cod": "RA-3",
+   "riesgo": "Acoplamiento por bases de datos compartidas",
+   "causa": "FACT-SALUD lee tablas de HIS-CORE y PORTAL-B2B lee la base de LIS-LAB, sin contrato.",
+   "consecuencia": "Un cambio en el origen —por ejemplo, un ajuste normativo— detiene la facturación, como ya pasó durante tres días.",
+   "p": 4,
+   "i": 5,
+   "controles": [
+    "Ninguna integración nueva por base de datos (P3): la lista de revisión la detecta en la revisión de diseño (R1)",
+    "Las dos existentes entran al registro de deuda con estrategia refinanciar: un adaptador que aísla el cambio",
+    "Pruebas de contrato en el comité de cambios: un cambio de esquema en HIS-CORE no pasa sin ellas"
+   ],
+   "vigila": "M3",
+   "dueno": "Arquitecto líder"
+  }
+ ],
+ "comparativo": [
+  {
+   "dimension": "Pregunta que responde",
+   "cobit": "Qué debe lograr el gobierno de la información y la tecnología en toda la empresa",
+   "togaf": "Cómo se gobierna la arquitectura: quién decide, con qué proceso y con qué criterios"
+  },
+  {
+   "dimension": "Alcance",
+   "cobit": "Todo el gobierno y la gestión de I&T: 40 objetivos en cinco dominios (EDM, APO, BAI, DSS, MEA)",
+   "togaf": "La capacidad de arquitectura empresarial y su gobierno: ARB, cumplimiento, contratos de arquitectura"
+  },
+  {
+   "dimension": "Dónde vive la arquitectura",
+   "cobit": "En un solo objetivo de gestión: APO03",
+   "togaf": "En todo el estándar; el gobierno es un documento propio"
+  },
+  {
+   "dimension": "Órgano que decide",
+   "cobit": "No lo prescribe: define responsabilidades (matriz RACI) por práctica",
+   "togaf": "El Architecture Board, con tamaño, mandato y operación sugeridos"
+  },
+  {
+   "dimension": "Cómo mide",
+   "cobit": "Niveles de capacidad de proceso de 0 a 5 y metas de alineamiento",
+   "togaf": "Niveles de cumplimiento de un proyecto frente a la arquitectura"
+  },
+  {
+   "dimension": "Mecanismo de control",
+   "cobit": "Prácticas, actividades y métricas de ejemplo por objetivo",
+   "togaf": "Revisiones de cumplimiento, dispensas (excepciones) y contratos de arquitectura"
+  },
+  {
+   "dimension": "Punto de articulación",
+   "cobit": "APO03 dice que debe existir una arquitectura gestionada",
+   "togaf": "TOGAF dice cómo operarla; el ARB ejecuta APO03.03 y APO03.04"
+  }
+ ],
+ "normativa": [
+  {
+   "norma": "Decreto 767 de 2022",
+   "entidad": "MinTIC",
+   "establece": "Lineamientos de la Política de Gobierno Digital; la arquitectura empresarial es uno de sus habilitadores",
+   "obliga": "Entidades públicas y particulares que cumplen funciones públicas",
+   "rsa": "Referencia, no obligación directa para una IPS privada"
+  },
+  {
+   "norma": "Resolución 1978 de 2023",
+   "entidad": "MinTIC",
+   "establece": "Adopta la versión 3 del Marco de Referencia de Arquitectura Empresarial (MRAE)",
+   "obliga": "Sujetos obligados del Decreto 1078 de 2015",
+   "rsa": "Referencia; obligatoria si la organización del grupo es pública, como una ESE"
+  },
+  {
+   "norma": "Decreto 1263 de 2022",
+   "entidad": "MinTIC",
+   "establece": "Lineamientos de transformación digital pública e interoperabilidad (adiciona el Título 22 al Decreto 1078 de 2015)",
+   "obliga": "Sujetos obligados del Decreto 1078 de 2015",
+   "rsa": "Marco de interoperabilidad que retoma la regulación de salud"
+  },
+  {
+   "norma": "Ley 1581 de 2012",
+   "entidad": "Congreso",
+   "establece": "Protección de datos personales; los datos de salud son datos sensibles",
+   "obliga": "Toda organización que trate datos personales",
+   "rsa": "Obligatoria: sustenta P5 y P6"
+  },
+  {
+   "norma": "Ley 2015 de 2020",
+   "entidad": "Congreso",
+   "establece": "Crea la historia clínica electrónica interoperable",
+   "obliga": "Prestadores de servicios de salud y demás actores",
+   "rsa": "Obligatoria: sustenta P2 y P6"
+  },
+  {
+   "norma": "Resolución 866 de 2021",
+   "entidad": "MinSalud",
+   "establece": "Conjunto de datos clínicos relevantes para la interoperabilidad y catálogos obligatorios",
+   "obliga": "Prestadores y actores del sistema de salud",
+   "rsa": "Obligatoria"
+  },
+  {
+   "norma": "Resolución 1888 de 2025",
+   "entidad": "MinSalud",
+   "establece": "Adopta el Resumen Digital de Atención (RDA) y el mecanismo de implementación de la interoperabilidad",
+   "obliga": "Los actores del artículo 2 de la Resolución 866 de 2021",
+   "rsa": "Obligatoria, con plazo de integración"
+  },
+  {
+   "norma": "Resolución 2275 de 2023",
+   "entidad": "MinSalud",
+   "establece": "RIPS como soporte de la factura electrónica de venta en salud",
+   "obliga": "Prestadores de servicios de salud",
+   "rsa": "Obligatoria: sustenta P8"
+  }
+ ]
+};
+const CLAVE = "arem-s3-arb";
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function estadoCaso() {
+  const area = r => /cl[ií]nic|financ|m[ée]dic|negocio|operaci|comercial/i.test(r.rol + " " + r.cargo) ? "negocio" : "tecnologia";
+  return {
+    modo: "caso", org: "Red Salud Andina", personas: 38, horasMes: 160,
+    nombre: CASO.arb.nombre, autoridad: "Acta del consejo directivo, a propuesta de la Presidencia (EDM01)",
+    mandato: CASO.arb.mandato,
+    sillas: CASO.arb.roles.map(r => ({ rol: r.rol, cargo: r.cargo, resp: r.resp,
+      voto: /sin voto/i.test(r.voto) ? "voz" : "voto", area: area(r), horas: r.horas })),
+    frec: CASO.arb.operacion[0].texto, quorum: CASO.arb.operacion[1].texto,
+    regla: CASO.arb.operacion[2].texto, escala: CASO.arb.operacion[4].texto
+  };
+}
+function estadoVacio() {
+  const s = () => ({ rol: "", cargo: "", resp: "", voto: "voto", area: "tecnologia", horas: 4 });
+  return { modo: "grupo", org: "", personas: 20, horasMes: 160, nombre: "", autoridad: "", mandato: "",
+           sillas: [s(), s(), s(), s()], frec: "", quorum: "", regla: "", escala: "" };
+}
+
+let E;
+try { E = JSON.parse(localStorage.getItem(CLAVE)); } catch (e) { E = null; }
+if (!E || !E.sillas) E = estadoCaso();
+if (new URLSearchParams(location.search).get("caso") === "grupo" && E.modo !== "grupo") E = estadoVacio();
+
+function guardar() { try { localStorage.setItem(CLAVE, JSON.stringify(E)); } catch (e) {} }
+
+const vinculos = [["c-org","org"],["c-pers","personas"],["c-horas","horasMes"],["a-nombre","nombre"],["a-autoridad","autoridad"],
+  ["a-mandato","mandato"],["o-frec","frec"],["o-quorum","quorum"],["o-regla","regla"],["o-escala","escala"]];
+
+function pintarCampos() {
+  vinculos.forEach(([id, k]) => { $(id).value = E[k]; });
+  $("btn-caso").setAttribute("aria-pressed", E.modo === "caso");
+  $("btn-grupo").setAttribute("aria-pressed", E.modo === "grupo");
+  $("modo").innerHTML = E.modo === "caso"
+    ? "Está viendo el <strong>ejemplo resuelto de Red Salud Andina</strong>. Modifíquelo para ver cómo cambia la revisión, o empiece con el caso de su grupo."
+    : "Está trabajando con <strong>el caso de su grupo</strong>. Lo que escribe se guarda en este navegador.";
+}
+
+function pintarSillas() {
+  $("sillas").innerHTML = E.sillas.map((s, i) => `
+    <div class="silla">
+      <div class="silla-cab"><b>Silla ${i + 1}</b>
+        <button class="btn btn-peligro btn-pequeno" data-quitar="${i}" aria-label="Quitar silla ${i + 1}">Quitar</button></div>
+      <div class="silla-grid">
+        <div class="campo"><label for="s${i}-rol">Rol</label><input id="s${i}-rol" data-i="${i}" data-k="rol" value="${esc(s.rol)}"/></div>
+        <div class="campo"><label for="s${i}-cargo">Cargo real que la ocupa</label><input id="s${i}-cargo" data-i="${i}" data-k="cargo" value="${esc(s.cargo)}"/></div>
+        <div class="campo"><label for="s${i}-resp">Responsabilidades</label><textarea id="s${i}-resp" rows="2" data-i="${i}" data-k="resp">${esc(s.resp)}</textarea></div>
+        <div class="campo"><label for="s${i}-voto">Voto</label><select id="s${i}-voto" data-i="${i}" data-k="voto">
+          <option value="voto"${s.voto === "voto" ? " selected" : ""}>Voz y voto</option>
+          <option value="voz"${s.voto === "voz" ? " selected" : ""}>Voz sin voto</option></select></div>
+        <div class="campo"><label for="s${i}-area">Perspectiva</label><select id="s${i}-area" data-i="${i}" data-k="area">
+          <option value="negocio"${s.area === "negocio" ? " selected" : ""}>Negocio</option>
+          <option value="tecnologia"${s.area === "tecnologia" ? " selected" : ""}>Tecnología</option></select></div>
+        <div class="campo"><label for="s${i}-horas">h/mes</label><input id="s${i}-horas" type="number" min="0" data-i="${i}" data-k="horas" value="${esc(s.horas)}"/></div>
+      </div>
+    </div>`).join("");
+}
+
+function revisar() {
+  const bloqueos = [], adv = [], ok = [];
+  const conResp = E.sillas.filter(s => s.rol.trim() && s.resp.trim());
+  const votantes = E.sillas.filter(s => s.voto === "voto" && s.rol.trim());
+  const horas = E.sillas.reduce((a, s) => a + (+s.horas || 0), 0);
+  const cap = (+E.personas || 0) * (+E.horasMes || 0);
+  const pct = cap ? horas / cap * 100 : 0;
+
+  if (conResp.length < 4) bloqueos.push(`Tiene ${conResp.length} roles con responsabilidades; la Actividad 3.2 pide al menos 4.`);
+  else ok.push(`${conResp.length} roles con responsabilidades.`);
+  if (votantes.length > 10) bloqueos.push(`Tiene ${votantes.length} votantes. TOGAF sugiere nunca más de 10 miembros permanentes.`);
+  else if (votantes.length > 5) adv.push(`${votantes.length} votantes: TOGAF sugiere 4 o 5 miembros permanentes. Un ARB grande no consigue quórum.`);
+  else if (votantes.length < 3) adv.push("Menos de 3 votantes: el ARB depende de una o dos personas.");
+  const sinCargo = E.sillas.filter(s => s.rol.trim() && !s.cargo.trim());
+  if (sinCargo.length) bloqueos.push(`Sillas sin cargo real: ${sinCargo.map(s => s.rol).join(", ")}.`);
+  const futuras = E.sillas.filter(s => /contrat|nuevo cargo|por definir|vacante|se crear/i.test(s.cargo));
+  if (futuras.length) adv.push(`Estas sillas dependen de contratar o crear cargos: ${futuras.map(s => s.rol || "sin nombre").join(", ")}. Si el área no crece, no existen.`);
+  if (!E.sillas.some(s => s.area === "negocio" && s.voto === "voto")) bloqueos.push("No hay ningún votante de negocio. Un ARB solo técnico pierde de vista el valor para la organización.");
+  else ok.push("Hay perspectiva de negocio con voto.");
+  if (!E.nombre.trim() || !E.mandato.trim()) bloqueos.push("Falta el nombre o el mandato del órgano.");
+  else if (!/no\s|sin\s|solo|sigue|comit/i.test(E.mandato)) adv.push("El mandato no dice qué no decide el ARB ni cómo se relaciona con quien decide la inversión.");
+  const faltan = [["frec","la frecuencia"],["quorum","el quórum"],["regla","la regla de decisión"],["escala","el escalamiento"]].filter(([k]) => !E[k].trim()).map(([, t]) => t);
+  if (faltan.length) bloqueos.push("Falta definir " + faltan.join(", ") + ".");
+  if (E.regla.trim() && !/si no|desempat|mayor[ií]a|votaci|veto/i.test(E.regla)) adv.push("La regla de decisión no dice qué pasa cuando no hay acuerdo.");
+  if (E.frec.trim() && !/extraordin|r[aá]pid|urgen|72|48|24/i.test(E.frec)) adv.push("No hay una vía rápida. Si el negocio no puede esperar a la próxima sesión, los equipos construyen por fuera.");
+  if (pct > 5) adv.push(`El ARB consume el ${pct.toFixed(1).replace(".", ",")} % de la capacidad del área: difícil de sostener sin crecer.`);
+  if (!horas) bloqueos.push("No hay horas asignadas: el costo del ARB no está calculado.");
+
+  $("r-horas").textContent = horas;
+  $("r-cap").textContent = cap.toLocaleString("es-CO");
+  $("r-pct").textContent = pct.toFixed(1).replace(".", ",") + " %";
+  $("r-vot").textContent = votantes.length;
+  $("barra-v").style.width = Math.min(100, pct * 10) + "%";
+  $("barra").className = "barra" + (pct > 5 ? " alta" : pct > 3 ? " media" : "");
+  $("barra").setAttribute("aria-label", `El ARB consume el ${pct.toFixed(1)} % de la capacidad; la barra llega al 100 % con el 10 %`);
+
+  let h = "";
+  if (bloqueos.length) h += `<div class="aviso aviso-bloqueo"><strong>El F-22 todavía no cumple:</strong><ul>${bloqueos.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  if (adv.length) h += `<div class="aviso aviso-advertencia"><strong>Revise:</strong><ul>${adv.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  if (!bloqueos.length) h += `<div class="aviso aviso-ok"><strong>El ARB cumple lo que pide la rúbrica:</strong> ${esc(ok.join(" "))} Tiene frecuencia, quórum, regla de decisión y escalamiento.</div>`;
+  $("revision").innerHTML = h;
+
+  const vot = E.sillas.filter(s => s.voto === "voto" && s.rol.trim());
+  const inv = E.sillas.filter(s => s.voto === "voz" && s.rol.trim());
+  $("organo").innerHTML = `
+    <div class="nivel-org"><div class="caja-org">${esc(E.autoridad || "Órgano que da el mandato")}</div></div>
+    <div class="flecha" aria-hidden="true">↓ mandato</div>
+    <div class="nivel-org"><div class="caja-org arb">${esc(E.nombre || "ARB")}</div></div>
+    <div class="nivel-org">${vot.map(s => `<div class="caja-org${s.area === "negocio" ? " neg" : ""}"><b>${esc(s.rol)}</b><br>${esc(s.cargo)}</div>`).join("")}</div>
+    ${inv.length ? `<div class="nivel-org">${inv.map(s => `<div class="caja-org inv">${esc(s.rol)} · voz sin voto</div>`).join("")}</div>` : ""}
+    <p class="campo ayuda">Borde coral: perspectiva de negocio. Borde punteado: voz sin voto.</p>`;
+
+  const lineas = [];
+  lineas.push(`${E.nombre || "[Nombre del ARB]"}${E.org ? " — " + E.org : ""}`);
+  lineas.push(`Mandato. ${E.mandato || "[mandato]"}`);
+  if (E.autoridad) lineas.push(`Autoridad. ${E.autoridad}.`);
+  lineas.push("");
+  lineas.push("Composición:");
+  E.sillas.filter(s => s.rol.trim()).forEach(s => lineas.push(`• ${s.rol} — ${s.cargo || "[cargo]"} (${s.voto === "voto" ? "voz y voto" : "voz sin voto"}; ${s.horas || 0} h/mes). ${s.resp}`));
+  lineas.push("");
+  lineas.push(`Frecuencia. ${E.frec}`);
+  lineas.push(`Quórum. ${E.quorum}`);
+  lineas.push(`Regla de decisión. ${E.regla}`);
+  lineas.push(`Escalamiento. ${E.escala}`);
+  lineas.push("");
+  lineas.push(`Dimensionado. El ARB cuesta ${horas} horas-persona al mes, el ${pct.toFixed(1).replace(".", ",")} % de la capacidad del área (${E.personas} personas × ${E.horasMes} h = ${cap.toLocaleString("es-CO")} h).`);
+  $("salida").textContent = lineas.join("\n");
+  guardar();
+}
+
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (t.dataset.k) { E.sillas[+t.dataset.i][t.dataset.k] = t.value; revisar(); return; }
+  const v = vinculos.find(([id]) => id === t.id);
+  if (v) { E[v[1]] = t.value; revisar(); }
+});
+document.addEventListener("change", e => { if (e.target.dataset.k) { E.sillas[+e.target.dataset.i][e.target.dataset.k] = e.target.value; revisar(); } });
+$("sillas").addEventListener("click", e => {
+  const i = e.target.dataset.quitar;
+  if (i !== undefined) { E.sillas.splice(+i, 1); pintarSillas(); revisar(); }
+});
+$("btn-silla").onclick = () => {
+  E.sillas.push({ rol: "", cargo: "", resp: "", voto: "voto", area: "tecnologia", horas: 4 });
+  pintarSillas(); revisar(); $(`s${E.sillas.length - 1}-rol`).focus();
+};
+$("btn-caso").onclick = () => { E = estadoCaso(); pintarCampos(); pintarSillas(); revisar(); };
+$("btn-grupo").onclick = () => {
+  if (E.modo === "grupo" || confirm("Se borrará lo que hay en pantalla para empezar en blanco. ¿Continuar?")) {
+    E = estadoVacio(); pintarCampos(); pintarSillas(); revisar();
+  }
+};
+$("btn-copiar").onclick = async () => {
+  try { await navigator.clipboard.writeText($("salida").textContent); $("btn-copiar").textContent = "Copiado ✓"; }
+  catch (e) { $("btn-copiar").textContent = "Seleccione el texto y cópielo"; }
+  setTimeout(() => $("btn-copiar").textContent = "Copiar texto", 2000);
+};
+pintarCampos(); pintarSillas(); revisar();
+</script>
+</body>
+</html>

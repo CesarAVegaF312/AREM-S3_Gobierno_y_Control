@@ -1,0 +1,3 @@
+# Fuentes en Word y PowerPoint: se conservan en local (AREM-S3_fuentes), en el repositorio solo van los PDF
+*.docx
+*.pptx
