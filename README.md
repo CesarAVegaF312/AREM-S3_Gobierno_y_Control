@@ -30,6 +30,12 @@ Las actividades de la unidad, tal como están en la plataforma:
 
 ## Empiecen aquí
 
+**Todo el material se abre desde aquí, sin descargar nada:**
+<https://cesaravegaf312.github.io/AREM-S3_Gobierno_y_Control/>
+
+Desde esa portada salen los documentos, las cuatro herramientas y la
+[presentación de la sesión](https://cesaravegaf312.github.io/AREM-S3_Gobierno_y_Control/presentacion.html).
+
 1. **Lean el [mapa de la Actividad 3.2](documentos/1_actividad_3_2/AREM_S3_Mapa_Actividad_3_2.pdf).** Dos páginas: qué pide la actividad, con
    qué criterio se califica, en qué sección del documento va cada cosa y qué formato la prepara.
 2. **Miren el [documento de ejemplo](documentos/1_actividad_3_2/AREM_S3_Informe_Ejemplo_Actividad_3_2.pdf).** Así se ve la 3.2 terminada, con Red Salud
