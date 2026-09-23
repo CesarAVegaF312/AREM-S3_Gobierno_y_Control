@@ -134,8 +134,6 @@ table.comparativa td:nth-child(3){color:#1F5A3A}
   padding:3px 9px;font-size:12px;cursor:pointer;font-family:inherit}
 #estado button:hover{background:rgba(201,214,234,.16)}
 #progreso{position:fixed;top:0;left:0;height:3px;background:var(--coral);z-index:6;transition:width .3s}
-.reloj{font-variant-numeric:tabular-nums;font-weight:700}
-.reloj.atrasado{color:#F0A28A} .reloj.adelantado{color:#9FD8B4}
 .crece{margin-left:auto}
 
 /* ── índice ── */
@@ -295,9 +293,8 @@ button, [role="button"], .mini { touch-action: manipulation; user-select: none; 
   <button id="b-sig" aria-label="Diapositiva siguiente">→</button>
   <span id="titulo-actual"></span>
   <span class="crece"></span>
-  <span class="reloj" id="reloj">00:00</span>
-  <span id="desfase"></span>
-  <button id="b-reloj">Iniciar sesión</button>
+  <button id="b-crono">Cronómetro (T)</button>
+  <button id="b-presentador">Ventana de notas (P)</button>
   <button id="b-notas">Notas (N)</button>
   <button id="b-lectura" aria-pressed="false">Lectura</button>
   <button id="b-indice">Índice (I)</button>
@@ -326,11 +323,12 @@ button, [role="button"], .mini { touch-action: manipulation; user-select: none; 
 </div>
 
 <div id="crono" role="timer" aria-live="off">
-  <div class="rot">Taller en salas</div>
+  <div class="rot">Taller en salas · ajústelo al tiempo que le quede</div>
   <div class="tiempo" id="crono-t">27:00</div>
   <div class="acc">
+    <button id="crono-menos" aria-label="Cinco minutos menos">−5</button>
     <button id="crono-play">Iniciar</button>
-    <button id="crono-reset">Reiniciar</button>
+    <button id="crono-mas" aria-label="Cinco minutos más">+5</button>
     <button id="crono-cerrar">Cerrar (T)</button>
   </div>
 </div>
@@ -341,12 +339,12 @@ button, [role="button"], .mini { touch-action: manipulation; user-select: none; 
     <table><tbody>
       <tr><td>← → · espacio</td><td>Moverse entre diapositivas</td></tr>
       <tr><td>Inicio · Fin</td><td>Primera y última</td></tr>
-      <tr><td>N</td><td>Notas del docente</td></tr>
+      <tr><td>N</td><td>Notas del docente, en esta misma pantalla</td></tr>
+      <tr><td>P</td><td>Notas en una ventana aparte: comparta solo la ventana de diapositivas</td></tr>
       <tr><td>I</td><td>Índice</td></tr>
       <tr><td>L</td><td>En el teléfono: leer las veinte diapositivas de corrido</td></tr>
       <tr><td>G</td><td>Glosario: de dónde sale cada código</td></tr>
-      <tr><td>T</td><td>Cronómetro del taller (27 minutos)</td></tr>
-      <tr><td>S</td><td>Iniciar o pausar el reloj de la sesión</td></tr>
+      <tr><td>T</td><td>Cronómetro del taller, ajustable</td></tr>
       <tr><td>B</td><td>Barra inferior</td></tr>
       <tr><td>F</td><td>Pantalla completa</td></tr>
       <tr><td>?</td><td>Esta ayuda</td></tr>
@@ -365,8 +363,7 @@ const SLIDES = [
   "lema": "Gobierno arquitectónico: quién decide, con qué reglas y cuánto cuesta decidir.",
   "pie": "Encuentro sincrónico · 2 horas · TOGAF® Standard, 10th Edition · COBIT® 2019 · ITIL® 4",
   "notas": "",
-  "codigos": [],
-  "plan": 0
+  "codigos": []
  },
  {
   "bloque": 0,
@@ -434,8 +431,7 @@ const SLIDES = [
     "ARB",
     "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
    ]
-  ],
-  "plan": 2
+  ]
  },
  {
   "bloque": 0,
@@ -446,61 +442,34 @@ const SLIDES = [
     "t": "columnas",
     "items": [
      {
-      "kicker": "Bloque 1 · 20 min",
-      "titulo": "Qué significa",
+      "kicker": "Primero",
+      "titulo": "Conceptos",
       "color": "coral",
       "texto": "Qué es gobernar una arquitectura, qué pasa cuando no existe y con qué mecanismos se hace."
      },
      {
-      "kicker": "Bloque 2 · 25 min",
-      "titulo": "Ejemplos guiados",
+      "kicker": "Después",
+      "titulo": "Ejemplos",
       "color": "teal",
       "texto": "Los mismos formatos que ustedes van a llenar, recorridos paso a paso con el caso."
      },
      {
-      "kicker": "Bloque 3 · 48 min",
-      "titulo": "Ustedes",
+      "kicker": "Y el resto de la sesión",
+      "titulo": "El hacer",
       "color": "cafe",
-      "texto": "Un taller en salas de 27 minutos, la puesta en común y el cierre."
+      "texto": "El taller en salas sobre su propio caso, la puesta en común y el cierre."
      }
     ]
    },
    {
-    "t": "tabla",
-    "size": 12,
-    "filas": [
-     [
-      "Minuto",
-      "Qué pasa"
-     ],
-     [
-      "0 a 25",
-      "El reto y el significado del gobierno arquitectónico"
-     ],
-     [
-      "25 a 32",
-      "La Actividad 3.1, guiada · pausa de 15 minutos"
-     ],
-     [
-      "47 a 72",
-      "Ejemplos guiados de la 3.2: del episodio al principio, a la pregunta y a la silla del ARB"
-     ],
-     [
-      "72 a 120",
-      "Taller en salas (27 min), puesta en común (12 min) y cierre"
-     ]
-    ]
+    "t": "banda",
+    "size": 15,
+    "texto": "El bloque que no se recorta es el tercero. Si los conceptos se alargan, se acortan los ejemplos: están todos en el repositorio para verlos después."
    }
   ],
-  "pie": "Una sola actividad en salas, al final: el resto de la sesión es para llegar a ella sabiendo qué hacer.",
+  "pie": "Una sola actividad en salas: el resto de la sesión es para llegar a ella sabiendo qué hacer.",
   "notas": "",
-  "codigos": [
-   [
-    "ARB",
-    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
-   ]
-  ],
-  "plan": 5
+  "codigos": []
  },
  {
   "bloque": 1,
@@ -553,8 +522,7 @@ const SLIDES = [
     "ARB",
     "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
    ]
-  ],
-  "plan": 7
+  ]
  },
  {
   "bloque": 1,
@@ -616,8 +584,7 @@ const SLIDES = [
     "ARB",
     "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
    ]
-  ],
-  "plan": 11
+  ]
  },
  {
   "bloque": 1,
@@ -681,8 +648,7 @@ const SLIDES = [
     "ARB",
     "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
    ]
-  ],
-  "plan": 16
+  ]
  },
  {
   "bloque": 1,
@@ -755,8 +721,7 @@ const SLIDES = [
     "R2",
     "Momento de la revisión de cumplimiento · Salida a producción: antes del paso a producción"
    ]
-  ],
-  "plan": 20
+  ]
  },
  {
   "bloque": 1,
@@ -810,8 +775,7 @@ const SLIDES = [
     "ARB",
     "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
    ]
-  ],
-  "plan": 23
+  ]
  },
  {
   "bloque": 1,
@@ -872,7 +836,7 @@ const SLIDES = [
     "t": "banda",
     "size": 14,
     "pausa": true,
-    "texto": "Pausa de quince minutos. Volvemos en punto: al regresar empiezan los ejemplos guiados de la 3.2."
+    "texto": "Pausa. Al regresar empiezan los ejemplos guiados de la 3.2."
    }
   ],
   "pie": "Normas verificadas en septiembre de 2026; confirmen vigencia en el normograma del MinTIC o del Ministerio de Salud antes de citarlas.",
@@ -886,8 +850,7 @@ const SLIDES = [
     "MRAE",
     "Marco de Referencia de Arquitectura Empresarial del MinTIC (Resolución 1978 de 2023)"
    ]
-  ],
-  "plan": 25
+  ]
  },
  {
   "bloque": 2,
@@ -937,8 +900,7 @@ const SLIDES = [
     "F-23",
     "Formato del curso · Catálogo de principios arquitectónicos: al menos ocho, con motivación e implicaciones"
    ]
-  ],
-  "plan": 47
+  ]
  },
  {
   "bloque": 2,
@@ -1008,8 +970,7 @@ const SLIDES = [
     "tipo A",
     "Tipo de iniciativa · Revisión completa en sesión del ARB: Toca datos clínicos o de paciente; integra con HIS, LIS o facturación; introduce un proveedor de nube o SaaS nuevo; crea una capacidad nueva; o supera 300 millones de COP (supuesto)."
    ]
-  ],
-  "plan": 51
+  ]
  },
  {
   "bloque": 2,
@@ -1055,8 +1016,7 @@ const SLIDES = [
     "ARB",
     "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
    ]
-  ],
-  "plan": 55
+  ]
  },
  {
   "bloque": 2,
@@ -1118,8 +1078,7 @@ const SLIDES = [
     "P3",
     "Principio del ejemplo · «Se integra por contrato, nunca por la base de datos»: Toda integración entre sistemas usa una interfaz publicada y versionada (API o mensaje); se prohíbe leer o escribir la base de datos de otro sistema."
    ]
-  ],
-  "plan": 60
+  ]
  },
  {
   "bloque": 2,
@@ -1185,8 +1144,7 @@ const SLIDES = [
     "ARB",
     "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
    ]
-  ],
-  "plan": 64
+  ]
  },
  {
   "bloque": 2,
@@ -1264,40 +1222,38 @@ const SLIDES = [
     "ARB",
     "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
    ]
-  ],
-  "plan": 68
+  ]
  },
  {
   "bloque": 3,
-  "kicker": "Bloque 3 · Taller en salas · 27 minutos",
+  "kicker": "El hacer · Taller en salas",
   "titulo": "Un episodio de su organización, tres formatos",
   "bloques": [
    {
     "t": "pasos",
     "size": 12.5,
-    "numerar": false,
     "items": [
      {
-      "titulo": "Minutos 0 a 5 · Elijan el episodio",
+      "titulo": "Elijan el episodio",
       "texto": "Una decisión real de su organización que hoy nadie gobernó: una compra que duplicó algo, una integración de apuro, un sistema hecho por fuera de TI. Si usan Red Salud Andina, tomen uno distinto a los tres de hoy."
      },
      {
-      "titulo": "Minutos 5 a 12 · El principio (F-23)",
+      "titulo": "El principio (F-23)",
       "texto": "La regla escrita antes que lo habría evitado: enunciado, motivación con el hecho e implicaciones. Si les sobra tiempo, escriban un segundo principio."
      },
      {
-      "titulo": "Minutos 12 a 20 · La pregunta y el dictamen (F-24)",
+      "titulo": "La pregunta y el dictamen (F-24)",
       "texto": "La pregunta de la lista de revisión que lo detecta; el tipo de iniciativa; el momento en que se habría visto, y el dictamen. Si es excepción: vencimiento, dueño y plan de retorno."
      },
      {
-      "titulo": "Minutos 20 a 27 · Las sillas (F-22)",
+      "titulo": "Las sillas (F-22)",
       "texto": "Quién tenía que estar en esa decisión, con el cargo real de su organización, y cuántas horas al mes cuesta el ARB completo."
      }
     ]
    }
   ],
   "pie": "Herramientas abiertas al lado: Diseñador de ARB y Compliance Review, con «Empezar con el caso del grupo». Enunciado: https://cesaravegaf312.github.io/AREM-S3_Gobierno_y_Control/documentos/1_actividad_3_2/AREM_S3_Enunciado_Actividad_3_2.pdf",
-  "cronometro": 27,
+  "cronometro": true,
   "notas": "",
   "codigos": [
    [
@@ -1316,8 +1272,7 @@ const SLIDES = [
     "ARB",
     "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
    ]
-  ],
-  "plan": 72
+  ]
  },
  {
   "bloque": 3,
@@ -1383,7 +1338,7 @@ const SLIDES = [
  },
  {
   "bloque": 3,
-  "kicker": "Puesta en común · 12 minutos",
+  "kicker": "Puesta en común",
   "titulo": "Dos grupos muestran; dos correcciones para todos",
   "bloques": [
    {
@@ -1418,8 +1373,7 @@ const SLIDES = [
   ],
   "pie": "Si un grupo no encontró ningún episodio, es la señal de que todavía no miró el gobierno real de su organización.",
   "notas": "",
-  "codigos": [],
-  "plan": 102
+  "codigos": []
  },
  {
   "bloque": 3,
@@ -1495,8 +1449,7 @@ const SLIDES = [
     "ARB",
     "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
    ]
-  ],
-  "plan": 114
+  ]
  },
  {
   "tipo": "referencias",
@@ -1810,14 +1763,8 @@ addEventListener("resize", escalar);
 
 // ---------------------------------------------------------------- navegación
 let actual = 0;
-// De las notas «⏱ 01:12–01:42» sale el minuto de la sesión en que va esta diapositiva.
-const minutoPlan = SLIDES.map(d => {
-  if (typeof d.plan === "number") return d.plan;          // versión publicada, sin notas
-  const m = (d.notas || "").match(/(\d{2}):(\d{2})\s*[–-]/);
-  return m ? (+m[1]) * 60 + (+m[2]) : null;
-});
 const HAY_NOTAS = SLIDES.some(d => (d.notas || "").trim());
-if (!HAY_NOTAS) { $("b-notas").hidden = true; $("notas").hidden = true; }
+if (!HAY_NOTAS) { $("b-notas").hidden = true; $("notas").hidden = true; $("b-presentador").hidden = true; }
 
 function ir(n, atras) {
   n = Math.max(0, Math.min(slides.length - 1, n));
@@ -1839,7 +1786,8 @@ function ir(n, atras) {
       cod.map(([c, t]) => `<div><b>${esc(c)}</b> · ${esc(t)}</div>`).join("")
     : "";
   location.hash = n + 1;
-  if (SLIDES[n].cronometro) abrirCrono(SLIDES[n].cronometro); else cerrarCrono();
+  if (SLIDES[n].cronometro) abrirCrono(); else cerrarCrono();
+  if (typeof pintarPresentador === "function") pintarPresentador();
   escalar();
 }
 const sig = () => ir(actual + 1);
@@ -1858,8 +1806,8 @@ addEventListener("keydown", e => {
     else if (k === "i") $("indice").classList.toggle("abierto");
     else if (k === "g") $("glosario").classList.toggle("abierto");
     else if (k === "l") alternarLectura();
-    else if (k === "t") { $("crono").classList.contains("visible") ? cerrarCrono() : abrirCrono(27); }
-    else if (k === "s") relojSesion();
+    else if (k === "p") abrirPresentador();
+    else if (k === "t") { $("crono").classList.contains("visible") ? cerrarCrono() : abrirCrono(); }
     else if (k === "b") { $("estado").classList.toggle("oculta"); document.body.classList.toggle("sin-barra"); escalar(); }
     else if (k === "f") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
     else if (k === "?" || e.key === "?") $("ayuda").classList.toggle("abierta");
@@ -1884,13 +1832,14 @@ $("ayuda").onclick = () => $("ayuda").classList.remove("abierta");
 
 // ---------------------------------------------------------------- índice
 $("rejilla").innerHTML = SLIDES.map((d, i) => `<button class="mini" data-ir="${i}" data-bloque="${d.bloque}">
-   <div class="num">${i + 1}${minutoPlan[i] !== null ? " · min " + minutoPlan[i] : ""}</div>
+   <div class="num">${i + 1}</div>
    <div class="t">${esc(d.titulo)}</div></button>`).join("");
 $("rejilla").addEventListener("click", e => {
   const b = e.target.closest("[data-ir]");
   if (b) { ir(+b.dataset.ir); $("indice").classList.remove("abierto"); }
 });
 $("b-indice").onclick = () => $("indice").classList.toggle("abierto");
+$("b-crono").onclick = () => $("crono").classList.contains("visible") ? cerrarCrono() : abrirCrono();
 
 // ---------------------------------------------------------------- modo lectura (teléfono)
 const tactil = () => matchMedia("(pointer: coarse)").matches;
@@ -1931,42 +1880,100 @@ function alternarNotas() {
 }
 $("b-notas").onclick = alternarNotas;
 
-// ---------------------------------------------------------------- reloj de la sesión
-let t0 = null, transcurrido = 0, tic = null;
-function pintarReloj() {
-  const s = transcurrido + (t0 ? (Date.now() - t0) / 1000 : 0);
-  $("reloj").textContent = String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(Math.floor(s % 60)).padStart(2, "0");
+// ---------------------------------------------------------------- ventana de notas (modo presentador)
+// Al compartir pantalla, el panel lateral se proyecta. Esta ventana va aparte: se comparte solo
+// la ventana de las diapositivas y las notas se quedan en la pantalla del docente.
+let vPres = null;
+const PLANTILLA_PRES = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<title>Notas del docente — AREM S3</title><style>
+ *{box-sizing:border-box;margin:0;padding:0}
+ body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:#13212A;color:#DCE6EA;
+      padding:20px 22px 24px;line-height:1.5;font-size:16px}
+ .cab{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;
+      border-bottom:1px solid rgba(220,230,234,.18);padding-bottom:10px;margin-bottom:14px}
+ h1{font-family:Cambria,Georgia,serif;font-size:21px;color:#fff;font-weight:700}
+ .num{font-size:13px;color:#93AAC9;font-weight:700}
+ .tiempo{font-size:15px;color:#F0B48A;font-weight:700;font-variant-numeric:tabular-nums}
+ .notas{white-space:pre-wrap;font-size:17px}
+ .cods{margin-top:18px;padding-top:12px;border-top:1px solid rgba(220,230,234,.18);font-size:14px}
+ .cods b{color:#F0B48A;font-family:Cambria,Georgia,serif}
+ .cods div{margin-bottom:6px}
+ .sig{margin-top:18px;padding-top:12px;border-top:1px solid rgba(220,230,234,.18);color:#93AAC9;font-size:14px}
+ .acc{position:sticky;bottom:0;background:#13212A;padding-top:14px;margin-top:18px;display:flex;gap:8px}
+ button{background:transparent;border:1px solid rgba(220,230,234,.35);color:inherit;border-radius:8px;
+        padding:8px 16px;font:inherit;cursor:pointer}
+ button:hover{background:rgba(220,230,234,.14)}
+</style></head><body>
+ <div class="cab"><div><div class="num" id="p-num"></div><h1 id="p-tit"></h1></div>
+   <div class="tiempo" id="p-plan"></div></div>
+ <div class="notas" id="p-notas"></div>
+ <div class="cods" id="p-cods"></div>
+ <div class="sig" id="p-sig"></div>
+ <div class="acc"><button id="p-ant">← Anterior</button><button id="p-sig-btn">Siguiente →</button></div>
+</body></html>`;
+
+function abrirPresentador() {
+  if (vPres && !vPres.closed) { vPres.focus(); return; }
+  vPres = open("", "arem-s3-notas", "width=560,height=760");
+  if (!vPres) { alert("El navegador bloqueó la ventana. Permita las ventanas emergentes de esta página."); return; }
+  vPres.document.write(PLANTILLA_PRES);
+  vPres.document.close();
+  vPres.addEventListener("load", () => {}, { once: true });
+  const d = vPres.document;
+  d.getElementById("p-ant").onclick = () => { ant(); vPres.focus(); };
+  d.getElementById("p-sig-btn").onclick = () => { sig(); vPres.focus(); };
+  d.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); sig(); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); ant(); }
+  });
+  pintarPresentador();
+}
+function pintarPresentador() {
+  if (!vPres || vPres.closed) return;
+  const d = vPres.document, D = SLIDES[actual];
+  if (!d.getElementById("p-tit")) return;
+  d.getElementById("p-num").textContent = `Diapositiva ${actual + 1} de ${slides.length}`;
+  d.getElementById("p-tit").textContent = D.titulo;
+  d.getElementById("p-notas").textContent = D.notas || "(sin notas)";
   const plan = minutoPlan[actual];
-  const d = $("desfase");
-  if (plan === null || !t0 && !transcurrido) { d.textContent = ""; $("reloj").className = "reloj"; return; }
-  const dif = Math.round(s / 60 - plan);
-  d.textContent = Math.abs(dif) < 2 ? "en hora" : (dif > 0 ? `${dif} min de atraso` : `${-dif} min de adelanto`);
-  $("reloj").className = "reloj" + (dif >= 2 ? " atrasado" : dif <= -2 ? " adelantado" : "");
+  d.getElementById("p-plan").textContent = plan === null || plan === undefined ? "" : `va en el minuto ${plan}`;
+  const cod = D.codigos || [];
+  d.getElementById("p-cods").innerHTML = cod.length
+    ? cod.map(([c, t]) => `<div><b>${esc(c)}</b> · ${esc(t)}</div>`).join("") : "";
+  d.getElementById("p-sig").textContent = actual + 1 < SLIDES.length
+    ? "Sigue: " + SLIDES[actual + 1].titulo : "Última diapositiva.";
+  d.title = `Notas · ${actual + 1}/${slides.length}`;
 }
-function relojSesion() {
-  if (t0) { transcurrido += (Date.now() - t0) / 1000; t0 = null; clearInterval(tic); $("b-reloj").textContent = "Reanudar"; }
-  else { t0 = Date.now(); tic = setInterval(pintarReloj, 1000); $("b-reloj").textContent = "Pausar"; }
-  pintarReloj();
-}
-$("b-reloj").onclick = relojSesion;
+$("b-presentador").onclick = abrirPresentador;
+addEventListener("pagehide", () => { if (vPres && !vPres.closed) vPres.close(); });
 
 // ---------------------------------------------------------------- cronómetro del taller
-let restan = 27 * 60, cTic = null;
+// Sin cronograma de sesión: el docente decide cuánto dura el taller con el tiempo que le quede.
+let minutosTaller = 25;
+try { minutosTaller = +localStorage.getItem("arem-s3-taller") || 25; } catch (e) {}
+let restan = minutosTaller * 60, cTic = null;
 function pintarCrono() {
   $("crono-t").textContent = String(Math.floor(restan / 60)).padStart(2, "0") + ":" + String(restan % 60).padStart(2, "0");
   $("crono-t").classList.toggle("poco", restan <= 120);
 }
-function abrirCrono(min) {
-  if (!$("crono").classList.contains("visible")) { restan = min * 60; pintarCrono(); }
+function abrirCrono() {
+  if (!$("crono").classList.contains("visible") && !cTic) { restan = minutosTaller * 60; pintarCrono(); }
   $("crono").classList.add("visible");
 }
+function ajustarCrono(delta) {
+  if (cTic) { restan = Math.max(60, restan + delta * 60); }
+  else { minutosTaller = Math.min(90, Math.max(5, minutosTaller + delta)); restan = minutosTaller * 60;
+         try { localStorage.setItem("arem-s3-taller", minutosTaller); } catch (e) {} }
+  pintarCrono();
+}
+$("crono-menos").onclick = () => ajustarCrono(-5);
+$("crono-mas").onclick = () => ajustarCrono(5);
 function cerrarCrono() { $("crono").classList.remove("visible"); clearInterval(cTic); cTic = null; $("crono-play").textContent = "Iniciar"; }
 $("crono-play").onclick = () => {
   if (cTic) { clearInterval(cTic); cTic = null; $("crono-play").textContent = "Reanudar"; return; }
   cTic = setInterval(() => { if (restan > 0) { restan--; pintarCrono(); } }, 1000);
   $("crono-play").textContent = "Pausar";
 };
-$("crono-reset").onclick = () => { restan = 27 * 60; pintarCrono(); };
 $("crono-cerrar").onclick = cerrarCrono;
 
 // ---------------------------------------------------------------- arranque

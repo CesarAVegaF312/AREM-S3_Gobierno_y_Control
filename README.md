@@ -158,12 +158,12 @@ AREM-S3_Gobierno_y_Control/
 |---|---|---|
 | `1_actividad_3_2` | [`AREM_S3_Mapa_Actividad_3_2.pdf`](documentos/1_actividad_3_2/AREM_S3_Mapa_Actividad_3_2.pdf) | Lo que pide la 3.2, su rúbrica y, para cada requisito, la sección, el formato, cuándo se trabaja y dónde está el ejemplo. |
 | | [`AREM_S3_Informe_Ejemplo_Actividad_3_2.pdf`](documentos/1_actividad_3_2/AREM_S3_Informe_Ejemplo_Actividad_3_2.pdf) | Documento de gobierno terminado de Red Salud Andina (13 páginas), con un recuadro por sección. |
-| | [`AREM_S3_Enunciado_Actividad_3_2.pdf`](documentos/1_actividad_3_2/AREM_S3_Enunciado_Actividad_3_2.pdf) | El taller de la sesión: la idea que lo organiza, las tareas minuto a minuto, el ejemplo resuelto y los conceptos. |
+| | [`AREM_S3_Enunciado_Actividad_3_2.pdf`](documentos/1_actividad_3_2/AREM_S3_Enunciado_Actividad_3_2.pdf) | El taller de la sesión: la idea que lo organiza, los cuatro pasos, el ejemplo resuelto y los conceptos. |
 | `2_caso` | [`AREM_Caso_Red_Salud_Andina.pdf`](documentos/2_caso/AREM_Caso_Red_Salud_Andina.pdf) | El dossier del caso de respaldo, el mismo de las unidades anteriores. |
 | `3_como_se_hace` | [`AREM_S3_Instrumentos.pdf`](documentos/3_como_se_hace/AREM_S3_Instrumentos.pdf) | Los ocho formatos F-21 a F-28. |
 | | [`AREM_S3_Guia_Actividad_3_1.pdf`](documentos/3_como_se_hace/AREM_S3_Guia_Actividad_3_1.pdf) | Cómo hacer los dos comparativos, con las tablas de referencia de COBIT, TOGAF y la normativa colombiana. |
 | | [`AREM_S3_Guia_Herramientas_e_Instrumentos.pdf`](documentos/3_como_se_hace/AREM_S3_Guia_Herramientas_e_Instrumentos.pdf) | Las cuatro herramientas recorridas con el caso y los formatos campo por campo. |
-| raíz | [`presentacion.html`](presentacion.html) | La misma sesión como presentación web animada: índice (I), glosario de códigos (G), reloj de la sesión (S) y cronómetro del taller (T). |
+| raíz | [`presentacion.html`](presentacion.html) | La misma sesión como presentación web animada: índice (I), glosario de códigos (G) y cronómetro del taller (T), ajustable. |
 | `fuentes` | Los seis documentos en `.docx` y el deck en `.pptx` | Para adaptarlos: cambien lo que necesiten y expórtenlos a PDF. Son los archivos con los que se produjeron los PDF de `documentos/`. |
 | `4_clase` | [`AREM_S3_Deck_Reto_U3.pdf`](documentos/4_clase/AREM_S3_Deck_Reto_U3.pdf) | Las 20 diapositivas del encuentro sincrónico: significado, seis ejemplos guiados y el taller. |
 
