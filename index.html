@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AREM S3 — Gobierno y Control</title>
+<style>
+:root{--azul:#002060;--medio:#00387D;--claro:#EEF3FA;--pale:#D9E1EF;--slate:#93AAC9;--coral:#C2622C;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:#F0F4FB;color:#1a1a2e;line-height:1.5;}
+.header{background:var(--azul);color:#fff;padding:26px 28px;}
+.header h1{font-size:23px;font-weight:700;}
+.header p{font-size:13.5px;color:var(--slate);margin-top:6px;max-width:70ch;}
+.wrap{max-width:1000px;margin:0 auto;padding:26px 20px 60px;}
+h2{font-size:15px;color:var(--azul);margin:30px 0 4px;letter-spacing:.2px;}
+h2:first-of-type{margin-top:8px;}
+.hint{font-size:13px;color:#5A6B82;margin-bottom:12px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;}
+a.card{display:block;background:#fff;border:1px solid var(--pale);border-left:4px solid var(--medio);
+       border-radius:5px;padding:14px 16px;text-decoration:none;color:inherit;transition:.12s;}
+a.card:hover{border-left-color:var(--coral);box-shadow:0 2px 8px rgba(0,32,96,.09);}
+a.card b{display:block;font-size:14.5px;color:var(--azul);margin-bottom:3px;}
+a.card span{font-size:12.5px;color:#5A6B82;}
+a.card.taller{border-left-color:var(--coral);}
+.doc{background:#fff;border:1px solid var(--pale);border-radius:5px;padding:14px 16px;
+     display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;text-decoration:none;color:inherit;}
+.doc:hover{background:var(--claro);}
+.doc b{font-size:14px;color:var(--azul);}
+.doc span{font-size:12.5px;color:#5A6B82;}
+.tag{font-size:10.5px;font-weight:700;letter-spacing:.4px;background:var(--claro);color:var(--medio);
+     padding:2px 7px;border-radius:3px;text-transform:uppercase;}
+.tag.c{background:#FBEDE3;color:var(--coral);}
+code{font-size:12px;background:var(--claro);padding:1px 5px;border-radius:3px;}
+.stack{display:flex;flex-direction:column;gap:10px;}
+footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--pale);font-size:12px;color:#7C8DA8;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Arquitectura Empresarial · Sesión 3 — Gobierno y Control</h1>
+  <p>Unidad 3: Gobierno y Gobernanza de Arquitectura Empresarial. Maestría en Ingeniería de Software,
+     Universidad de La Sabana. TOGAF® Standard, 10.ª edición · COBIT® 2019 · ITIL® 4.</p>
+</div>
+
+<div class="wrap">
+
+  <h2>1 · La Actividad 3.2: qué se entrega y cómo se ve</h2>
+  <p class="hint">Empiecen aquí. La Actividad 3.2 se entrega en la plataforma: un documento de gobierno arquitectónico en PDF, de máximo 15 páginas. Los formatos F-22 a F-26 no se suben; son el borrador del documento. Carpeta <code>documentos/1_actividad_3_2</code>.</p>
+  <div class="stack">
+    <a class="doc" href="documentos/1_actividad_3_2/AREM_S3_Mapa_Actividad_3_2.pdf">
+      <span class="tag c">Mapa</span><b>Mapa de la Actividad 3.2</b>
+      <span>Lo que pide la actividad en la plataforma y su rúbrica, y de qué formato sale cada sección del documento.</span></a>
+    <a class="doc" href="documentos/1_actividad_3_2/AREM_S3_Informe_Ejemplo_Actividad_3_2.pdf">
+      <span class="tag c">Ejemplo</span><b>Documento de gobierno de ejemplo</b>
+      <span>El producto final, con Red Salud Andina: cada sección explica qué hay que hacer en ella, en qué criterio se califica y con qué formato se prepara.</span></a>
+    <a class="doc" href="documentos/1_actividad_3_2/AREM_S3_Enunciado_Actividad_3_2.pdf">
+      <span class="tag c">Taller</span><b>Enunciado del taller de la sesión</b>
+      <span>Un episodio de su organización, tres formatos: el principio, la pregunta de revisión y las sillas del ARB. Minuto a minuto, con el ejemplo resuelto.</span></a>
+  </div>
+
+  <h2>2 · El caso</h2>
+  <p class="hint">El mismo caso de las unidades anteriores. Para la Unidad 3 importan las secciones 4, 10, 11 y 13. Carpeta <code>documentos/2_caso</code>.</p>
+  <div class="stack">
+    <a class="doc" href="documentos/2_caso/AREM_Caso_Red_Salud_Andina.pdf">
+      <span class="tag">Caso</span><b>Dossier de Red Salud Andina</b>
+      <span>La organización simulada de respaldo: partes interesadas, gobierno actual, los tres episodios, cifras y restricciones.</span></a>
+  </div>
+
+  <h2>3 · Cómo se hace: formatos, guías y herramientas</h2>
+  <p class="hint">Los formatos se llenan; las guías se consultan. Carpeta <code>documentos/3_como_se_hace</code>.</p>
+  <div class="stack">
+    <a class="doc" href="documentos/3_como_se_hace/AREM_S3_Instrumentos.pdf">
+      <span class="tag c">Se llena</span><b>Instrumentos F-21 a F-28</b>
+      <span>Los ocho formatos de la unidad, con el orden de llenado, lo que invalida cada uno y la sección del documento a la que va.</span></a>
+    <a class="doc" href="documentos/3_como_se_hace/AREM_S3_Guia_Actividad_3_1.pdf">
+      <span class="tag">Guía</span><b>Guía de la Actividad 3.1</b>
+      <span>Los dos comparativos: COBIT 2019 frente a TOGAF, y la normativa colombiana y del MinTIC, con tablas de referencia.</span></a>
+    <a class="doc" href="documentos/3_como_se_hace/AREM_S3_Guia_Herramientas_e_Instrumentos.pdf">
+      <span class="tag">Guía</span><b>Cómo usar las herramientas y llenar los formatos</b>
+      <span>Las cuatro herramientas recorridas con Red Salud Andina, y los formatos campo por campo.</span></a>
+  </div>
+
+  <p class="hint" style="margin-top:18px"><b>Herramientas interactivas.</b> Se abren en el navegador; no hay que instalar nada. Las cuatro traen el caso de Red Salud Andina y un botón para empezar en blanco con el caso del grupo.</p>
+  <div class="grid">
+    <a class="card" href="interactivos/mapa_cobit_togaf_itil_interactivo.html">
+      <b>Mapa COBIT · TOGAF · ITIL</b>
+      <span>Dónde se tocan los tres marcos, con niveles de capacidad. Incluye las tablas de referencia de la Actividad 3.1.</span></a>
+    <a class="card taller" href="interactivos/disenador_arb_interactivo.html">
+      <b>Diseñador de ARB</b>
+      <span>El ARB silla por silla, con su costo en horas contra la capacidad real del área.</span></a>
+    <a class="card taller" href="interactivos/compliance_review_interactivo.html">
+      <b>Compliance Review</b>
+      <span>Una iniciativa por tipos, momentos y lista de revisión hasta un dictamen. No deja registrar una excepción sin vencimiento.</span></a>
+    <a class="card" href="interactivos/metricas_riesgos_interactivo.html">
+      <b>Métricas y riesgos</b>
+      <span>Cinco métricas con fórmula y umbral, y tres riesgos con controles verificables en una matriz de exposición.</span></a>
+  </div>
+
+  <h2>4 · La clase</h2>
+  <p class="hint">Carpeta <code>documentos/4_clase</code>.</p>
+  <div class="stack">
+    <a class="doc" href="presentacion.html">
+      <span class="tag c">Presentación</span><b>Presentación web de la sesión</b>
+      <span>Las 20 diapositivas animadas, con notas del docente, índice, reloj de la sesión y cronómetro del taller. Se abre en el navegador.</span></a>
+    <a class="doc" href="documentos/4_clase/AREM_S3_Deck_Reto_U3.pdf">
+      <span class="tag">Clase</span><b>Deck de la sesión</b>
+      <span>Las 20 diapositivas del encuentro sincrónico: primero qué significa el gobierno, después seis ejemplos guiados y el taller.</span></a>
+  </div>
+
+  <footer>
+    Material docente de César Augusto Vega Fernández · Licencia MIT ·
+    TOGAF® es marca registrada de The Open Group; COBIT® de ISACA; ITIL® de AXELOS Limited.
+  </footer>
+
+</div>
+</body>
+</html>

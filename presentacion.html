@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AREM S3 · Gobierno y Control — Presentación</title>
+<style>
+:root{
+  --osc:#1C2B33; --txt:#31424B; --gris:#6B7A82; --claro:#EFF2F3; --linea:#CFDAE0; --crema:#F6EAE1;
+  --coral:#C2622C; --teal:#46707E; --teal2:#34535D; --cafe:#9E5C3B;
+  --serif:'Cambria','Georgia','Times New Roman',serif;
+  --sans:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+  --sombra:0 18px 48px rgba(28,43,51,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#0E181D;font-family:var(--sans);color:var(--txt);overflow:hidden}
+body.notas-abiertas{overflow:auto}
+
+/* ── escenario: una diapositiva de 1280×720 escalada al viewport ── */
+#escenario{position:fixed;inset:0;overflow:hidden}
+#lienzo{width:1280px;height:720px;position:absolute;left:50%;top:calc(50% - 17px);
+  transform-origin:center;background:#fff;box-shadow:var(--sombra);border-radius:6px;overflow:hidden}
+body.sin-barra #lienzo{top:50%}
+.slide{position:absolute;inset:0;padding:34px 46px 30px;display:none;flex-direction:column;background:#fff}
+.slide.viva{display:flex}
+.slide.entra{animation:entrar .42s cubic-bezier(.22,.61,.36,1)}
+.slide.entra-atras{animation:entrar-atras .42s cubic-bezier(.22,.61,.36,1)}
+@keyframes entrar{from{opacity:0;transform:translateX(26px) scale(.995)}to{opacity:1;transform:none}}
+@keyframes entrar-atras{from{opacity:0;transform:translateX(-26px) scale(.995)}to{opacity:1;transform:none}}
+
+/* ── encabezado ── */
+.kicker{font-size:12.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--coral)}
+.slide h1{font-family:var(--serif);font-size:38px;line-height:1.14;color:var(--osc);margin:6px 0 0;font-weight:700}
+.regla{height:4px;width:74px;border-radius:2px;margin:14px 0 0;background:var(--coral)}
+.slide[data-bloque="1"] .regla{background:var(--coral)}
+.slide[data-bloque="2"] .regla{background:var(--teal)}
+.slide[data-bloque="3"] .regla{background:var(--cafe)}
+.slide[data-bloque="2"] .kicker{color:var(--teal)}
+.slide[data-bloque="3"] .kicker{color:var(--cafe)}
+.cuerpo{flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center;padding:14px 0 6px;min-height:0}
+.pie{font-size:11.5px;color:var(--gris);border-top:1px solid var(--linea);padding-top:8px}
+
+/* ── animación de entrada de cada elemento ── */
+[data-anim]{opacity:0;transform:translateY(14px)}
+.slide.viva [data-anim]{animation:surgir .5s cubic-bezier(.22,.61,.36,1) forwards;animation-delay:calc(var(--i,0) * 90ms + 120ms)}
+@keyframes surgir{to{opacity:1;transform:none}}
+
+/* ── tarjetas ── */
+.tarjetas{display:grid;gap:16px;grid-auto-flow:column;grid-auto-columns:1fr}
+.tarjeta{border-radius:12px;overflow:hidden;background:var(--claro);display:flex;flex-direction:column;
+  box-shadow:0 2px 10px rgba(28,43,51,.06);transition:transform .25s,box-shadow .25s}
+.tarjeta:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(28,43,51,.13)}
+.tarjeta > h2{font-family:var(--serif);font-size:19px;color:#fff;padding:11px 16px;font-weight:700;line-height:1.2}
+.tarjeta .contenido{padding:14px 16px;font-size:15.5px;line-height:1.45;display:flex;flex-direction:column;gap:8px}
+.tenue{color:var(--gris);font-size:14px}
+.c-coral{background:var(--coral)} .c-teal{background:var(--teal)} .c-teal2{background:var(--teal2)} .c-cafe{background:var(--cafe)}
+
+/* ── pasos ── */
+.pasos{display:flex;flex-direction:column;gap:9px}
+.paso{display:grid;grid-template-columns:54px 1fr;align-items:stretch;border-radius:10px;overflow:hidden;
+  background:var(--claro);transition:transform .2s}
+.paso:hover{transform:translateX(3px)}
+.paso .n{background:var(--coral);color:#fff;font-family:var(--serif);font-size:23px;font-weight:700;
+  display:grid;place-items:center}
+.slide[data-bloque="3"] .paso .n{background:var(--cafe)}
+.paso .txt{padding:9px 16px}
+.paso .txt b{display:block;color:var(--osc);font-size:16px;margin-bottom:2px}
+.paso .txt span{font-size:15px;line-height:1.4}
+
+/* ── tabla ── */
+table{width:100%;border-collapse:collapse;font-size:15px;background:#fff;border-radius:10px;overflow:hidden;
+  box-shadow:0 2px 10px rgba(28,43,51,.06)}
+thead th{background:var(--osc);color:#fff;text-align:left;padding:9px 14px;font-size:13.5px;font-weight:700}
+tbody td{padding:9px 14px;border-bottom:1px solid var(--linea);vertical-align:top;line-height:1.38}
+tbody tr:nth-child(odd){background:var(--claro)}
+tbody tr:last-child td{border-bottom:none}
+tbody td:first-child{font-weight:700;color:var(--osc)}
+table.comparativa td:nth-child(2){color:#8A3A2A}
+table.comparativa td:nth-child(3){color:#1F5A3A}
+
+/* ── banda ── */
+.banda{background:var(--osc);color:#fff;border-radius:10px;padding:14px 20px;font-family:var(--serif);
+  font-size:18px;line-height:1.35}
+.banda.pausa{background:linear-gradient(100deg,var(--coral),#A64F22)}
+
+/* ── columnas ── */
+.columnas{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:22px}
+.columna .barra{height:5px;border-radius:3px;margin-bottom:12px}
+.columna .k{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.columna h2{font-family:var(--serif);font-size:27px;color:var(--osc);margin:4px 0 8px}
+.columna p{font-size:15.5px;line-height:1.4}
+
+/* ── cita y cajas ── */
+.cita-cajas{display:grid;grid-template-columns:5fr 7fr;gap:20px;align-items:start}
+.cita{background:var(--crema);border-radius:12px;padding:22px 24px;font-family:var(--serif);font-size:19px;
+  line-height:1.35;height:100%}
+.cita .autor{font-family:var(--sans);font-size:12.5px;color:var(--gris);font-weight:700;margin-top:14px}
+.cajas{display:flex;flex-direction:column;gap:12px}
+.caja{background:var(--claro);border-left:6px solid var(--teal2);border-radius:0 10px 10px 0;padding:12px 18px}
+.caja h2{font-family:var(--serif);font-size:19px;margin-bottom:5px}
+.caja ul{list-style:none;font-size:14.5px;line-height:1.45}
+.caja li::before{content:"· ";color:var(--gris)}
+.b-coral{border-left-color:var(--coral)} .b-teal{border-left-color:var(--teal)}
+.b-teal2{border-left-color:var(--teal2)} .b-cafe{border-left-color:var(--cafe)}
+.caja.b-coral h2{color:var(--coral)} .caja.b-teal2 h2{color:var(--teal2)}
+
+/* ── portada y referencias ── */
+.slide.portada{background:var(--osc);color:#fff;justify-content:center;padding:60px 70px}
+.slide.portada .kicker{color:var(--coral)}
+.slide.portada h1{color:#fff;font-size:58px;margin:10px 0 18px}
+.slide.portada .sub{font-family:var(--serif);font-size:26px;color:#CFDAE0}
+.slide.portada .lema{font-size:17px;color:#8FA5AF;margin-top:16px;max-width:60ch}
+.slide.portada .docente{margin-top:auto;font-size:15px;font-weight:700}
+.slide.portada .pie{border-top-color:rgba(255,255,255,.14);color:#8FA5AF;margin-top:10px}
+.barras{position:absolute;right:70px;top:190px;display:flex;flex-direction:column;gap:14px}
+.barras i{display:block;width:250px;height:22px;border-radius:3px;animation:crecer .7s cubic-bezier(.22,.61,.36,1) backwards}
+.barras i:nth-child(1){background:var(--coral);animation-delay:.15s}
+.barras i:nth-child(2){background:var(--teal);animation-delay:.28s}
+.barras i:nth-child(3){background:var(--cafe);animation-delay:.41s}
+.barras i:nth-child(4){background:var(--teal2);animation-delay:.54s}
+@keyframes crecer{from{transform:scaleX(0);opacity:0;transform-origin:left}to{transform:none;opacity:1}}
+.refs{font-size:14.5px;line-height:1.5;columns:2;column-gap:34px}
+.refs p{break-inside:avoid;margin-bottom:9px;padding-left:18px;text-indent:-18px}
+
+/* ── barra de estado ── */
+#estado{position:fixed;left:0;right:0;bottom:0;height:34px;display:flex;align-items:center;gap:16px;
+  padding:0 14px;background:rgba(14,24,29,.92);color:#C9D6EA;font-size:12.5px;backdrop-filter:blur(4px);
+  transition:transform .25s;z-index:5}
+#estado.oculta{transform:translateY(100%)}
+#estado button{background:transparent;border:1px solid rgba(201,214,234,.35);color:inherit;border-radius:6px;
+  padding:3px 9px;font-size:12px;cursor:pointer;font-family:inherit}
+#estado button:hover{background:rgba(201,214,234,.16)}
+#progreso{position:fixed;top:0;left:0;height:3px;background:var(--coral);z-index:6;transition:width .3s}
+.reloj{font-variant-numeric:tabular-nums;font-weight:700}
+.reloj.atrasado{color:#F0A28A} .reloj.adelantado{color:#9FD8B4}
+.crece{margin-left:auto}
+
+/* ── índice ── */
+#indice{position:fixed;inset:0;background:rgba(14,24,29,.97);z-index:10;display:none;overflow:auto;padding:34px}
+#indice.abierto{display:block}
+#indice h2{color:#fff;font-family:var(--serif);font-size:24px;margin-bottom:18px}
+.rejilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:12px}
+.mini{background:#fff;border-radius:8px;padding:12px 14px;cursor:pointer;border:2px solid transparent;text-align:left}
+.mini:hover,.mini:focus-visible{border-color:var(--coral)}
+.mini .num{font-size:11px;font-weight:800;color:var(--gris)}
+.mini .t{font-family:var(--serif);font-size:15px;color:var(--osc);line-height:1.25;margin-top:3px}
+.mini[data-bloque="1"]{border-left:6px solid var(--coral)}
+.mini[data-bloque="2"]{border-left:6px solid var(--teal)}
+.mini[data-bloque="3"]{border-left:6px solid var(--cafe)}
+
+/* ── notas del docente ── */
+#notas{position:fixed;right:0;top:0;bottom:34px;width:390px;background:#13212A;color:#DCE6EA;padding:22px;
+  overflow:auto;transform:translateX(100%);transition:transform .3s;z-index:7;font-size:14.5px;line-height:1.5}
+#notas.abiertas{transform:none}
+#notas h3{font-family:var(--serif);font-size:17px;color:#fff;margin-bottom:10px}
+#notas p{margin-bottom:10px;white-space:pre-wrap}
+#notas .sig{margin-top:16px;padding-top:12px;border-top:1px solid rgba(220,230,234,.18);color:#93AAC9;font-size:13px}
+#notas .codigos{margin-top:16px;padding-top:12px;border-top:1px solid rgba(220,230,234,.18)}
+#notas .codigos h4{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:#93AAC9;margin-bottom:8px}
+#notas .codigos div{margin-bottom:7px;font-size:13.5px;line-height:1.4}
+#notas .codigos b{color:#F0B48A;font-family:var(--serif)}
+
+/* ── glosario completo ── */
+#glosario{position:fixed;inset:0;background:rgba(14,24,29,.97);z-index:10;display:none;overflow:auto;padding:34px}
+#glosario.abierto{display:block}
+#glosario h2{color:#fff;font-family:var(--serif);font-size:24px;margin-bottom:6px}
+#glosario .aclara{color:#93AAC9;font-size:14px;max-width:80ch;margin-bottom:18px}
+.gfamilias{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.gfam{background:#fff;border-radius:10px;padding:14px 16px}
+.gfam h3{font-family:var(--serif);font-size:17px;color:var(--osc);margin-bottom:4px}
+.gfam .de{font-size:12.5px;color:var(--gris);margin-bottom:10px}
+.gfam dl{font-size:14px;line-height:1.4}
+.gfam dt{font-weight:700;color:var(--coral);font-family:var(--serif);margin-top:8px}
+.gfam dd{color:var(--txt)}
+
+/* ── cronómetro del taller ── */
+#crono{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.9);z-index:9;display:none;
+  background:rgba(14,24,29,.96);color:#fff;border-radius:18px;padding:30px 44px;text-align:center;
+  box-shadow:0 24px 60px rgba(0,0,0,.4);animation:aparecer .25s forwards}
+#crono.visible{display:block}
+@keyframes aparecer{to{transform:translate(-50%,-50%) scale(1)}}
+#crono .tiempo{font-family:var(--serif);font-size:96px;font-variant-numeric:tabular-nums;line-height:1}
+#crono .tiempo.poco{color:#F0A28A}
+#crono .rot{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#8FA5AF;margin-bottom:8px}
+#crono .acc{margin-top:16px;display:flex;gap:10px;justify-content:center}
+#crono button{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;
+  padding:6px 14px;cursor:pointer;font-family:inherit}
+
+#ayuda{position:fixed;inset:0;background:rgba(14,24,29,.96);z-index:11;display:none;place-items:center;color:#fff}
+#ayuda.abierta{display:grid}
+#ayuda table{background:transparent;box-shadow:none;color:#fff;max-width:560px;font-size:15px}
+#ayuda td{border-bottom:1px solid rgba(255,255,255,.12);color:#DCE6EA}
+#ayuda td:first-child{color:#fff;font-family:var(--serif);width:150px}
+#ayuda h2{font-family:var(--serif);font-size:26px;margin-bottom:16px;text-align:center}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+  [data-anim]{opacity:1;transform:none}
+}
+@media print{
+  body{background:#fff;overflow:visible}
+  #estado,#indice,#notas,#crono,#progreso,#ayuda,#glosario{display:none !important}
+  #escenario{position:static;display:block}
+  #lienzo{transform:none !important;box-shadow:none;border-radius:0}
+  .slide{display:flex !important;position:relative;page-break-after:always;width:1280px;height:720px}
+  [data-anim]{opacity:1 !important;transform:none !important;animation:none !important}
+  @page{size:1280px 720px;margin:0}
+}
+</style>
+</head>
+<body>
+
+<div id="progreso"></div>
+<div id="escenario"><div id="lienzo" aria-live="polite"></div></div>
+
+<div id="estado">
+  <button id="b-ant" aria-label="Diapositiva anterior">←</button>
+  <span id="cuenta" aria-live="off">1 / 20</span>
+  <button id="b-sig" aria-label="Diapositiva siguiente">→</button>
+  <span id="titulo-actual"></span>
+  <span class="crece"></span>
+  <span class="reloj" id="reloj">00:00</span>
+  <span id="desfase"></span>
+  <button id="b-reloj">Iniciar sesión</button>
+  <button id="b-notas">Notas (N)</button>
+  <button id="b-indice">Índice (I)</button>
+  <button id="b-glosario">Códigos (G)</button>
+  <button id="b-ayuda" aria-label="Atajos de teclado">?</button>
+</div>
+
+<aside id="notas" aria-label="Notas del docente">
+  <h3 id="notas-tit"></h3>
+  <p id="notas-txt"></p>
+  <div class="sig" id="notas-sig"></div>
+  <div class="codigos" id="notas-cod"></div>
+</aside>
+
+<div id="glosario" role="dialog" aria-label="Glosario de códigos">
+  <h2>De dónde sale cada código</h2>
+  <p class="aclara">Los formatos F-nn son del curso y su numeración sigue entre sesiones. Los códigos P, M y RA son
+     del ejemplo de Red Salud Andina: en el documento de cada grupo significarán otra cosa. R0, R1 y R2 no son
+     riesgos: son los tres momentos de la revisión de cumplimiento.</p>
+  <div class="gfamilias" id="gfamilias"></div>
+</div>
+
+<div id="indice" role="dialog" aria-label="Índice de diapositivas">
+  <h2>Índice de la sesión</h2>
+  <div class="rejilla" id="rejilla"></div>
+</div>
+
+<div id="crono" role="timer" aria-live="off">
+  <div class="rot">Taller en salas</div>
+  <div class="tiempo" id="crono-t">27:00</div>
+  <div class="acc">
+    <button id="crono-play">Iniciar</button>
+    <button id="crono-reset">Reiniciar</button>
+    <button id="crono-cerrar">Cerrar (T)</button>
+  </div>
+</div>
+
+<div id="ayuda" role="dialog" aria-label="Atajos de teclado">
+  <div>
+    <h2>Atajos</h2>
+    <table><tbody>
+      <tr><td>← → · espacio</td><td>Moverse entre diapositivas</td></tr>
+      <tr><td>Inicio · Fin</td><td>Primera y última</td></tr>
+      <tr><td>N</td><td>Notas del docente</td></tr>
+      <tr><td>I</td><td>Índice</td></tr>
+      <tr><td>G</td><td>Glosario: de dónde sale cada código</td></tr>
+      <tr><td>T</td><td>Cronómetro del taller (27 minutos)</td></tr>
+      <tr><td>S</td><td>Iniciar o pausar el reloj de la sesión</td></tr>
+      <tr><td>B</td><td>Barra inferior</td></tr>
+      <tr><td>F</td><td>Pantalla completa</td></tr>
+      <tr><td>?</td><td>Esta ayuda</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<script>
+const SLIDES = [
+ {
+  "tipo": "portada",
+  "bloque": 0,
+  "kicker": "Maestría · Espacio académico",
+  "titulo": "Arquitectura Empresarial",
+  "subtitulo": "Sesión 3 — Unidad 3 · Presentación del Reto",
+  "lema": "Gobierno arquitectónico: quién decide, con qué reglas y cuánto cuesta decidir.",
+  "pie": "Encuentro sincrónico · 2 horas · TOGAF® Standard, 10th Edition · COBIT® 2019 · ITIL® 4",
+  "notas": "⏱ 00:00–00:02 · Apertura\n\nBienvenidos a la tercera sesión. En la Unidad 1 diagnosticaron la organización y en la Unidad 2 la modelaron y decidieron entre dos caminos. Hoy la pregunta cambia: ya hay una arquitectura y una decisión; ¿qué evita que dentro de un año nadie la respete?\n\nEsa pregunta es el gobierno arquitectónico. Y les adelanto la tesis de la sesión: el gobierno no es control; es la forma de que las decisiones razonables de cada equipo no terminen, sumadas, en una arquitectura que nadie decidió.",
+  "codigos": []
+ },
+ {
+  "bloque": 0,
+  "kicker": "El reto de la Unidad 3 · Actividades en la plataforma",
+  "titulo": "Tres decisiones razonables, una arquitectura que nadie eligió",
+  "bloques": [
+   {
+    "t": "cita_y_cajas",
+    "cita": [
+     "«Aquí nunca se decidió nada de arquitectura; se compró.»",
+     "",
+     "Hay comité de TI, pero decide presupuesto, no diseño. No hay principios escritos ni dónde escalar un desacuerdo."
+    ],
+    "autor": "Gerencia de tecnología (CIO) · Red Salud Andina",
+    "cajas": [
+     {
+      "titulo": "Actividad 3.1 · Presentación del reto",
+      "color": "teal2",
+      "lineas": [
+       "Individual · formativa, sin nota. Dos comparativos de 1 página: COBIT 2019 frente a TOGAF, y la normativa colombiana y del MinTIC."
+      ]
+     },
+     {
+      "titulo": "Actividad 3.2 · Propuesta de sistema de gobierno arquitectónico",
+      "color": "coral",
+      "lineas": [
+       "Grupal, de 3 a 4 · 20 % · 20 horas",
+       "ARB con al menos 4 roles, frecuencia y proceso de decisión · 8 principios o más",
+       "Revisión de cumplimiento con excepciones · 5 métricas y 3 riesgos",
+       "APO03 y otro objetivo de COBIT 2019 · PDF de máximo 15 páginas, en APA 7"
+      ]
+     }
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 15,
+    "texto": "Rúbrica de la 3.2 (sobre 5,0): ARB y principios 1,5 · proceso de cumplimiento 1,5 · métricas y riesgos 1,25 · COBIT e ITIL 0,75."
+   }
+  ],
+  "pie": "Los **F-nn** son los formatos del curso —las plantillas que preparan cada sección—, con numeración continua entre sesiones: F-05 a F-12 fueron de la Unidad 1, F-13 a F-20 de la Unidad 2 y F-21 a F-28 son los de esta. No se suben a la plataforma. · Fuente: las actividades 3.1 y 3.2, con su enunciado y su rúbrica. Caso: Red Salud Andina, dossier §4 y §10.",
+  "notas": "⏱ 00:02–00:05 · El reto\n\nLa frase es del CIO de Red Salud Andina, el caso de respaldo. Lean despacio lo que dice: no que se decidió mal, sino que no se decidió. Se compró.\n\nLa 3.1 es individual, sin nota, y son dos comparativos de una página. La 3.2 es la calificable: un documento de gobierno de máximo 15 páginas.\n\nHoy no vamos a hacer el documento entero: vamos a dejar resuelto el hilo difícil, que es de dónde sale cada cosa. Y sale de los episodios de su organización.\n\nUna aclaración de vocabulario, porque hoy los van a oír todo el tiempo: cuando digo «F-22» o «F-24» me refiero a los formatos del curso, las plantillas que preparan cada sección del documento. Se numeran seguido entre sesiones, así que los de esta unidad van del F-21 al F-28. No se suben a la plataforma: lo que se sube es el documento; los formatos son el borrador.",
+  "codigos": [
+   [
+    "F-21",
+    "Formato del curso · Comparativos de gobierno de la Actividad 3.1: COBIT frente a TOGAF, y la normativa colombiana"
+   ],
+   [
+    "F-22",
+    "Formato del curso · Diseño del Architecture Review Board: sillas, mandato, quórum, regla de decisión y horas"
+   ],
+   [
+    "F-24",
+    "Formato del curso · Revisión de cumplimiento y ruta de excepción: tipos, momentos, lista de revisión y dictámenes"
+   ],
+   [
+    "F-28",
+    "Formato del curso · Lista de verificación previa a la entrega de la Actividad 3.2"
+   ],
+   [
+    "APO03",
+    "Objetivo de COBIT 2019 · Managed Enterprise Architecture (arquitectura empresarial gestionada). Objetivo de gestión · obligatorio en la 3.2"
+   ],
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "bloque": 0,
+  "kicker": "Cómo vamos a usar las dos horas",
+  "titulo": "Primero qué significa, después ejemplos, después ustedes",
+  "bloques": [
+   {
+    "t": "columnas",
+    "items": [
+     {
+      "kicker": "Bloque 1 · 20 min",
+      "titulo": "Qué significa",
+      "color": "coral",
+      "texto": "Qué es gobernar una arquitectura, qué pasa cuando no existe y con qué mecanismos se hace."
+     },
+     {
+      "kicker": "Bloque 2 · 25 min",
+      "titulo": "Ejemplos guiados",
+      "color": "teal",
+      "texto": "Los mismos formatos que ustedes van a llenar, recorridos paso a paso con el caso."
+     },
+     {
+      "kicker": "Bloque 3 · 48 min",
+      "titulo": "Ustedes",
+      "color": "cafe",
+      "texto": "Un taller en salas de 27 minutos, la puesta en común y el cierre."
+     }
+    ]
+   },
+   {
+    "t": "tabla",
+    "size": 12,
+    "filas": [
+     [
+      "Minuto",
+      "Qué pasa"
+     ],
+     [
+      "0 a 25",
+      "El reto y el significado del gobierno arquitectónico"
+     ],
+     [
+      "25 a 32",
+      "La Actividad 3.1, guiada · pausa de 15 minutos"
+     ],
+     [
+      "47 a 72",
+      "Ejemplos guiados de la 3.2: del episodio al principio, a la pregunta y a la silla del ARB"
+     ],
+     [
+      "72 a 120",
+      "Taller en salas (27 min), puesta en común (12 min) y cierre"
+     ]
+    ]
+   }
+  ],
+  "pie": "Una sola actividad en salas, al final: el resto de la sesión es para llegar a ella sabiendo qué hacer.",
+  "notas": "⏱ 00:05–00:07 · Ruta\n\nLa forma de hoy es distinta a la de la sesión pasada. Primero les explico qué significa esto y por qué importa: veinte minutos, sin formatos. Después vemos ejemplos guiados, paso a paso, con Red Salud Andina; son exactamente los formatos que ustedes van a llenar.\n\nY al final hay un solo taller de veintisiete minutos. Uno solo, no dos: prefiero que tengan tiempo real de trabajo y no que corramos.\n\nLa pausa es a los 32 minutos y son quince.",
+  "codigos": [
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "bloque": 1,
+  "kicker": "Bloque 1 · Qué significa",
+  "titulo": "Gobernar no es diseñar: es decidir qué diseño es aceptable",
+  "bloques": [
+   {
+    "t": "tarjetas",
+    "size": 13.5,
+    "items": [
+     {
+      "titulo": "Gobierno de inversión",
+      "color": "teal2",
+      "lineas": [
+       "Decide **qué proyectos se financian** y en qué orden.",
+       "",
+       "Es lo que hace hoy el comité de TI del caso: mira el caso de negocio, no el diseño."
+      ]
+     },
+     {
+      "titulo": "Gobierno de arquitectura",
+      "color": "coral",
+      "lineas": [
+       "Decide **si una solución es conforme** con los principios y la arquitectura objetivo.",
+       "",
+       "Otorga o niega excepciones, y las registra con vencimiento."
+      ]
+     },
+     {
+      "titulo": "Gobierno y gestión",
+      "color": "cafe",
+      "lineas": [
+       "El gobierno **evalúa, dirige y supervisa**; la gestión planea, construye y ejecuta (ISACA, 2018).",
+       "",
+       "El ARB no diseña la solución del proyecto: dice si es aceptable."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 14,
+    "texto": "El valor del gobierno no se ve en lo que pasa cuando funciona, sino en los problemas que no ocurren. Por eso cuesta tanto defenderlo con un caso de negocio."
+   }
+  ],
+  "pie": "TOGAF 10, Enterprise Architecture Capability and Governance. COBIT 2019 separa gobierno (EDM) de gestión (APO, BAI, DSS, MEA).",
+  "notas": "⏱ 00:07–00:11 · Qué significa\n\nTres distinciones. La primera: gobierno de inversión frente a gobierno de arquitectura. Casi todas las organizaciones tienen la primera; muy pocas, la segunda.\n\nLa segunda, de COBIT: gobierno evalúa, dirige y supervisa; la gestión planea, construye y ejecuta. El ARB gobierna: no se sienta a diseñar la solución del proyecto.\n\nY la tercera, la incómoda: el gobierno se nota por lo que no pasa. Por eso es tan difícil pedirle presupuesto, y por eso conviene medirlo, como veremos al final.",
+  "codigos": [
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "bloque": 1,
+  "kicker": "Bloque 1 · Qué pasa cuando no existe",
+  "titulo": "Tres equipos, tres decisiones razonables, ninguna gobernada",
+  "bloques": [
+   {
+    "t": "tarjetas",
+    "size": 13,
+    "items": [
+     {
+      "titulo": "Telemedicina",
+      "color": "teal",
+      "lineas": [
+       "La plataforma de teleconsulta trae su propio módulo de agenda, que duplica la capacidad que presta AGENDA-WEB.",
+       "",
+       {
+        "texto": "Hoy: Se firmó porque «venía incluido». Hoy hay dos agendas que no se hablan.",
+        "tenue": true
+       }
+      ]
+     },
+     {
+      "titulo": "Laboratorio B2B",
+      "color": "coral",
+      "lineas": [
+       "PORTAL-B2B consulta directamente la base de datos de LIS-LAB porque la interfaz formal tomaba seis semanas y el cliente empezaba en tres.",
+       "",
+       {
+        "texto": "Hoy: Nadie lo supo hasta 2024. La actualización mayor del LIS está aplazada porque nadie sabe qué se rompe.",
+        "tenue": true
+       }
+      ]
+     },
+     {
+      "titulo": "Portal del paciente",
+      "color": "cafe",
+      "lineas": [
+       "El proveedor levantó el servicio en su propia nube, distinta a la que la organización ya usaba.",
+       "",
+       {
+        "texto": "Hoy: Nadie lo objetó: no había lineamiento que objetar. Hoy hay tres servicios en dos nubes distintas.",
+        "tenue": true
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 15,
+    "texto": "Ninguno de los tres equipos actuó de mala fe. No había norma frente a la cual excepcionar: el problema no es de personas, es de gobierno."
+   }
+  ],
+  "pie": "Red Salud Andina, dossier §10. Estos tres episodios vuelven en los ejemplos guiados y son el modelo de lo que ustedes harán en el taller.",
+  "notas": "⏱ 00:11–00:16 · Los tres episodios\n\nTelemedicina: la plataforma trajo su propia agenda porque venía incluida. Laboratorio: se integró leyendo la base de datos del LIS porque la interfaz formal tomaba seis semanas y el cliente empezaba en tres. Portal del paciente: el proveedor lo puso en su nube.\n\nPregúntense qué habrían hecho ustedes en esos equipos. Probablemente lo mismo.\n\nGuárdenlos, porque toda la sesión gira alrededor de ellos: de un episodio salen el principio, la pregunta de revisión y la silla del ARB. Eso es exactamente lo que van a hacer en el taller con un episodio suyo.",
+  "codigos": [
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "bloque": 1,
+  "kicker": "Bloque 1 · Con qué se gobierna",
+  "titulo": "Tres mecanismos, y ninguno funciona solo",
+  "bloques": [
+   {
+    "t": "tarjetas",
+    "size": 13,
+    "items": [
+     {
+      "titulo": "Quién decide",
+      "color": "teal",
+      "lineas": [
+       "El **Architecture Review Board**: el órgano que dictamina si una iniciativa es conforme.",
+       "",
+       "Pequeño —4 o 5 permanentes, nunca más de 10—, con mandato de un órgano superior y con horas reales."
+      ]
+     },
+     {
+      "titulo": "Con qué regla",
+      "color": "coral",
+      "lineas": [
+       "Los **principios**: reglas duraderas con nombre, enunciado, motivación e implicaciones.",
+       "",
+       "Salen de hechos de la organización. Si nadie estaría en desacuerdo, no restringen nada."
+      ]
+     },
+     {
+      "titulo": "En qué momento",
+      "color": "cafe",
+      "lineas": [
+       "La **revisión de cumplimiento**: qué se revisa, cuándo y con qué lista.",
+       "",
+       "R0 idea · R1 diseño · R2 salida a producción. Termina en un dictamen escrito."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 15,
+    "texto": "Un ARB sin principios decide por gusto. Unos principios sin revisión son un póster. Una revisión sin ARB no tiene quién firme."
+   }
+  ],
+  "notas": "⏱ 00:16–00:20 · Los tres mecanismos\n\nQuién decide, con qué regla y en qué momento. Son los tres que pide la Actividad 3.2 y los tres que vamos a recorrer con ejemplos.\n\nLa banda dice lo que más se olvida: los tres se sostienen entre sí. El error más común en los trabajos es traer un organigrama del ARB muy bonito y unos principios genéricos copiados de internet, sin ninguna revisión que los aplique.",
+  "codigos": [
+   [
+    "R0",
+    "Momento de la revisión de cumplimiento · Idea: antes de escribir el caso de negocio"
+   ],
+   [
+    "R1",
+    "Momento de la revisión de cumplimiento · Diseño: antes de contratar o de construir"
+   ],
+   [
+    "R2",
+    "Momento de la revisión de cumplimiento · Salida a producción: antes del paso a producción"
+   ],
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "bloque": 1,
+  "kicker": "Bloque 1 · El corazón del asunto",
+  "titulo": "La excepción: lo que separa el gobierno del trámite",
+  "bloques": [
+   {
+    "t": "tarjetas",
+    "size": 13.5,
+    "items": [
+     {
+      "titulo": "Sin ruta de excepción",
+      "color": "teal2",
+      "lineas": [
+       "El equipo con un plazo real tiene dos salidas: mentir o construir por fuera.",
+       "",
+       "Es lo que pasó con el portal del laboratorio: nadie en TI lo supo hasta 2024."
+      ]
+     },
+     {
+      "titulo": "Con ruta de excepción",
+      "color": "coral",
+      "lineas": [
+       "La desviación se acepta, pero se escribe: principio, riesgo, dueño, plan de retorno y **vencimiento**.",
+       "",
+       "Si deja deuda, abre una partida en el registro de la Unidad 2, con su interés mensual."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "tabla",
+    "size": 11.5,
+    "filas": [
+     [
+      "Dictamen",
+      "Qué significa para el proyecto"
+     ],
+     [
+      "Conforme",
+      "Sigue sin condiciones."
+     ],
+     [
+      "Conforme con condiciones",
+      "Sigue si cumple las condiciones escritas en el dictamen, que se verifican en R2."
+     ],
+     [
+      "Excepción con vencimiento",
+      "Se acepta una desviación de un principio por un tiempo acotado, con plan de retorno, dueño y registro. No aplica a P1 ni a P6."
+     ],
+     [
+      "No conforme",
+      "Se devuelve: no puede seguir hasta corregir."
+     ]
+    ]
+   }
+  ],
+  "pie": "Los cuatro dictámenes traducen los seis niveles de conformidad de TOGAF a lo que el proyecto necesita saber.",
+  "notas": "⏱ 00:20–00:23 · La excepción\n\nSi de la sesión se llevan una sola idea, que sea esta: el gobierno no se define por lo que prohíbe, sino por cómo trata las desviaciones.\n\nUna excepción sin fecha deja de ser excepción: se vuelve la regla, y nadie la aprobó. Y un gobierno sin excepciones posibles produce lo mismo que no tener gobierno: gente construyendo por fuera.\n\nEn la rúbrica, la gestión de excepciones es lo que separa el nivel bueno del excelente en el criterio de 1,5.",
+  "codigos": [
+   [
+    "P1",
+    "Principio del ejemplo · «La continuidad de la atención prevalece»: Ninguna decisión de arquitectura puede introducir un punto único de falla en un proceso asistencial sin una ruta de operación degradada probada."
+   ],
+   [
+    "P6",
+    "Principio del ejemplo · «Cumplimiento normativo desde el diseño»: Los requisitos normativos de historia clínica interoperable, RIPS y protección de datos se diseñan desde el inicio, no se agregan al final."
+   ],
+   [
+    "R2",
+    "Momento de la revisión de cumplimiento · Salida a producción: antes del paso a producción"
+   ]
+  ]
+ },
+ {
+  "bloque": 1,
+  "kicker": "Bloque 1 · Dónde encaja",
+  "titulo": "COBIT dice qué debe existir; TOGAF, cómo operarlo; ITIL, por dónde pasa",
+  "bloques": [
+   {
+    "t": "tabla",
+    "size": 12,
+    "filas": [
+     [
+      "Marco",
+      "Qué aporta",
+      "Lo que hay que saber hoy"
+     ],
+     [
+      "COBIT 2019",
+      "Qué debe lograr el gobierno de la información y la tecnología en toda la empresa",
+      "APO03 es «arquitectura empresarial gestionada»: el objetivo que el ARB opera. Niveles de capacidad de 0 a 5"
+     ],
+     [
+      "TOGAF 10",
+      "Cómo se gobierna la arquitectura: órgano, proceso y criterios",
+      "Architecture Board · revisión de cumplimiento · dispensas · contratos de arquitectura"
+     ],
+     [
+      "ITIL 4",
+      "Por dónde pasa el gobierno en la operación diaria",
+      "Habilitación del cambio: ningún cambio mayor a producción sin el dictamen del ARB"
+     ]
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 14,
+    "texto": "Ojo con una trampa de la rúbrica: EDM01 es un objetivo de gobierno, no de gestión. Se puede mencionar, pero no cuenta como el segundo objetivo que piden."
+   }
+  ],
+  "pie": "La 3.2 pide APO03 y al menos otro objetivo de gestión, con nivel actual, objetivo y plazo.",
+  "notas": "⏱ 00:23–00:25 · Dónde encaja\n\nTres marcos, tres papeles distintos. COBIT dice qué debe existir, TOGAF cómo operarlo e ITIL por dónde pasa en el día a día.\n\nY la advertencia: los objetivos de COBIT que empiezan por EDM son de gobierno; los de APO, BAI, DSS y MEA son de gestión. La rúbrica pide dos de gestión. Es el error más frecuente y cuesta puntos.",
+  "codigos": [
+   [
+    "APO03",
+    "Objetivo de COBIT 2019 · Managed Enterprise Architecture (arquitectura empresarial gestionada). Objetivo de gestión · obligatorio en la 3.2"
+   ],
+   [
+    "EDM01",
+    "Objetivo de COBIT 2019 · Ensured Governance Framework Setting and Maintenance. Objetivo de gobierno · da el mandato"
+   ],
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "bloque": 1,
+  "kicker": "La Actividad 3.1, guiada",
+  "titulo": "Dos comparativos de una página, individuales y sin nota",
+  "bloques": [
+   {
+    "t": "tarjetas",
+    "size": 12.5,
+    "items": [
+     {
+      "titulo": "A · COBIT 2019 frente a TOGAF",
+      "color": "teal",
+      "lineas": [
+       "Una fila resuelta, para que vean la forma:",
+       "",
+       "**Órgano que decide** · COBIT: no lo prescribe, reparte responsabilidades por práctica · TOGAF: el Architecture Board, con tamaño y mandato.",
+       "",
+       {
+        "texto": "Así no: dos párrafos que describen cada marco por separado. Eso es un resumen, no un comparativo.",
+        "tenue": true
+       }
+      ]
+     },
+     {
+      "titulo": "B · La normativa colombiana",
+      "color": "coral",
+      "lineas": [
+       "Una norma resuelta:",
+       "",
+       "**Resolución 1978 de 2023** (MRAE v3) · obliga a los sujetos obligados del Decreto 1078 de 2015 · a una IPS privada **no** la obliga: es referencia.",
+       "",
+       {
+        "texto": "El comparativo se juega en la obligatoriedad: qué los obliga a ustedes y por qué.",
+        "tenue": true
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "t": "tabla",
+    "size": 12,
+    "filas": [
+     [
+      "Qué entregan",
+      "Con qué",
+      "Cuándo"
+     ],
+     [
+      "Dos páginas, una por comparativo, en APA 7",
+      "F-21 y la guía de la Actividad 3.1; pestañas del Mapa COBIT · TOGAF · ITIL",
+      "Fuera de clase, individual"
+     ]
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 14,
+    "pausa": true,
+    "texto": "Pausa de quince minutos. Volvemos en punto: al regresar empiezan los ejemplos guiados de la 3.2."
+   }
+  ],
+  "pie": "Normas verificadas en septiembre de 2026; confirmen vigencia en el normograma del MinTIC o del Ministerio de Salud antes de citarlas.",
+  "notas": "⏱ 00:25–00:32 · La 3.1 guiada\n\nLa 3.1 es individual, no tiene nota y se hace fuera de clase; se la muestro ahora para que sepan cómo se ve una fila bien hecha.\n\nEn el comparativo A, cada fila contrasta una dimensión en los dos marcos. Si escriben dos párrafos separados, es un resumen.\n\nEn el B, lo que evalúo es la obligatoriedad: el marco de arquitectura del MinTIC no obliga a una IPS privada, pero la Ley 2015 de 2020 sí. Si su organización es pública, la respuesta cambia. Díganme en cuál de los dos casos están.\n\nPausa de quince minutos, hasta el minuto 47.",
+  "codigos": [
+   [
+    "F-21",
+    "Formato del curso · Comparativos de gobierno de la Actividad 3.1: COBIT frente a TOGAF, y la normativa colombiana"
+   ],
+   [
+    "MRAE",
+    "Marco de Referencia de Arquitectura Empresarial del MinTIC (Resolución 1978 de 2023)"
+   ]
+  ]
+ },
+ {
+  "bloque": 2,
+  "kicker": "Bloque 2 · Ejemplo guiado 1 · F-23",
+  "titulo": "Del episodio al principio, paso a paso",
+  "bloques": [
+   {
+    "t": "pasos",
+    "size": 12,
+    "items": [
+     {
+      "titulo": "Tomen el episodio",
+      "texto": "«Un cambio de esquema en una tabla de HIS-CORE dejó tres días sin facturar, porque FACT-SALUD leía esa tabla directamente.»"
+     },
+     {
+      "titulo": "Pregunten qué regla lo habría evitado",
+      "texto": "No «qué estuvo mal», sino qué regla, escrita antes, habría hecho que alguien lo objetara."
+     },
+     {
+      "titulo": "Escríbanla como enunciado",
+      "texto": "«Toda integración entre sistemas usa una interfaz publicada y versionada (API o mensaje); se prohíbe leer o escribir la base de datos de otro sistema.»"
+     },
+     {
+      "titulo": "La motivación es el hecho, no la teoría",
+      "texto": "«Un cambio de esquema en HIS-CORE dejó tres días sin facturar; PORTAL-B2B lee la base de LIS-LAB y bloquea su actualización.»"
+     },
+     {
+      "titulo": "Las implicaciones dicen qué cuesta",
+      "texto": "«Las integraciones nuevas pasan por el bus o por API con contrato registrado. Las existentes que violan el principio entran al registro de deuda con fecha de retiro.»"
+     }
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 13.5,
+    "texto": "La prueba: ¿alguien razonable estaría en desacuerdo? El gerente del laboratorio sí lo estaría, porque le cuesta seis semanas. Por eso es un principio."
+   }
+  ],
+  "pie": "Formato TOGAF: nombre, enunciado, motivación e implicaciones. Los cinco principios de la Unidad 1 (F-09) son el punto de partida.",
+  "notas": "⏱ 00:47–00:51 · Guiado 1\n\nEste es el recorrido que quiero que repitan en el taller. Fíjense en el paso 2: la pregunta no es qué estuvo mal, sino qué regla escrita antes lo habría evitado. Esa diferencia es la que convierte una queja en un principio.\n\nY fíjense en el paso 5: un principio sin implicaciones no restringe; las implicaciones son lo que cuesta cumplirlo.",
+  "codigos": [
+   [
+    "F-09",
+    "Formato del curso · Formato de la Unidad 1: plantilla de principio arquitectónico (los cinco principios de partida)"
+   ],
+   [
+    "F-23",
+    "Formato del curso · Catálogo de principios arquitectónicos: al menos ocho, con motivación e implicaciones"
+   ]
+  ]
+ },
+ {
+  "bloque": 2,
+  "kicker": "Bloque 2 · Ejemplo guiado 2 · F-24",
+  "titulo": "Del principio a la pregunta que lo detecta, y al dictamen",
+  "bloques": [
+   {
+    "t": "pasos",
+    "size": 12,
+    "items": [
+     {
+      "titulo": "Conviertan el principio en pregunta",
+      "texto": "P3 → «¿Todas las integraciones usan una interfaz publicada y versionada? ¿Alguna lee la base de otro sistema?»"
+     },
+     {
+      "titulo": "Clasifiquen la iniciativa",
+      "texto": "El portal B2B integra con el LIS y entrega resultados clínicos a terceros: **tipo A**, revisión completa."
+     },
+     {
+      "titulo": "Elijan el momento",
+      "texto": "R1 · diseño, por vía rápida en 72 horas: el plazo del cliente era real."
+     },
+     {
+      "titulo": "Respondan la lista y miren qué falla",
+      "texto": "Fallan las preguntas 1, 4 y 9 → P3 y P7. Nivel de conformidad de TOGAF: no conforme."
+     },
+     {
+      "titulo": "Dictaminen",
+      "texto": "**Excepción con vencimiento**, porque P3 sí admite excepción. Si hubiera fallado P1 o P6, el único dictamen posible sería «no conforme»."
+     }
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 14,
+    "texto": "Una lista de revisión que no está atada a principios mide cosas que nadie decidió gobernar."
+   }
+  ],
+  "pie": "Herramienta: Compliance Review, con los tres episodios precargados.",
+  "notas": "⏱ 00:51–00:55 · Guiado 2\n\nSeguimos con el mismo episodio. Del principio sale la pregunta: eso es lo que hace que la lista de revisión sea de ustedes y no una plantilla.\n\nY miren el paso 5: el dictamen depende de si el principio admite excepción. Dos de los ocho no admiten: continuidad de la atención y cumplimiento normativo. Los demás sí, con fecha.",
+  "codigos": [
+   [
+    "F-24",
+    "Formato del curso · Revisión de cumplimiento y ruta de excepción: tipos, momentos, lista de revisión y dictámenes"
+   ],
+   [
+    "P1",
+    "Principio del ejemplo · «La continuidad de la atención prevalece»: Ninguna decisión de arquitectura puede introducir un punto único de falla en un proceso asistencial sin una ruta de operación degradada probada."
+   ],
+   [
+    "P3",
+    "Principio del ejemplo · «Se integra por contrato, nunca por la base de datos»: Toda integración entre sistemas usa una interfaz publicada y versionada (API o mensaje); se prohíbe leer o escribir la base de datos de otro sistema."
+   ],
+   [
+    "P6",
+    "Principio del ejemplo · «Cumplimiento normativo desde el diseño»: Los requisitos normativos de historia clínica interoperable, RIPS y protección de datos se diseñan desde el inicio, no se agregan al final."
+   ],
+   [
+    "P7",
+    "Principio del ejemplo · «Todo sistema tiene dueño y documentación»: Cada sistema en operación tiene un dueño de negocio, un responsable en TI y documentación suficiente para que no dependa de una sola persona."
+   ],
+   [
+    "R1",
+    "Momento de la revisión de cumplimiento · Diseño: antes de contratar o de construir"
+   ],
+   [
+    "tipo A",
+    "Tipo de iniciativa · Revisión completa en sesión del ARB: Toca datos clínicos o de paciente; integra con HIS, LIS o facturación; introduce un proveedor de nube o SaaS nuevo; crea una capacidad nueva; o supera 300 millones de COP (supuesto)."
+   ]
+  ]
+ },
+ {
+  "bloque": 2,
+  "kicker": "Bloque 2 · Ejemplo guiado 3 · F-22",
+  "titulo": "¿Y quién tenía que haber dicho que no? Las sillas del ARB",
+  "bloques": [
+   {
+    "t": "pasos",
+    "size": 12.5,
+    "items": [
+     {
+      "titulo": "Partan de la restricción, no del ideal",
+      "texto": "38 personas en TI, un solo arquitecto de soluciones, y el área no crece el próximo año (dossier §13)."
+     },
+     {
+      "titulo": "Pregunten quién tenía que estar en esa decisión",
+      "texto": "Quien responde por la continuidad clínica, quien responde por la facturación, quien responde por la nube y los datos, y quien conoce la arquitectura."
+     },
+     {
+      "titulo": "Denle cargo real a cada silla",
+      "texto": "Delegado de la Dirección médica · delegado de la Dirección financiera · líder de infraestructura y seguridad · el arquitecto de soluciones, liberado al 50 % · el CIO preside."
+     },
+     {
+      "titulo": "Cuenten las horas",
+      "texto": "6 + 6 + 8 + 80 + 6 + 2 de invitados = **108 h al mes**, el 1,8 % de las 6.080 h del área."
+     }
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 14,
+    "texto": "Si una silla depende de contratar a alguien, el ARB no existe: su organización no va a crecer para gobernarse."
+   }
+  ],
+  "pie": "TOGAF sugiere 4 o 5 miembros permanentes y nunca más de 10. Herramienta: Diseñador de ARB, que calcula el porcentaje solo.",
+  "notas": "⏱ 00:55–01:00 · Guiado 3\n\nTercera pieza del mismo hilo: del episodio sale también quién tenía que decidirlo.\n\nEl paso 4 es el que separa un ARB real de uno de papel. Ciento ocho horas al mes suena a mucho, pero es el 1,8 % de la capacidad del área, y el 80 % de esas horas son del arquitecto que ya existe.\n\nLa herramienta les calcula ese porcentaje mientras arman las sillas, y les avisa si no hay nadie de negocio.",
+  "codigos": [
+   [
+    "F-22",
+    "Formato del curso · Diseño del Architecture Review Board: sillas, mandato, quórum, regla de decisión y horas"
+   ],
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "bloque": 2,
+  "kicker": "Bloque 2 · Ejemplo guiado 4 · F-24",
+  "titulo": "La excepción, diligenciada campo por campo",
+  "bloques": [
+   {
+    "t": "tabla",
+    "size": 12.5,
+    "filas": [
+     [
+      "Campo",
+      "Laboratorio B2B"
+     ],
+     [
+      "Principio del que se desvía",
+      "P3 · Se integra por contrato, nunca por la base de datos"
+     ],
+     [
+      "Por qué no se puede cumplir ahora",
+      "La interfaz formal toma 6 semanas y el cliente empieza en 3 (el hecho, no la preferencia)"
+     ],
+     [
+      "Riesgo que se acepta · quién",
+      "Una actualización del LIS rompe el portal · lo acepta la gerencia de laboratorio"
+     ],
+     [
+      "Plan de retorno",
+      "API de resultados sobre el bus"
+     ],
+     [
+      "Vencimiento",
+      "4 meses; renovable una sola vez"
+     ],
+     [
+      "Deuda que abre (F-18)",
+      "«Acceso directo a LIS-LAB», con interés en horas de soporte"
+     ]
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 16,
+    "texto": "Una excepción sin vencimiento es una norma nueva que nadie aprobó."
+   }
+  ],
+  "pie": "El formato completo, con tipos, lista de revisión y dictámenes, está en AREM_S3_Instrumentos.pdf.",
+  "notas": "⏱ 01:00–01:04 · Guiado 4\n\nMiren dos campos. El segundo: el hecho, no la preferencia. «Nos parece más cómodo» no es una razón para excepcionar; «el cliente empieza en tres semanas» sí lo es.\n\nY el último: la excepción abre deuda en el registro de la Unidad 2. Así la excepción tiene costo visible y no se vuelve permanente por olvido.",
+  "codigos": [
+   [
+    "F-18",
+    "Formato del curso · Formato de la Unidad 2: registro de deuda arquitectónica, donde entran las excepciones que dejan deuda"
+   ],
+   [
+    "F-24",
+    "Formato del curso · Revisión de cumplimiento y ruta de excepción: tipos, momentos, lista de revisión y dictámenes"
+   ],
+   [
+    "P3",
+    "Principio del ejemplo · «Se integra por contrato, nunca por la base de datos»: Toda integración entre sistemas usa una interfaz publicada y versionada (API o mensaje); se prohíbe leer o escribir la base de datos de otro sistema."
+   ]
+  ]
+ },
+ {
+  "bloque": 2,
+  "kicker": "Bloque 2 · Ejemplo guiado 5 · F-26",
+  "titulo": "Una métrica y un riesgo, construidos paso a paso",
+  "bloques": [
+   {
+    "t": "tarjetas",
+    "size": 12.5,
+    "items": [
+     {
+      "titulo": "M3 · Interfaces bajo contrato",
+      "color": "teal",
+      "lineas": [
+       "**Qué mide:** si el principio P3 se está cumpliendo de verdad.",
+       "**Fórmula:** interfaces con contrato registrado ÷ interfaces totales × 100.",
+       "**Fuente que ya existe:** el inventario (41 registradas, 10 estimadas) y la consola del bus (6).",
+       "**Línea base:** 6 ÷ 51 = 11,8 %. **Umbral:** crece menos de 3 puntos en un trimestre."
+      ]
+     },
+     {
+      "titulo": "RA-1 · El gobierno se vuelve trámite",
+      "color": "coral",
+      "lineas": [
+       "**Causa:** si el ARB tarda más que el plazo del negocio, los equipos repiten lo del laboratorio.",
+       "**Control concreto:** vía rápida con dictamen en 72 horas.",
+       "**Control concreto:** patrones preaprobados; quien los usa pasa directo.",
+       "**Cómo se vigila:** M5, el tiempo de dictamen del propio ARB (p90 ≤ 10 días)."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 14,
+    "texto": "Sin fórmula no se calcula; sin umbral no avisa. «Sensibilizar a los equipos» no es un control: un control es algo que alguien puede verificar."
+   }
+  ],
+  "pie": "La 3.2 pide cinco métricas y tres riesgos. Herramienta: Métricas y riesgos, que no guarda una métrica sin fórmula ni umbral.",
+  "notas": "⏱ 01:04–01:08 · Guiado 5\n\nUna métrica de las cinco y un riesgo de los tres.\n\nDe la métrica, quédense con la fuente: tiene que existir hoy. Si su métrica necesita un sistema que no tienen, todavía no pueden calcularla: es un deseo con forma de fórmula.\n\nDel riesgo, lo que importa es otra cosa: el mayor peligro del sistema de gobierno es el propio gobierno: que estorbe. Por eso una de las cinco métricas mide al ARB, no a los proyectos.",
+  "codigos": [
+   [
+    "F-26",
+    "Formato del curso · Métricas de cumplimiento y riesgos arquitectónicos"
+   ],
+   [
+    "P3",
+    "Principio del ejemplo · «Se integra por contrato, nunca por la base de datos»: Toda integración entre sistemas usa una interfaz publicada y versionada (API o mensaje); se prohíbe leer o escribir la base de datos de otro sistema."
+   ],
+   [
+    "M3",
+    "Métrica del ejemplo · Interfaces bajo contrato: Proporción de interfaces en operación que usan un contrato publicado y versionado (bus o API)."
+   ],
+   [
+    "M5",
+    "Métrica del ejemplo · Tiempo de dictamen: Días hábiles entre la radicación completa de una solicitud tipo A y el dictamen del ARB."
+   ],
+   [
+    "RA-1",
+    "Riesgo arquitectónico del ejemplo · El gobierno se vuelve un trámite y los equipos lo evitan"
+   ],
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "bloque": 2,
+  "kicker": "Bloque 2 · Ejemplo guiado 6 · F-25",
+  "titulo": "APO03 y el nivel de capacidad, sin inflarlo",
+  "bloques": [
+   {
+    "t": "tabla",
+    "size": 11.5,
+    "filas": [
+     [
+      "Objetivo",
+      "Qué parte del sistema lo opera",
+      "Nivel",
+      "Por qué ese nivel"
+     ],
+     [
+      "APO03 · gestión",
+      "El ARB entero: principios (03.01), repositorio (03.02), revisión R0 (03.03), R1 y R2 (03.04)",
+      "1 → 2 en 12 meses",
+      "Hoy hay actividades sueltas sin proceso; el nivel 3 exige medición estable que no existe"
+     ],
+     [
+      "APO12 · gestión",
+      "Cada excepción aceptada y los tres riesgos entran al registro de riesgos",
+      "1 → 2 en 12 meses",
+      "Hoy el riesgo se gestiona por proyecto, sin registro común"
+     ],
+     [
+      "EDM01 · gobierno",
+      "El acta del consejo directivo que crea el ARB y le da autoridad",
+      "1 → 2 en 6 meses",
+      "Da el mandato, pero no cuenta como objetivo de gestión"
+     ]
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 14,
+    "texto": "Nivel 2 significa que el proceso logra su propósito con un conjunto básico y completo de actividades. Proponer nivel 4 en el primer año es una señal de que no se entendió la escala."
+   }
+  ],
+  "pie": "Niveles de capacidad de COBIT 2019: 0 a 5. Herramienta: Mapa COBIT · TOGAF · ITIL.",
+  "notas": "⏱ 01:08–01:12 · Guiado 6\n\nÚltimo ejemplo guiado. Tres cosas: qué parte de su sistema opera el objetivo, el nivel actual y el objetivo con plazo.\n\nSean honestos con el nivel actual. Una organización que hoy no tiene ARB está en nivel 1, y no pasa nada por decirlo: lo que califica es la coherencia entre el diagnóstico y la meta.",
+  "codigos": [
+   [
+    "F-25",
+    "Formato del curso · Articulación con COBIT 2019 e ITIL 4, con niveles de capacidad"
+   ],
+   [
+    "R0",
+    "Momento de la revisión de cumplimiento · Idea: antes de escribir el caso de negocio"
+   ],
+   [
+    "R1",
+    "Momento de la revisión de cumplimiento · Diseño: antes de contratar o de construir"
+   ],
+   [
+    "R2",
+    "Momento de la revisión de cumplimiento · Salida a producción: antes del paso a producción"
+   ],
+   [
+    "APO03",
+    "Objetivo de COBIT 2019 · Managed Enterprise Architecture (arquitectura empresarial gestionada). Objetivo de gestión · obligatorio en la 3.2"
+   ],
+   [
+    "APO12",
+    "Objetivo de COBIT 2019 · Managed Risk (riesgo gestionado). Objetivo de gestión · el segundo que pide la 3.2"
+   ],
+   [
+    "EDM01",
+    "Objetivo de COBIT 2019 · Ensured Governance Framework Setting and Maintenance. Objetivo de gobierno · da el mandato"
+   ],
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "bloque": 3,
+  "kicker": "Bloque 3 · Taller en salas · 27 minutos",
+  "titulo": "Un episodio de su organización, tres formatos",
+  "bloques": [
+   {
+    "t": "pasos",
+    "size": 12.5,
+    "numerar": false,
+    "items": [
+     {
+      "titulo": "Minutos 0 a 5 · Elijan el episodio",
+      "texto": "Una decisión real de su organización que hoy nadie gobernó: una compra que duplicó algo, una integración de apuro, un sistema hecho por fuera de TI. Si usan Red Salud Andina, tomen uno distinto a los tres de hoy."
+     },
+     {
+      "titulo": "Minutos 5 a 12 · El principio (F-23)",
+      "texto": "La regla escrita antes que lo habría evitado: enunciado, motivación con el hecho e implicaciones. Si les sobra tiempo, escriban un segundo principio."
+     },
+     {
+      "titulo": "Minutos 12 a 20 · La pregunta y el dictamen (F-24)",
+      "texto": "La pregunta de la lista de revisión que lo detecta; el tipo de iniciativa; el momento en que se habría visto, y el dictamen. Si es excepción: vencimiento, dueño y plan de retorno."
+     },
+     {
+      "titulo": "Minutos 20 a 27 · Las sillas (F-22)",
+      "texto": "Quién tenía que estar en esa decisión, con el cargo real de su organización, y cuántas horas al mes cuesta el ARB completo."
+     }
+    ]
+   }
+  ],
+  "pie": "Herramientas abiertas al lado: Diseñador de ARB y Compliance Review, con «Empezar con el caso del grupo». Enunciado: https://cesaravegaf312.github.io/AREM-S3_Gobierno_y_Control/documentos/1_actividad_3_2/AREM_S3_Enunciado_Actividad_3_2.pdf",
+  "cronometro": 27,
+  "notas": "⏱ 01:12–01:42 · Taller (en salas de 01:15 a 01:42)\n\nVeintisiete minutos en sala, en los grupos de la 3.2 y sobre su propio caso. Un solo episodio atraviesa los tres formatos: de él salen el principio, la pregunta y la silla.\n\nYo entro a las salas con tres preguntas, una por bloque: ¿qué regla escrita antes lo habría evitado? ¿Qué dictamen habría recibido? ¿De dónde salen las horas de cada silla?\n\nLo que produzcan aquí es el borrador de las secciones 2, 3 y 4 del documento, que son 3,0 de los 5,0 puntos.",
+  "codigos": [
+   [
+    "F-22",
+    "Formato del curso · Diseño del Architecture Review Board: sillas, mandato, quórum, regla de decisión y horas"
+   ],
+   [
+    "F-23",
+    "Formato del curso · Catálogo de principios arquitectónicos: al menos ocho, con motivación e implicaciones"
+   ],
+   [
+    "F-24",
+    "Formato del curso · Revisión de cumplimiento y ruta de excepción: tipos, momentos, lista de revisión y dictámenes"
+   ],
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "bloque": 3,
+  "kicker": "Para tener al lado durante el taller",
+  "titulo": "Cómo se llena mal y cómo bien",
+  "bloques": [
+   {
+    "t": "tabla",
+    "size": 12,
+    "comparativa": true,
+    "filas": [
+     [
+      "Campo",
+      "Así no",
+      "Así sí",
+      "Por qué"
+     ],
+     [
+      "Principio",
+      "«La información es un activo»",
+      "«Se integra por contrato, nunca por la base de datos»",
+      "Si nadie estaría en desacuerdo, no restringe nada."
+     ],
+     [
+      "Motivación",
+      "«Es una buena práctica»",
+      "Tres días sin facturar tras un cambio de esquema",
+      "La motivación es un hecho del caso."
+     ],
+     [
+      "Pregunta",
+      "«¿Cumple la arquitectura?»",
+      "«¿Alguna integración lee la base de otro sistema?» → P3",
+      "Cada pregunta, atada a un principio."
+     ],
+     [
+      "Excepción",
+      "«Se aprueba temporalmente»",
+      "4 meses, dueño, plan de retorno, partida de deuda",
+      "Sin fecha, la excepción es permanente."
+     ],
+     [
+      "Silla del ARB",
+      "«Arquitecto de datos» (no existe)",
+      "Delegado de la Dirección médica · 6 h/mes",
+      "Si la silla no tiene cargo real, el ARB no existe."
+     ]
+    ]
+   }
+  ],
+  "pie": "Prohibido un ARB de diez personas en una organización con un arquitecto.",
+  "notas": "Diapositiva de apoyo: déjenla proyectada mientras trabajan en salas, o compártanla en el chat. Recoge los errores más frecuentes de los cuatro formatos que tocan hoy.",
+  "codigos": [
+   [
+    "P3",
+    "Principio del ejemplo · «Se integra por contrato, nunca por la base de datos»: Toda integración entre sistemas usa una interfaz publicada y versionada (API o mensaje); se prohíbe leer o escribir la base de datos de otro sistema."
+   ],
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "bloque": 3,
+  "kicker": "Puesta en común · 12 minutos",
+  "titulo": "Dos grupos muestran; dos correcciones para todos",
+  "bloques": [
+   {
+    "t": "tarjetas",
+    "size": 13.5,
+    "items": [
+     {
+      "titulo": "El principio que nadie discute",
+      "color": "coral",
+      "lineas": [
+       "«La seguridad es lo primero», «la información es un activo».",
+       "",
+       "Síntoma para reconocerlo solos: no pueden nombrar un proyecto que ese principio habría detenido."
+      ]
+     },
+     {
+      "titulo": "La excepción eterna",
+      "color": "teal",
+      "lineas": [
+       "«Se aprueba mientras se implementa la solución definitiva.»",
+       "",
+       "Síntoma: no tiene fecha. En un año, la excepción es la arquitectura."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 15,
+    "texto": "Dos grupos cuentan su episodio en dos minutos: qué pasó, qué principio escribieron y qué dictamen habría recibido."
+   }
+  ],
+  "pie": "Si un grupo no encontró ningún episodio, es la señal de que todavía no miró el gobierno real de su organización.",
+  "notas": "⏱ 01:42–01:54 · Puesta en común\n\nDos grupos, dos minutos cada uno. Yo pregunto siempre lo mismo: ¿qué proyecto habría detenido ese principio?\n\nLas dos correcciones de las tarjetas son las que se repiten todos los semestres.",
+  "codigos": []
+ },
+ {
+  "bloque": 3,
+  "kicker": "Cierre · qué sigue",
+  "titulo": "Lo que se llevan hoy y lo que falta",
+  "bloques": [
+   {
+    "t": "tarjetas",
+    "size": 13,
+    "items": [
+     {
+      "titulo": "Lo que ya tienen",
+      "color": "teal",
+      "lineas": [
+       "Un principio con su motivación (F-23) · una pregunta de revisión con su dictamen (F-24) · las sillas del ARB con sus horas (F-22).",
+       "",
+       "Es el borrador de las secciones 2, 3 y 4: **3,0 de los 5,0 puntos**."
+      ]
+     },
+     {
+      "titulo": "Lo que falta, fuera de clase",
+      "color": "coral",
+      "lineas": [
+       "Completar los ocho principios y el proceso · **F-25**: APO03 y otro objetivo de gestión · **F-26**: cinco métricas y tres riesgos.",
+       "",
+       "Antes de subir: **F-28**, la lista de verificación. Y la **3.1**, individual, con el F-21."
+      ]
+     }
+    ]
+   },
+   {
+    "t": "banda",
+    "size": 15,
+    "texto": "Empiecen por el mapa de la Actividad 3.2 y el documento de ejemplo: https://cesaravegaf312.github.io/AREM-S3_Gobierno_y_Control/"
+   }
+  ],
+  "pie": "De los ejemplos se copia la estructura, nunca el contenido. Su documento es sobre su organización.",
+  "notas": "⏱ 01:54–02:00 · Cierre\n\nLo que hicieron hoy no es un ejercicio de clase: es la mitad difícil del documento, y es la mitad que no se puede copiar de internet porque sale de sus episodios.\n\nFuera de clase quedan las métricas, los riesgos y COBIT, que son los que las herramientas más ayudan a hacer bien.\n\nNos vemos en la Unidad 4, donde este gobierno sostiene el roadmap de transformación.",
+  "codigos": [
+   [
+    "F-21",
+    "Formato del curso · Comparativos de gobierno de la Actividad 3.1: COBIT frente a TOGAF, y la normativa colombiana"
+   ],
+   [
+    "F-22",
+    "Formato del curso · Diseño del Architecture Review Board: sillas, mandato, quórum, regla de decisión y horas"
+   ],
+   [
+    "F-23",
+    "Formato del curso · Catálogo de principios arquitectónicos: al menos ocho, con motivación e implicaciones"
+   ],
+   [
+    "F-24",
+    "Formato del curso · Revisión de cumplimiento y ruta de excepción: tipos, momentos, lista de revisión y dictámenes"
+   ],
+   [
+    "F-25",
+    "Formato del curso · Articulación con COBIT 2019 e ITIL 4, con niveles de capacidad"
+   ],
+   [
+    "F-26",
+    "Formato del curso · Métricas de cumplimiento y riesgos arquitectónicos"
+   ],
+   [
+    "F-28",
+    "Formato del curso · Lista de verificación previa a la entrega de la Actividad 3.2"
+   ],
+   [
+    "APO03",
+    "Objetivo de COBIT 2019 · Managed Enterprise Architecture (arquitectura empresarial gestionada). Objetivo de gestión · obligatorio en la 3.2"
+   ],
+   [
+    "ARB",
+    "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)"
+   ]
+  ]
+ },
+ {
+  "tipo": "referencias",
+  "bloque": 0,
+  "kicker": "Referencias",
+  "titulo": "Fuentes de la sesión",
+  "items": [
+   "Axelos. (2019). ITIL® foundation: ITIL 4 edition. TSO.",
+   "Colombia, Congreso de la República. (2012). Ley 1581 de 2012, por la cual se dictan disposiciones generales para la protección de datos personales.",
+   "Colombia, Congreso de la República. (2020). Ley 2015 de 2020, por medio de la cual se crea la historia clínica electrónica interoperable.",
+   "Hohpe, G. (2020). The software architect elevator: Redefining the architect's role in the digital enterprise. O'Reilly Media.",
+   "ISACA. (2018). COBIT® 2019 framework: Governance and management objectives. ISACA.",
+   "Ministerio de Salud y Protección Social. (2021). Resolución 866 de 2021.",
+   "Ministerio de Salud y Protección Social. (2023). Resolución 2275 de 2023.",
+   "Ministerio de Salud y Protección Social. (2025). Resolución 1888 de 2025, por medio de la cual se adopta el Resumen Digital de Atención en Salud (RDA).",
+   "Ministerio de Tecnologías de la Información y las Comunicaciones. (2022). Decreto 767 de 2022.",
+   "Ministerio de Tecnologías de la Información y las Comunicaciones. (2023). Resolución 1978 de 2023, por la cual se adopta el Marco de Referencia de Arquitectura Empresarial.",
+   "The Open Group. (2022). The TOGAF® standard, 10th edition: Enterprise architecture capability and governance. Van Haren Publishing.",
+   "Vega Fernández, C. A. (2026). Red Salud Andina: dossier del caso de respaldo [Material docente]. Universidad de La Sabana."
+  ],
+  "notas": "Referencias en APA 7. La normativa colombiana se verificó en septiembre de 2026; los estudiantes deben confirmar su vigencia en los normogramas oficiales antes de citarla.",
+  "codigos": [
+   [
+    "RDA",
+    "Resumen Digital de Atención en Salud (Resolución 1888 de 2025)"
+   ]
+  ]
+ }
+];
+const GLOSARIO = [
+ [
+  "F-09",
+  "Formato del curso · Formato de la Unidad 1: plantilla de principio arquitectónico (los cinco principios de partida)",
+  "formato"
+ ],
+ [
+  "F-18",
+  "Formato del curso · Formato de la Unidad 2: registro de deuda arquitectónica, donde entran las excepciones que dejan deuda",
+  "formato"
+ ],
+ [
+  "F-21",
+  "Formato del curso · Comparativos de gobierno de la Actividad 3.1: COBIT frente a TOGAF, y la normativa colombiana",
+  "formato"
+ ],
+ [
+  "F-22",
+  "Formato del curso · Diseño del Architecture Review Board: sillas, mandato, quórum, regla de decisión y horas",
+  "formato"
+ ],
+ [
+  "F-23",
+  "Formato del curso · Catálogo de principios arquitectónicos: al menos ocho, con motivación e implicaciones",
+  "formato"
+ ],
+ [
+  "F-24",
+  "Formato del curso · Revisión de cumplimiento y ruta de excepción: tipos, momentos, lista de revisión y dictámenes",
+  "formato"
+ ],
+ [
+  "F-25",
+  "Formato del curso · Articulación con COBIT 2019 e ITIL 4, con niveles de capacidad",
+  "formato"
+ ],
+ [
+  "F-26",
+  "Formato del curso · Métricas de cumplimiento y riesgos arquitectónicos",
+  "formato"
+ ],
+ [
+  "F-27",
+  "Formato del curso · Rúbrica formativa de la Actividad 3.1 (la usa el docente)",
+  "formato"
+ ],
+ [
+  "F-28",
+  "Formato del curso · Lista de verificación previa a la entrega de la Actividad 3.2",
+  "formato"
+ ],
+ [
+  "P1",
+  "Principio del ejemplo · «La continuidad de la atención prevalece»: Ninguna decisión de arquitectura puede introducir un punto único de falla en un proceso asistencial sin una ruta de operación degradada probada.",
+  "principio"
+ ],
+ [
+  "P2",
+  "Principio del ejemplo · «Un solo paciente, una sola identidad»: La identidad del paciente se gestiona en un único servicio maestro; ningún sistema crea pacientes por su cuenta.",
+  "principio"
+ ],
+ [
+  "P3",
+  "Principio del ejemplo · «Se integra por contrato, nunca por la base de datos»: Toda integración entre sistemas usa una interfaz publicada y versionada (API o mensaje); se prohíbe leer o escribir la base de datos de otro sistema.",
+  "principio"
+ ],
+ [
+  "P4",
+  "Principio del ejemplo · «Reutilizar antes de comprar, comprar antes de construir»: Antes de adquirir o construir una capacidad se verifica si ya existe en el portafolio; no se duplican capacidades.",
+  "principio"
+ ],
+ [
+  "P5",
+  "Principio del ejemplo · «La nube se elige por lineamiento, no por proveedor»: Los servicios en la nube se despliegan en las plataformas aprobadas por la organización y bajo sus controles.",
+  "principio"
+ ],
+ [
+  "P6",
+  "Principio del ejemplo · «Cumplimiento normativo desde el diseño»: Los requisitos normativos de historia clínica interoperable, RIPS y protección de datos se diseñan desde el inicio, no se agregan al final.",
+  "principio"
+ ],
+ [
+  "P7",
+  "Principio del ejemplo · «Todo sistema tiene dueño y documentación»: Cada sistema en operación tiene un dueño de negocio, un responsable en TI y documentación suficiente para que no dependa de una sola persona.",
+  "principio"
+ ],
+ [
+  "P8",
+  "Principio del ejemplo · «El dato se corrige donde nace»: La calidad del dato se asegura en el sistema y el proceso donde se origina, no con conciliaciones posteriores.",
+  "principio"
+ ],
+ [
+  "M1",
+  "Métrica del ejemplo · Cobertura de revisión: Proporción de iniciativas tipo A y B aprobadas que tuvieron dictamen del ARB antes de su aprobación.",
+  "metrica"
+ ],
+ [
+  "M2",
+  "Métrica del ejemplo · Excepciones vencidas: Excepciones que superaron su vencimiento sin cerrarse ni renovarse.",
+  "metrica"
+ ],
+ [
+  "M3",
+  "Métrica del ejemplo · Interfaces bajo contrato: Proporción de interfaces en operación que usan un contrato publicado y versionado (bus o API).",
+  "metrica"
+ ],
+ [
+  "M4",
+  "Métrica del ejemplo · Capacidades duplicadas: Capacidades de negocio prestadas por más de un sistema sin que exista una excepción aprobada.",
+  "metrica"
+ ],
+ [
+  "M5",
+  "Métrica del ejemplo · Tiempo de dictamen: Días hábiles entre la radicación completa de una solicitud tipo A y el dictamen del ARB.",
+  "metrica"
+ ],
+ [
+  "RA-1",
+  "Riesgo arquitectónico del ejemplo · El gobierno se vuelve un trámite y los equipos lo evitan",
+  "riesgo"
+ ],
+ [
+  "RA-2",
+  "Riesgo arquitectónico del ejemplo · Concentración del conocimiento de HIS-CORE en dos personas",
+  "riesgo"
+ ],
+ [
+  "RA-3",
+  "Riesgo arquitectónico del ejemplo · Acoplamiento por bases de datos compartidas",
+  "riesgo"
+ ],
+ [
+  "R0",
+  "Momento de la revisión de cumplimiento · Idea: antes de escribir el caso de negocio",
+  "momento"
+ ],
+ [
+  "R1",
+  "Momento de la revisión de cumplimiento · Diseño: antes de contratar o de construir",
+  "momento"
+ ],
+ [
+  "R2",
+  "Momento de la revisión de cumplimiento · Salida a producción: antes del paso a producción",
+  "momento"
+ ],
+ [
+  "tipo A",
+  "Tipo de iniciativa · Revisión completa en sesión del ARB: Toca datos clínicos o de paciente; integra con HIS, LIS o facturación; introduce un proveedor de nube o SaaS nuevo; crea una capacidad nueva; o supera 300 millones de COP (supuesto).",
+  "tipo"
+ ],
+ [
+  "tipo B",
+  "Tipo de iniciativa · Revisión ligera, asíncrona: Modifica un sistema existente cambiando una interfaz, un contrato o un modelo de datos.",
+  "tipo"
+ ],
+ [
+  "tipo C",
+  "Tipo de iniciativa · Autodeclaración con lista de revisión: Mantenimiento o evolución sin cambio de interfaz, de datos ni de proveedor.",
+  "tipo"
+ ],
+ [
+  "APO03",
+  "Objetivo de COBIT 2019 · Managed Enterprise Architecture (arquitectura empresarial gestionada). Objetivo de gestión · obligatorio en la 3.2",
+  "cobit"
+ ],
+ [
+  "APO12",
+  "Objetivo de COBIT 2019 · Managed Risk (riesgo gestionado). Objetivo de gestión · el segundo que pide la 3.2",
+  "cobit"
+ ],
+ [
+  "MEA03",
+  "Objetivo de COBIT 2019 · Managed Compliance With External Requirements (cumplimiento de requisitos externos). Objetivo de gestión · complementario",
+  "cobit"
+ ],
+ [
+  "EDM01",
+  "Objetivo de COBIT 2019 · Ensured Governance Framework Setting and Maintenance. Objetivo de gobierno · da el mandato",
+  "cobit"
+ ],
+ [
+  "ARB",
+  "Architecture Review Board: el órgano que dictamina si una iniciativa es conforme (TOGAF)",
+  "otro"
+ ],
+ [
+  "MPI",
+  "Índice maestro de pacientes: el servicio que da una identidad única al paciente",
+  "otro"
+ ],
+ [
+  "IHCE",
+  "Interoperabilidad de la historia clínica electrónica (Ley 2015 de 2020)",
+  "otro"
+ ],
+ [
+  "RDA",
+  "Resumen Digital de Atención en Salud (Resolución 1888 de 2025)",
+  "otro"
+ ],
+ [
+  "MRAE",
+  "Marco de Referencia de Arquitectura Empresarial del MinTIC (Resolución 1978 de 2023)",
+  "otro"
+ ]
+];
+const DOCENTE = "César Augusto Vega Fernández";
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fuerte = s => esc(s).split("**").map((p, i) => i % 2 ? `<b>${p}</b>` : p).join("");
+const linea = l => typeof l === "string" ? (l ? `<div>${fuerte(l)}</div>` : "")
+                                         : `<div class="tenue">${fuerte(l.texto)}</div>`;
+
+// ---------------------------------------------------------------- render
+const BLOQUES = {
+  tarjetas: b => `<div class="tarjetas">${b.items.map(it => `
+      <article class="tarjeta"><h2 class="c-${it.color}">${esc(it.titulo)}</h2>
+      <div class="contenido">${it.lineas.map(linea).join("")}</div></article>`).join("")}</div>`,
+
+  pasos: b => `<div class="pasos">${b.items.map((it, i) => `
+      <div class="paso"><div class="n">${i + 1}</div>
+      <div class="txt"><b>${b.numerar === false ? esc(it.titulo) : (i + 1) + " · " + esc(it.titulo)}</b>
+      <span>${fuerte(it.texto)}</span></div></div>`).join("")}</div>`,
+
+  tabla: b => `<table class="${b.comparativa ? "comparativa" : ""}">
+      <thead><tr>${b.filas[0].map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead>
+      <tbody>${b.filas.slice(1).map(f => `<tr>${f.map(c => `<td>${fuerte(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`,
+
+  banda: b => `<div class="banda${b.pausa ? " pausa" : ""}">${fuerte(b.texto)}</div>`,
+
+  columnas: b => `<div class="columnas">${b.items.map(it => `
+      <div class="columna"><div class="barra c-${it.color}"></div>
+      <div class="k" style="color:var(--${it.color})">${esc(it.kicker)}</div>
+      <h2>${esc(it.titulo)}</h2><p>${fuerte(it.texto)}</p></div>`).join("")}</div>`,
+
+  cita_y_cajas: b => `<div class="cita-cajas">
+      <div class="cita">${b.cita.map(l => l ? `<p>${fuerte(l)}</p>` : "<br>").join("")}
+        <div class="autor">${esc(b.autor)}</div></div>
+      <div class="cajas">${b.cajas.map(c => `<div class="caja b-${c.color}"><h2>${esc(c.titulo)}</h2>
+        <ul>${c.lineas.map(l => `<li>${fuerte(l)}</li>`).join("")}</ul></div>`).join("")}</div></div>`
+};
+
+function render(d, i) {
+  if (d.tipo === "portada") {
+    return `<section class="slide portada" data-bloque="0">
+      <div class="barras" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="kicker" data-anim style="--i:0">${esc(d.kicker)}</div>
+      <h1 data-anim style="--i:1">${esc(d.titulo)}</h1>
+      <div class="sub" data-anim style="--i:2">${esc(d.subtitulo)}</div>
+      <div class="lema" data-anim style="--i:3">${esc(d.lema)}</div>
+      <div class="docente" data-anim style="--i:4">${esc(DOCENTE)}</div>
+      <div class="pie" data-anim style="--i:5">${esc(d.pie)}</div></section>`;
+  }
+  if (d.tipo === "referencias") {
+    return `<section class="slide" data-bloque="0">
+      <div class="kicker">${esc(d.kicker)}</div><h1>${esc(d.titulo)}</h1><div class="regla"></div>
+      <div class="cuerpo"><div class="refs" data-anim style="--i:0">
+        ${d.items.map(r => `<p>${esc(r)}</p>`).join("")}</div></div></section>`;
+  }
+  const cuerpo = d.bloques.map((b, k) =>
+    `<div data-anim style="--i:${k + 1}">${BLOQUES[b.t](b)}</div>`).join("");
+  return `<section class="slide" data-bloque="${d.bloque}">
+    <div class="kicker" data-anim style="--i:0">${esc(d.kicker)}</div>
+    <h1 data-anim style="--i:0">${esc(d.titulo)}</h1>
+    <div class="regla" data-anim style="--i:0"></div>
+    <div class="cuerpo">${cuerpo}</div>
+    ${d.pie ? `<div class="pie" data-anim style="--i:${d.bloques.length + 1}">${esc(d.pie)}</div>` : ""}
+  </section>`;
+}
+
+$("lienzo").innerHTML = SLIDES.map(render).join("");
+const slides = [...document.querySelectorAll(".slide")];
+
+// ---------------------------------------------------------------- escala
+function escalar() {
+  const barra = $("estado").classList.contains("oculta") ? 12 : 46;
+  const k = Math.min((innerWidth - 24) / 1280, (innerHeight - barra) / 720);
+  $("lienzo").style.transform = `translate(-50%, -50%) scale(${k})`;
+}
+addEventListener("resize", escalar);
+
+// ---------------------------------------------------------------- navegación
+let actual = 0;
+// De las notas «⏱ 01:12–01:42» sale el minuto de la sesión en que va esta diapositiva.
+const minutoPlan = SLIDES.map(d => {
+  const m = (d.notas || "").match(/(\d{2}):(\d{2})\s*[–-]/);
+  return m ? (+m[1]) * 60 + (+m[2]) : null;
+});
+
+function ir(n, atras) {
+  n = Math.max(0, Math.min(slides.length - 1, n));
+  slides[actual].classList.remove("viva", "entra", "entra-atras");
+  actual = n;
+  const s = slides[actual];
+  s.classList.add("viva");
+  void s.offsetWidth;                       // reinicia las animaciones de entrada
+  s.classList.add(atras ? "entra-atras" : "entra");
+  $("cuenta").textContent = `${n + 1} / ${slides.length}`;
+  $("progreso").style.width = ((n + 1) / slides.length * 100) + "%";
+  $("titulo-actual").textContent = SLIDES[n].titulo;
+  $("notas-tit").textContent = `${n + 1} · ${SLIDES[n].titulo}`;
+  $("notas-txt").textContent = SLIDES[n].notas || "";
+  $("notas-sig").textContent = n + 1 < SLIDES.length ? "Sigue: " + SLIDES[n + 1].titulo : "Última diapositiva.";
+  const cod = SLIDES[n].codigos || [];
+  $("notas-cod").innerHTML = cod.length
+    ? `<h4>Qué significa cada código de esta diapositiva</h4>` +
+      cod.map(([c, t]) => `<div><b>${esc(c)}</b> · ${esc(t)}</div>`).join("")
+    : "";
+  location.hash = n + 1;
+  if (SLIDES[n].cronometro) abrirCrono(SLIDES[n].cronometro); else cerrarCrono();
+  escalar();
+}
+const sig = () => ir(actual + 1);
+const ant = () => ir(actual - 1, true);
+
+addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); sig(); }
+  else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); ant(); }
+  else if (e.key === "Home") ir(0);
+  else if (e.key === "End") ir(slides.length - 1);
+  else if (e.key === "Escape") { $("indice").classList.remove("abierto"); $("ayuda").classList.remove("abierta"); $("glosario").classList.remove("abierto"); }
+  else if (/^[0-9]$/.test(e.key)) { /* reservado */ }
+  else {
+    const k = e.key.toLowerCase();
+    if (k === "n") alternarNotas();
+    else if (k === "i") $("indice").classList.toggle("abierto");
+    else if (k === "g") $("glosario").classList.toggle("abierto");
+    else if (k === "t") { $("crono").classList.contains("visible") ? cerrarCrono() : abrirCrono(27); }
+    else if (k === "s") relojSesion();
+    else if (k === "b") { $("estado").classList.toggle("oculta"); document.body.classList.toggle("sin-barra"); escalar(); }
+    else if (k === "f") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    else if (k === "?" || e.key === "?") $("ayuda").classList.toggle("abierta");
+  }
+});
+$("escenario").addEventListener("click", e => { (e.clientX > innerWidth * 0.35) ? sig() : ant(); });
+let x0 = null;
+addEventListener("touchstart", e => x0 = e.touches[0].clientX, { passive: true });
+addEventListener("touchend", e => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0;
+  if (Math.abs(dx) > 50) dx < 0 ? sig() : ant();
+  x0 = null;
+});
+$("b-sig").onclick = e => { e.stopPropagation(); sig(); };
+$("b-ant").onclick = e => { e.stopPropagation(); ant(); };
+$("b-ayuda").onclick = () => $("ayuda").classList.toggle("abierta");
+$("ayuda").onclick = () => $("ayuda").classList.remove("abierta");
+
+// ---------------------------------------------------------------- índice
+$("rejilla").innerHTML = SLIDES.map((d, i) => `<button class="mini" data-ir="${i}" data-bloque="${d.bloque}">
+   <div class="num">${i + 1}${minutoPlan[i] !== null ? " · min " + minutoPlan[i] : ""}</div>
+   <div class="t">${esc(d.titulo)}</div></button>`).join("");
+$("rejilla").addEventListener("click", e => {
+  const b = e.target.closest("[data-ir]");
+  if (b) { ir(+b.dataset.ir); $("indice").classList.remove("abierto"); }
+});
+$("b-indice").onclick = () => $("indice").classList.toggle("abierto");
+
+// ---------------------------------------------------------------- glosario
+const FAMILIAS = [
+  ["formato", "Formatos del curso · F-nn", "Numeración continua entre sesiones: F-05 a F-12 son de la Unidad 1, F-13 a F-20 de la Unidad 2 y F-21 a F-28 de esta."],
+  ["principio", "Principios · Pn", "Del ejemplo de Red Salud Andina. Cada grupo escribe los suyos, así que su P3 será otro."],
+  ["momento", "Momentos de revisión · R0, R1, R2", "Cuándo se revisa una iniciativa. No son riesgos."],
+  ["tipo", "Tipos de iniciativa · A, B y C", "Deciden la profundidad de la revisión."],
+  ["metrica", "Métricas · Mn", "Las cinco métricas de cumplimiento del ejemplo."],
+  ["riesgo", "Riesgos · RA-n", "Riesgos arquitectónicos del ejemplo. Llevan «RA» para no confundirlos con R0, R1 y R2."],
+  ["cobit", "Objetivos de COBIT 2019", "Los nombres y códigos son del marco, no del curso."],
+  ["otro", "Siglas del caso y del sector", ""]
+];
+$("gfamilias").innerHTML = FAMILIAS.map(([f, tit, de]) => {
+  const items = GLOSARIO.filter(g => g[2] === f);
+  if (!items.length) return "";
+  return `<section class="gfam"><h3>${esc(tit)}</h3>${de ? `<div class="de">${esc(de)}</div>` : ""}
+    <dl>${items.map(g => `<dt>${esc(g[0])}</dt><dd>${esc(g[1])}</dd>`).join("")}</dl></section>`;
+}).join("");
+$("b-glosario").onclick = () => $("glosario").classList.toggle("abierto");
+
+// ---------------------------------------------------------------- notas
+function alternarNotas() {
+  const abierto = $("notas").classList.toggle("abiertas");
+  $("b-notas").setAttribute("aria-pressed", abierto);
+}
+$("b-notas").onclick = alternarNotas;
+
+// ---------------------------------------------------------------- reloj de la sesión
+let t0 = null, transcurrido = 0, tic = null;
+function pintarReloj() {
+  const s = transcurrido + (t0 ? (Date.now() - t0) / 1000 : 0);
+  $("reloj").textContent = String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(Math.floor(s % 60)).padStart(2, "0");
+  const plan = minutoPlan[actual];
+  const d = $("desfase");
+  if (plan === null || !t0 && !transcurrido) { d.textContent = ""; $("reloj").className = "reloj"; return; }
+  const dif = Math.round(s / 60 - plan);
+  d.textContent = Math.abs(dif) < 2 ? "en hora" : (dif > 0 ? `${dif} min de atraso` : `${-dif} min de adelanto`);
+  $("reloj").className = "reloj" + (dif >= 2 ? " atrasado" : dif <= -2 ? " adelantado" : "");
+}
+function relojSesion() {
+  if (t0) { transcurrido += (Date.now() - t0) / 1000; t0 = null; clearInterval(tic); $("b-reloj").textContent = "Reanudar"; }
+  else { t0 = Date.now(); tic = setInterval(pintarReloj, 1000); $("b-reloj").textContent = "Pausar"; }
+  pintarReloj();
+}
+$("b-reloj").onclick = relojSesion;
+
+// ---------------------------------------------------------------- cronómetro del taller
+let restan = 27 * 60, cTic = null;
+function pintarCrono() {
+  $("crono-t").textContent = String(Math.floor(restan / 60)).padStart(2, "0") + ":" + String(restan % 60).padStart(2, "0");
+  $("crono-t").classList.toggle("poco", restan <= 120);
+}
+function abrirCrono(min) {
+  if (!$("crono").classList.contains("visible")) { restan = min * 60; pintarCrono(); }
+  $("crono").classList.add("visible");
+}
+function cerrarCrono() { $("crono").classList.remove("visible"); clearInterval(cTic); cTic = null; $("crono-play").textContent = "Iniciar"; }
+$("crono-play").onclick = () => {
+  if (cTic) { clearInterval(cTic); cTic = null; $("crono-play").textContent = "Reanudar"; return; }
+  cTic = setInterval(() => { if (restan > 0) { restan--; pintarCrono(); } }, 1000);
+  $("crono-play").textContent = "Pausar";
+};
+$("crono-reset").onclick = () => { restan = 27 * 60; pintarCrono(); };
+$("crono-cerrar").onclick = cerrarCrono;
+
+// ---------------------------------------------------------------- arranque
+const inicial = parseInt(location.hash.replace("#", ""), 10);
+ir(Number.isFinite(inicial) && inicial > 0 ? inicial - 1 : 0);
+escalar();
+</script>
+</body>
+</html>
