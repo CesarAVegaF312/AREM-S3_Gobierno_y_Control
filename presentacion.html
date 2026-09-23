@@ -2,7 +2,9 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"/>
+<meta name="theme-color" content="#0E181D"/>
+<meta name="color-scheme" content="light"/>
 <title>AREM S3 · Gobierno y Control — Presentación</title>
 <style>
 :root{
@@ -194,6 +196,79 @@ table.comparativa td:nth-child(3){color:#1F5A3A}
 #ayuda td:first-child{color:#fff;font-family:var(--serif);width:150px}
 #ayuda h2{font-family:var(--serif);font-size:26px;margin-bottom:16px;text-align:center}
 
+
+/* ══════════════ plataforma: que en el teléfono no se note que es una web ══════════════ */
+html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; overscroll-behavior: none; }
+button, [role="button"], .mini { touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+#escenario { touch-action: pan-y; }              /* el cambio de diapositiva se lleva el eje horizontal */
+#estado button, .mini { transition: transform 120ms cubic-bezier(.22,.61,.36,1), background 120ms; }
+#estado button:active, .mini:active { transform: scale(.97); }
+/* el dedo no tiene hover: sin esto, el estado se queda pegado tras tocar */
+@media (hover: none), (pointer: coarse) {
+  .tarjeta:hover { transform: none; box-shadow: 0 2px 10px rgba(28,43,51,.06); }
+  .paso:hover { transform: none; }
+  .mini:hover { border-color: transparent; }
+  #estado button:hover { background: transparent; }
+}
+
+/* ══════════════ móvil: una diapositiva por pantalla, en vertical ══════════════ */
+#b-lectura { display: none; }
+@media (max-width: 760px) {
+  html, body { height: auto; overflow: auto; background: #0E181D; }
+  #escenario { position: static; overflow: visible; }
+  #lienzo { position: static; width: 100%; height: auto; min-height: 100dvh; transform: none !important;
+            border-radius: 0; box-shadow: none; background: transparent; }
+  .slide { position: relative; min-height: calc(100dvh - 62px); background: #fff;
+           padding: calc(22px + env(safe-area-inset-top, 0px)) 18px 26px; }
+  .cuerpo { justify-content: flex-start; gap: 12px; }
+  .slide.viva { animation: entrar-movil .28s cubic-bezier(.22,.61,.36,1); }
+  @keyframes entrar-movil { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  /* el texto, a su tamaño real */
+  .slide h1 { font-size: 26px; }
+  .slide.portada h1 { font-size: 34px; }
+  .slide.portada .sub { font-size: 19px; }
+  .barras { display: none; }
+  .kicker { font-size: 11.5px; }
+  .tarjeta > h2, .caja h2 { font-size: 17px; }
+  .tarjeta .contenido, .columna p, .paso .txt span { font-size: 15.5px; }
+  .banda { font-size: 16px; padding: 12px 16px; }
+  .cita { font-size: 17px; padding: 18px; }
+  .pie { font-size: 12px; }
+
+  /* de tres columnas a una */
+  .tarjetas, .columnas { grid-auto-flow: row; grid-auto-columns: auto; }
+  .cita-cajas { grid-template-columns: 1fr; }
+  .refs { columns: 1; }
+  .paso { grid-template-columns: 40px 1fr; }
+  .paso .n { font-size: 19px; }
+  .gfamilias { grid-template-columns: 1fr; }
+
+  /* las tablas se desplazan de lado en vez de encogerse hasta ser ilegibles */
+  .cuerpo > div { overflow-x: auto; overscroll-behavior-x: contain; }
+  table { font-size: 14px; min-width: 520px; }
+
+  /* la barra: a la medida del pulgar y por encima del indicador de inicio */
+  #estado { position: fixed; height: auto; flex-wrap: wrap; gap: 8px 12px;
+            padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px)); }
+  #estado button { padding: 8px 13px; min-height: 40px; }
+  #titulo-actual, #desfase { display: none; }
+  #cuenta { font-weight: 700; }
+  #b-lectura { display: inline-block; }
+  #notas, #indice, #glosario { width: 100%; top: 0; bottom: 0;
+            padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
+  #crono { padding: 24px 28px; }
+  #crono .tiempo { font-size: 64px; }
+
+  /* ── modo lectura: las veinte, una debajo de otra ── */
+  body.lectura .slide { display: flex !important; min-height: 0;
+                        border-radius: 12px; margin: 0 10px 14px; }
+  body.lectura .slide.viva { animation: none; }
+  body.lectura [data-anim] { opacity: 1 !important; transform: none !important; animation: none !important; }
+  body.lectura #lienzo { padding: 8px 0 96px; }
+  body.lectura #b-ant, body.lectura #b-sig, body.lectura #cuenta, body.lectura #progreso { display: none; }
+}
+
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
   [data-anim]{opacity:1;transform:none}
@@ -224,6 +299,7 @@ table.comparativa td:nth-child(3){color:#1F5A3A}
   <span id="desfase"></span>
   <button id="b-reloj">Iniciar sesión</button>
   <button id="b-notas">Notas (N)</button>
+  <button id="b-lectura" aria-pressed="false">Lectura</button>
   <button id="b-indice">Índice (I)</button>
   <button id="b-glosario">Códigos (G)</button>
   <button id="b-ayuda" aria-label="Atajos de teclado">?</button>
@@ -267,6 +343,7 @@ table.comparativa td:nth-child(3){color:#1F5A3A}
       <tr><td>Inicio · Fin</td><td>Primera y última</td></tr>
       <tr><td>N</td><td>Notas del docente</td></tr>
       <tr><td>I</td><td>Índice</td></tr>
+      <tr><td>L</td><td>En el teléfono: leer las veinte diapositivas de corrido</td></tr>
       <tr><td>G</td><td>Glosario: de dónde sale cada código</td></tr>
       <tr><td>T</td><td>Cronómetro del taller (27 minutos)</td></tr>
       <tr><td>S</td><td>Iniciar o pausar el reloj de la sesión</td></tr>
@@ -1780,6 +1857,7 @@ addEventListener("keydown", e => {
     if (k === "n") alternarNotas();
     else if (k === "i") $("indice").classList.toggle("abierto");
     else if (k === "g") $("glosario").classList.toggle("abierto");
+    else if (k === "l") alternarLectura();
     else if (k === "t") { $("crono").classList.contains("visible") ? cerrarCrono() : abrirCrono(27); }
     else if (k === "s") relojSesion();
     else if (k === "b") { $("estado").classList.toggle("oculta"); document.body.classList.toggle("sin-barra"); escalar(); }
@@ -1787,11 +1865,14 @@ addEventListener("keydown", e => {
     else if (k === "?" || e.key === "?") $("ayuda").classList.toggle("abierta");
   }
 });
-$("escenario").addEventListener("click", e => { (e.clientX > innerWidth * 0.35) ? sig() : ant(); });
+$("escenario").addEventListener("click", e => {
+  if (tactil()) return;                       // en el teléfono se pasa deslizando o con los botones
+  (e.clientX > innerWidth * 0.35) ? sig() : ant();
+});
 let x0 = null;
 addEventListener("touchstart", e => x0 = e.touches[0].clientX, { passive: true });
 addEventListener("touchend", e => {
-  if (x0 === null) return;
+  if (x0 === null || document.body.classList.contains("lectura")) return;
   const dx = e.changedTouches[0].clientX - x0;
   if (Math.abs(dx) > 50) dx < 0 ? sig() : ant();
   x0 = null;
@@ -1810,6 +1891,19 @@ $("rejilla").addEventListener("click", e => {
   if (b) { ir(+b.dataset.ir); $("indice").classList.remove("abierto"); }
 });
 $("b-indice").onclick = () => $("indice").classList.toggle("abierto");
+
+// ---------------------------------------------------------------- modo lectura (teléfono)
+const tactil = () => matchMedia("(pointer: coarse)").matches;
+function alternarLectura() {
+  const lee = document.body.classList.toggle("lectura");
+  $("b-lectura").setAttribute("aria-pressed", lee);
+  $("b-lectura").textContent = lee ? "Diapositivas" : "Lectura";
+  try { localStorage.setItem("arem-s3-lectura", lee ? "1" : ""); } catch (e) {}
+  if (lee) slides[actual].scrollIntoView({ block: "start" });
+  else { ir(actual); scrollTo(0, 0); }
+}
+$("b-lectura").onclick = alternarLectura;
+try { if (localStorage.getItem("arem-s3-lectura")) alternarLectura(); } catch (e) {}
 
 // ---------------------------------------------------------------- glosario
 const FAMILIAS = [
