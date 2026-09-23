@@ -142,7 +142,8 @@ AREM-S3_Gobierno_y_Control/
 │   ├── 2_caso/                 ← dossier de Red Salud Andina
 │   ├── 3_como_se_hace/         ← instrumentos F-21 a F-28 y guías
 │   └── 4_clase/                ← deck de la sesión
-└── interactivos/               ← las cuatro herramientas HTML
+├── interactivos/               ← las cuatro herramientas HTML
+└── fuentes/                    ← los mismos documentos en Word, y el deck en PowerPoint
 ```
 
 ### `documentos/` — PDF
@@ -156,7 +157,8 @@ AREM-S3_Gobierno_y_Control/
 | `3_como_se_hace` | [`AREM_S3_Instrumentos.pdf`](documentos/3_como_se_hace/AREM_S3_Instrumentos.pdf) | Los ocho formatos F-21 a F-28. |
 | | [`AREM_S3_Guia_Actividad_3_1.pdf`](documentos/3_como_se_hace/AREM_S3_Guia_Actividad_3_1.pdf) | Cómo hacer los dos comparativos, con las tablas de referencia de COBIT, TOGAF y la normativa colombiana. |
 | | [`AREM_S3_Guia_Herramientas_e_Instrumentos.pdf`](documentos/3_como_se_hace/AREM_S3_Guia_Herramientas_e_Instrumentos.pdf) | Las cuatro herramientas recorridas con el caso y los formatos campo por campo. |
-| raíz | [`presentacion.html`](presentacion.html) | La misma sesión como presentación web animada: notas del docente (N), índice (I), reloj de la sesión (S) y cronómetro del taller (T). |
+| raíz | [`presentacion.html`](presentacion.html) | La misma sesión como presentación web animada: índice (I), glosario de códigos (G), reloj de la sesión (S) y cronómetro del taller (T). |
+| `fuentes` | Los seis documentos en `.docx` y el deck en `.pptx` | Para adaptarlos: cambien lo que necesiten y expórtenlos a PDF. Son los archivos con los que se produjeron los PDF de `documentos/`. |
 | `4_clase` | [`AREM_S3_Deck_Reto_U3.pdf`](documentos/4_clase/AREM_S3_Deck_Reto_U3.pdf) | Las 20 diapositivas del encuentro sincrónico: significado, seis ejemplos guiados y el taller. |
 
 ### `interactivos/` — herramientas HTML
@@ -194,19 +196,6 @@ Clic derecho → **Abrir con** → Chrome, Edge o Firefox.
 **La herramienta muestra lo que escribí la última vez.**
 Se guarda en el navegador para que no se pierda. Para volver al ejemplo, pulsen
 **«Caso Red Salud Andina»**.
-
----
-
-## Para el docente: publicar con GitHub Pages
-
-1. En el repositorio, **`Settings`** → **`Pages`**.
-2. En **Build and deployment → Source**, elegir **`Deploy from a branch`**.
-3. En **Branch**, seleccionar **`main`** y **`/ (root)`**. Pulsar **`Save`**.
-
-Portada: `https://cesaravegaf312.github.io/AREM-S3_Gobierno_y_Control/`
-
-Las fuentes en Word y PowerPoint, y los scripts que regeneran los PDF y los interactivos, están
-fuera del repositorio, en `AREM-S3_fuentes/` (`build/build_all.sh`).
 
 ---
 
