@@ -223,9 +223,15 @@ La normativa colombiana completa, con su vigencia verificada en septiembre de 20
 
 ## Licencia
 
-Publicado bajo la **Licencia MIT** — ver [`LICENSE`](LICENSE).
+Este material se distribuye bajo la licencia [Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es) — ver [`LICENSE`](LICENSE).
+
+Pueden **usar, adaptar o compartir** este contenido, incluido el código de los interactivos, con fines educativos, siempre que:
+
+1. Se reconozca la autoría del profesor **César Augusto Vega Fernández**.
+2. No se utilice con fines comerciales.
+3. Las obras derivadas se distribuyan bajo la misma licencia.
 
 *Nota: TOGAF® es marca registrada de The Open Group; COBIT® de ISACA; ITIL® de AXELOS Limited.
-Este repositorio contiene material docente que los explica; la licencia MIT aplica a estos
+Este repositorio contiene material docente que los explica; la licencia aplica a estos
 materiales, no a los marcos originales. Red Salud Andina es una organización simulada con fines
 pedagógicos.*
