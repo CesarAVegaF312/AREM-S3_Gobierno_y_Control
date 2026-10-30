@@ -135,6 +135,78 @@ es otra.
 
 ---
 
+## Saberes del syllabus y radar de la industria
+
+Esta sesión trabaja el saber **«Gobierno y Gobernanza de Arquitectura Empresarial»** del syllabus
+del curso. La tabla dice dónde se trabaja cada parte.
+
+| Parte del saber | Dónde se trabaja |
+|---|---|
+| Architecture Review Board: composición, roles y decisión | Paso 1 y `interactivos/disenador_arb_interactivo.html` |
+| Principios y estándares | Paso 2 |
+| Cumplimiento y gestión de excepciones | Paso 3 y `interactivos/compliance_review_interactivo.html` |
+| Articulación con COBIT 2019 e ITIL 4 | Paso 4 y `interactivos/mapa_cobit_togaf_itil_interactivo.html` |
+| Métricas de cumplimiento y riesgos arquitectónicos | Paso 5 y `interactivos/metricas_riesgos_interactivo.html` |
+| Normativa colombiana | Paso 0 y la guía de la Actividad 3.1 |
+| Deuda arquitectónica | Las excepciones que dejan deuda pasan al registro F-18 de la Unidad 2 |
+| Fitness functions, observabilidad y resiliencia | Radar de esta sesión |
+| La arquitectura empresarial como servicio interno | Radar de esta sesión |
+
+### Radar de la industria
+
+Temas actuales conectados con la unidad. Se comentan al inicio del encuentro sincrónico y **no son
+requisitos adicionales de la actividad**: sirven como lente para el documento. Si usan uno, citen
+la fuente.
+
+**Fitness functions, SLO y evals.** Una *fitness function* es una verificación automática de que la
+arquitectura sigue cumpliendo una característica que se decidió proteger (Ford et al., 2017). Los SLO
+de la ingeniería de confiabilidad (SRE) son su versión operativa: un objetivo medible de
+disponibilidad o latencia, con un presupuesto de error que, cuando se agota, frena los cambios
+(Beyer et al., 2016). En un sistema con IA, las *evals*, pruebas sistemáticas del comportamiento del
+modelo, cumplen el mismo papel. Las tres convierten un principio escrito en un control que se
+ejecuta.
+*En la Actividad 3.2:* revisen sus cinco métricas. Si alguna se puede calcular automáticamente en
+cada cambio, es una fitness function, y vale la pena decirlo. Si su organización tiene sistemas
+críticos, al menos una métrica debería ser un SLO con su umbral.
+*Para leer:* Ford, N., Parsons, R., & Kua, P. (2017). *Building evolutionary architectures*.
+O'Reilly Media. Beyer, B., Jones, C., Petoff, J., & Murphy, N. R. (2016). *Site reliability
+engineering*. O'Reilly Media.
+
+**Gobierno de la IA.** Los modelos y agentes de IA traen riesgos que el ARB tiene que poder decidir:
+decisiones automáticas sobre personas, datos sensibles que salen de la organización e instrucciones
+maliciosas escondidas en los datos que el agente lee (*prompt injection*). Hay marcos para
+estructurarlo: el AI Risk Management Framework del NIST (2023), la norma ISO/IEC 42001:2023 de
+sistemas de gestión de IA y, en Colombia, la política nacional de inteligencia artificial del
+documento CONPES 4144 de 2025. Además, casi toda organización ya tiene uso de IA no autorizado:
+personas que usan asistentes públicos con datos de la organización. Es el mismo patrón de las
+interfaces que nadie registró.
+*En la Actividad 3.2:* si su organización usa IA, incluyan al menos un principio y un riesgo sobre
+ella, con un control concreto; por ejemplo, qué puede hacer un agente sin aprobación humana.
+*Para leer:* National Institute of Standards and Technology. (2023). *Artificial Intelligence Risk
+Management Framework (AI RMF 1.0)* (NIST AI 100-1). <https://doi.org/10.6028/NIST.AI.100-1>
+
+**ADR y el advice process.** El ARB de TOGAF es un modelo centralizado: un órgano revisa y decide.
+Muchas organizaciones ágiles lo complementan con registros de decisiones de arquitectura (ADR),
+documentos cortos que dicen qué se decidió, por qué y qué alternativas se descartaron, y con el
+*advice process*: cualquiera puede tomar una decisión de arquitectura si antes consulta a los
+afectados y a quienes saben (Harmel-Law, 2024).
+*En la Actividad 3.2:* al diseñar el proceso de decisión del ARB, digan qué decisiones se reserva el
+ARB y cuáles pueden tomar los equipos dejando un ADR. Es una forma concreta de dimensionar el ARB al
+talento que la organización tiene.
+*Para leer:* Harmel-Law, A. (2024). *Facilitating software architecture*. O'Reilly Media.
+
+**FinOps y la arquitectura como servicio interno.** FinOps es la práctica de gobernar el costo de la
+nube entre finanzas, tecnología y negocio, con datos de consumo compartidos y un responsable por
+servicio. Es también un ejemplo de lo que el syllabus llama «la arquitectura empresarial como
+servicio interno»: un equipo que no aprueba ni prohíbe, sino que da información y criterios para que
+otros decidan mejor. El FDE del radar de la Sesión 1 es la otra cara del mismo modelo: el arquitecto
+que trabaja sentado con el equipo.
+*En la Actividad 3.2:* si su organización tiene servicios en la nube, consideren una métrica de costo
+por servicio o de gasto sin responsable identificado.
+*Para leer:* FinOps Foundation. *FinOps Framework*. <https://www.finops.org/framework/>
+
+---
+
 ## Qué hay en el repositorio
 
 ```text
