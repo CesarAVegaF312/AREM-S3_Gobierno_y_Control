@@ -1,0 +1,26 @@
+# Plantilla para un principio nuevo.
+#
+# 1. Copien este archivo a politicas/p9_<nombre>.rego. Tiene que terminar en .rego: si no,
+#    Conftest no lo lee.
+# 2. Cambien lo marcado con CAMBIAR.
+# 3. Corran: docker compose run --rm gobierno revisar
+#
+# Cómo se lee una regla, con la de P5 como ejemplo:
+#
+#   incumplimiento contains {"principio": "P5", "sujeto": s.nombre, "motivo": "..."} if {
+#       input.tipo == "sistemas"                          <- qué archivo de arquitectura/ mira
+#       some s in input.sistemas                          <- recorre cada elemento del archivo
+#       s.nube != null                                    <- condiciones: si TODAS se cumplen,
+#       not s.nube in data.lineamientos.nubes_aprobadas      hay incumplimiento
+#   }
+#
+# Si escriben una condición que nunca se cumple, la regla no reporta nada: revisen con un
+# caso que sepan que incumple. Si escriben una sin condiciones, todos los elementos incumplen.
+package main
+
+incumplimiento contains {"principio": "P9", "sujeto": a.nombre,    # CAMBIAR el número si hace falta
+	"motivo": "CAMBIAR: por qué incumple, en una frase"} if {
+	input.tipo == "agentes"
+	some a in input.agentes
+	# CAMBIAR: las condiciones del incumplimiento, una por línea.
+}

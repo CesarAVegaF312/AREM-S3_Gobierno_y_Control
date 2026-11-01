@@ -1,0 +1,12 @@
+# Lineamientos que las reglas consultan. Supuesto del laboratorio: el dossier dice que hoy
+# no hay lineamiento de nube; este es el catálogo que el ARB aprobaría para cumplir P5.
+
+lineamientos:
+  nubes_aprobadas:
+    - Nube A
+  # P7: mínimo de personas que conocen un sistema, descontando las salidas previstas.
+  minimo_personas_que_lo_conocen: 2
+  # Plazo máximo de una excepción, en días, contado desde su aprobación.
+  plazo_maximo_excepcion_dias: 365
+  # Principios que no admiten excepción (informe de ejemplo de la Actividad 3.2).
+  no_negociables: [P1, P6]

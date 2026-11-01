@@ -1,0 +1,29 @@
+# Registro de excepciones del ARB. Cada excepción dice qué principio se deja de cumplir,
+# en qué sistema, interfaz o capacidad ("sujeto"), por qué, quién la aprobó y hasta cuándo.
+#
+# El sujeto se escribe exactamente como aparece en el reporte de "revisar".
+# Las reglas rechazan excepciones sobre P1 y P6, sin vencimiento, sin justificación o con
+# un plazo mayor al de lineamientos.yaml. Una excepción vencida vuelve a ser incumplimiento.
+
+tipo: excepciones
+
+excepciones:
+  - principio: P2
+    sujeto: HIS-CORE
+    justificacion: >-
+      El índice maestro de pacientes (MPI) no existe todavía. HIS-CORE sigue creando
+      pacientes hasta que el MPI entre en operación, según la implicación de P2.
+    aprobada_por: ARB
+    acta: ARB-2026-07
+    aprobada_en: "2026-08-15"
+    vence: "2027-06-30"
+
+  - principio: P3
+    sujeto: HIS-CORE → FACT-SALUD
+    justificacion: >-
+      La lectura directa de tablas se mantiene mientras se construye la interfaz por el bus.
+      Entra al registro de deuda de la Unidad 2 con fecha de retiro.
+    aprobada_por: ARB
+    acta: ARB-2026-07
+    aprobada_en: "2026-08-15"
+    vence: "2027-02-28"

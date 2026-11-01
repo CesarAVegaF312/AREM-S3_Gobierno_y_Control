@@ -1,0 +1,31 @@
+# Revisión de cumplimiento arquitectónico en cada pull request.
+#
+# GitHub Actions solo lee los workflows de .github/workflows/ en la raíz del repositorio.
+# Este archivo está en laboratorio/ci/ para no correr en el repositorio del curso. En su
+# copia del repositorio (fork), cópienlo así:
+#
+#   mkdir -p .github/workflows
+#   cp laboratorio/ci/gobierno.yml .github/workflows/gobierno.yml
+name: Gobierno de arquitectura
+
+on:
+  pull_request:
+    paths:
+      - "laboratorio/**"
+
+jobs:
+  revision:
+    name: Revisión de cumplimiento
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Primero se prueban las reglas: una regla rota da un dictamen equivocado.
+      - name: Pruebas de las reglas
+        run: docker compose run --rm gobierno probar
+        working-directory: laboratorio
+
+      # Si hay incumplimientos sin excepción vigente, este paso falla y el PR queda en rojo.
+      - name: Revisión de cumplimiento
+        run: docker compose run --rm gobierno revisar
+        working-directory: laboratorio

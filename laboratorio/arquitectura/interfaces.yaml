@@ -1,0 +1,82 @@
+# Integraciones de Red Salud Andina (dossier, sección 7).
+#
+# El inventario formal reporta 41 interfaces y TI estima entre 8 y 12 más sin registrar.
+# Aquí están las diez que el dossier describe. Las métricas que salen de este archivo
+# se calculan sobre esas diez, y el reporte lo dice.
+#
+# tipo_mecanismo: api | mensajeria | base_de_datos | archivos | manual | inexistente
+#   api y mensajeria pueden cumplir P3 si además están versionadas.
+#   manual e inexistente (el dato se digita otra vez) incumplen P8.
+
+tipo: interfaces
+
+interfaces:
+  - nombre: HIS-CORE → FACT-SALUD
+    tipo_mecanismo: base_de_datos
+    mecanismo: Lectura directa de tablas
+    versionada: false
+    alertas: false
+    observacion: Sin contrato de interfaz. Un cambio de esquema en el origen rompe el destino.
+
+  - nombre: HIS-CORE → LIS-LAB
+    tipo_mecanismo: archivos
+    mecanismo: Archivos planos por carpeta compartida, cada 15 minutos
+    versionada: false
+    alertas: false
+    observacion: Reprocesos manuales cuando falla; sin alertamiento.
+
+  - nombre: HIS-NORTE → FACT-SALUD
+    tipo_mecanismo: manual
+    mecanismo: Carga manual asistida, diaria
+    versionada: false
+    alertas: false
+    observacion: Dos personas dedicadas. Principal fuente de glosa por inconsistencia.
+
+  - nombre: HIS-NORTE → LIS-LAB
+    tipo_mecanismo: inexistente
+    mecanismo: No existe
+    versionada: false
+    alertas: false
+    observacion: Las órdenes de las seis sedes se digitan de nuevo en el laboratorio.
+
+  - nombre: AGENDA-WEB → HIS-CORE
+    tipo_mecanismo: api
+    mecanismo: Servicio web del proveedor
+    versionada: false
+    alertas: false
+    observacion: Único punto con API real. Sin control de versiones del contrato.
+
+  - nombre: TELEMED → HIS-CORE
+    tipo_mecanismo: inexistente
+    mecanismo: No existe
+    versionada: false
+    alertas: false
+    observacion: La teleconsulta se registra después, manualmente, en HIS-CORE.
+
+  - nombre: PORTAL-B2B → LIS-LAB
+    tipo_mecanismo: base_de_datos
+    mecanismo: Consulta directa a base de datos
+    versionada: false
+    alertas: false
+    observacion: Construido por la unidad de laboratorio; TI se enteró en 2024.
+
+  - nombre: ERP-ADM → BI-ANDINA
+    tipo_mecanismo: archivos
+    mecanismo: Extracción nocturna
+    versionada: false
+    alertas: false
+    observacion: Si falla, el tablero muestra el día anterior sin avisar.
+
+  - nombre: FACT-SALUD → aseguradores
+    tipo_mecanismo: manual
+    mecanismo: Portales web de cada asegurador, semanal
+    versionada: false
+    alertas: false
+    observacion: Proceso manual distinto por asegurador; siete formatos.
+
+  - nombre: HIS-CORE → PACS-RIS
+    tipo_mecanismo: mensajeria
+    mecanismo: Mensajería estándar del sector
+    versionada: true
+    alertas: true                     # supuesto
+    observacion: Funciona bien. Es la única integración con estándar del sector.
