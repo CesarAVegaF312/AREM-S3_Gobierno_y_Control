@@ -1,0 +1,37 @@
+# Agentes de IA que Red Salud Andina tiene o está evaluando. Supuesto del laboratorio:
+# el dossier no los trae. Son los dos del radar de la sesión.
+#
+# Ningún principio del informe de ejemplo cubre la IA. Escribir ese principio y su regla
+# es la actividad 5 del laboratorio (ver README).
+
+tipo: agentes
+
+agentes:
+  - nombre: Agente de agendamiento del call center
+    estado: piloto
+    proveedor_modelo: Proveedor de modelos externo
+    dueno_negocio: Operaciones
+    escribe_en:
+      - sistema: AGENDA-WEB
+        asistencial: false
+    lee_de: [AGENDA-WEB, CRM-CC]
+    aprobacion_humana: false          # agenda por su cuenta
+    evals:
+      existen: true
+      umbral_aprobacion: 0.95
+    datos_salen_de_la_organizacion: true
+
+  - nombre: Agente de revisión previa de facturación
+    estado: evaluación del proveedor
+    proveedor_modelo: Proveedor de FACT-SALUD
+    dueno_negocio: Dirección financiera
+    escribe_en:
+      - sistema: FACT-SALUD
+        asistencial: false
+      - sistema: HIS-CORE
+        asistencial: true             # corrige códigos de procedimiento en la historia clínica
+    lee_de: [FACT-SALUD, HIS-CORE]
+    aprobacion_humana: false
+    evals:
+      existen: false
+    datos_salen_de_la_organizacion: true

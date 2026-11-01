@@ -1,0 +1,15 @@
+# Laboratorio de gobierno como código: los principios del ARB como reglas que se ejecutan
+#
+#   docker compose run --rm gobierno revisar                    revisión de cumplimiento
+#   docker compose run --rm gobierno revisar --fecha 2027-03-15 la misma revisión en otra fecha
+#   docker compose run --rm gobierno metricas                   métricas de cumplimiento
+#   docker compose run --rm gobierno probar                     pruebas de las reglas
+
+name: arem-gobierno
+
+services:
+  gobierno:
+    build: ./herramienta
+    image: arem-gobierno
+    volumes:
+      - .:/lab

@@ -100,6 +100,10 @@ herramientas, en la [guía de herramientas y formatos](documentos/3_como_se_hace
 - **Va al documento en:** sección 4.
 - **Se califica en:** *Proceso de cumplimiento arquitectónico* (1,5). Sin gestión de excepciones no
   hay nota máxima.
+- **Para ver la revisión funcionando,** el [laboratorio de gobierno como código](laboratorio/)
+  convierte los ocho principios del documento de ejemplo en reglas que revisan la arquitectura de
+  Red Salud Andina, con registro de excepciones y vencimientos. Es opcional y necesita Docker o
+  GitHub Codespaces.
 
 ### Paso 4 · Articular con COBIT 2019 e ITIL 4
 
@@ -121,6 +125,8 @@ herramientas, en la [guía de herramientas y formatos](documentos/3_como_se_hace
   umbral; **tres riesgos** con controles concretos y dueño.
 - **Va al documento en:** secciones 6 y 7.
 - **Se califica en:** *Métricas y gestión de riesgos* (1,25).
+- **El [laboratorio](laboratorio/)** calcula M2, M3 y M4 del documento de ejemplo a partir de las
+  reglas, en la fecha de corte que se le pida.
 
 ### Paso 6 · Armar el documento y verificar
 
@@ -149,7 +155,8 @@ AREM-S3_Gobierno_y_Control/
 │   ├── 3_como_se_hace/         ← instrumentos F-21 a F-28 y guías
 │   └── 4_clase/                ← deck de la sesión
 ├── interactivos/               ← las cuatro herramientas HTML
-└── fuentes/                    ← los mismos documentos en Word, y el deck en PowerPoint
+├── fuentes/                    ← los mismos documentos en Word, y el deck en PowerPoint
+└── laboratorio/                ← los principios como reglas que se ejecutan (Docker)
 ```
 
 ### `documentos/` — PDF
@@ -182,6 +189,15 @@ navegador de quien las usa.
 
 Las cuatro abren con **Red Salud Andina** y tienen el botón **«Empezar con el caso del grupo»**.
 Para abrirlas directamente en blanco, agreguen `?caso=grupo` al final de la dirección.
+
+### `laboratorio/` — gobierno como código
+
+Los ocho principios del documento de ejemplo, escritos como reglas (Rego, ejecutadas con
+Conftest) que revisan el inventario de sistemas e interfaces de Red Salud Andina. Incluye el
+registro de excepciones con sus reglas (sin excepciones sobre P1 y P6, con plazo máximo y
+vencimiento), el cálculo de las métricas M2, M3 y M4, la plantilla para escribir un principio de
+IA y el mismo control como paso de GitHub Actions. Requiere Docker Desktop o GitHub Codespaces;
+las seis actividades están en [`laboratorio/README.md`](laboratorio/README.md).
 
 > Las Sesiones 1 y 2 están en sus propios repositorios:
 > [AREM-S1_Marcos_y_Capacidades](https://github.com/CesarAVegaF312/AREM-S1_Marcos_y_Capacidades-repositorio) y

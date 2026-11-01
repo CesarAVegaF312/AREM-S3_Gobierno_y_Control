@@ -1,0 +1,203 @@
+# Inventario de sistemas de Red Salud Andina (dossier, secciones 5, 6, 9 y 11).
+#
+# Cada campo que el dossier no trae está listado en "supuestos" del sistema: es un dato
+# que el laboratorio asume para poder evaluar un principio. Si su grupo trabaja con su
+# propia organización, reemplacen este archivo por el inventario de ella.
+#
+# Campos que leen las reglas:
+#   asistencial                 soporta un proceso de atención al paciente (P1)
+#   modo_degradado_probado      tiene una ruta de operación degradada probada (P1)
+#   crea_pacientes              mantiene su propio maestro de pacientes (P2)
+#   capacidades                 capacidades de negocio que presta (P4)
+#   nube                        proveedor de nube, o null si corre en el centro de datos (P5)
+#   datos_sensibles             trata datos de salud (P6)
+#   evaluacion_datos_personales tiene evaluación de impacto de datos personales (P6)
+#   dueno_negocio, responsable_ti, personas_que_lo_conocen, salidas_previstas (P7)
+
+tipo: sistemas
+
+sistemas:
+  - nombre: HIS-CORE
+    proposito: Historia clínica, admisión y agenda interna. Oracle Forms, en operación desde 2009.
+    asistencial: true
+    modo_degradado_probado: false   # Urgencias opera en papel en la ventana dominical; se digitó 26 h después
+    crea_pacientes: true
+    capacidades: [Admisión y atención clínica]
+    nube: null
+    datos_sensibles: true
+    evaluacion_datos_personales: true
+    dueno_negocio: Dirección médica
+    responsable_ti: Área de desarrollo
+    personas_que_lo_conocen: 2
+    salidas_previstas: 1            # uno de los dos desarrolladores se pensiona en 14 meses
+    supuestos: [evaluacion_datos_personales, dueno_negocio, responsable_ti]
+
+  - nombre: HIS-NORTE
+    proposito: Sistema asistencial de las seis sedes adquiridas. Contrato heredado hasta 2027.
+    asistencial: true
+    modo_degradado_probado: false
+    crea_pacientes: true
+    capacidades: [Admisión y atención clínica]
+    nube: null
+    datos_sensibles: true
+    evaluacion_datos_personales: true
+    dueno_negocio: Dirección médica
+    responsable_ti: Proveedor externo
+    personas_que_lo_conocen: 3
+    salidas_previstas: 0
+    supuestos: [modo_degradado_probado, nube, evaluacion_datos_personales, responsable_ti, personas_que_lo_conocen]
+
+  - nombre: LIS-LAB
+    proposito: Laboratorio clínico, órdenes, muestras y resultados. Producto comercial, 2019.
+    asistencial: true
+    modo_degradado_probado: true
+    crea_pacientes: false
+    capacidades: [Órdenes y resultados de laboratorio]
+    nube: null
+    datos_sensibles: true
+    evaluacion_datos_personales: true
+    dueno_negocio: Unidad de diagnóstico
+    responsable_ti: Área de infraestructura
+    personas_que_lo_conocen: 3
+    salidas_previstas: 0
+    supuestos: [modo_degradado_probado, evaluacion_datos_personales, responsable_ti, personas_que_lo_conocen]
+
+  - nombre: PACS-RIS
+    proposito: Imágenes diagnósticas y su información asociada. Producto comercial, 2016.
+    asistencial: true
+    modo_degradado_probado: true
+    crea_pacientes: false
+    capacidades: [Imágenes diagnósticas]
+    nube: null
+    datos_sensibles: true
+    evaluacion_datos_personales: true
+    dueno_negocio: Unidad de diagnóstico
+    responsable_ti: Área de infraestructura
+    personas_que_lo_conocen: 3
+    salidas_previstas: 0
+    supuestos: [modo_degradado_probado, evaluacion_datos_personales, responsable_ti, personas_que_lo_conocen]
+
+  - nombre: FACT-SALUD
+    proposito: Facturación, radicación, RIPS y glosas. Muy personalizado; dos versiones sin actualizar.
+    asistencial: false
+    crea_pacientes: false
+    capacidades: [Facturación y radicación]
+    nube: null
+    datos_sensibles: true
+    evaluacion_datos_personales: true
+    dueno_negocio: Dirección financiera
+    responsable_ti: Área de desarrollo
+    personas_que_lo_conocen: 3
+    salidas_previstas: 0
+    supuestos: [evaluacion_datos_personales, responsable_ti, personas_que_lo_conocen]
+
+  - nombre: BASE-GLOSAS
+    proposito: Base construida por el área financiera en una herramienta ofimática para gestionar glosas.
+    asistencial: false
+    crea_pacientes: false
+    capacidades: [Gestión de glosas y cartera]
+    nube: null
+    datos_sensibles: true
+    evaluacion_datos_personales: false
+    dueno_negocio: Dirección financiera
+    responsable_ti: null            # construida por fuera de TI
+    personas_que_lo_conocen: 1
+    salidas_previstas: 0
+    supuestos: [evaluacion_datos_personales, personas_que_lo_conocen]
+
+  - nombre: ERP-ADM
+    proposito: Contabilidad, compras, inventarios y nómina. Producto comercial, 2017.
+    asistencial: false
+    crea_pacientes: false
+    capacidades: [Abastecimiento y farmacia]
+    nube: null
+    datos_sensibles: false
+    dueno_negocio: Dirección administrativa
+    responsable_ti: Área de infraestructura
+    personas_que_lo_conocen: 3
+    salidas_previstas: 0
+    supuestos: [responsable_ti, personas_que_lo_conocen]
+
+  - nombre: AGENDA-WEB
+    proposito: Portal de agendamiento para pacientes. Servicio en la nube de un proveedor, 2021.
+    asistencial: false
+    crea_pacientes: true
+    capacidades: [Agendamiento y autorización]
+    nube: Nube del proveedor de AGENDA-WEB
+    datos_sensibles: true
+    evaluacion_datos_personales: true
+    dueno_negocio: Operaciones
+    responsable_ti: Área de desarrollo
+    personas_que_lo_conocen: 3
+    salidas_previstas: 0
+    supuestos: [evaluacion_datos_personales, responsable_ti, personas_que_lo_conocen]
+
+  - nombre: TELEMED
+    proposito: Teleconsulta. Piloto 2025 en la nube; trae su propio módulo de agenda.
+    asistencial: true
+    modo_degradado_probado: false
+    crea_pacientes: false
+    capacidades: [Teleconsulta, Agendamiento y autorización]
+    nube: Nube A
+    datos_sensibles: true
+    evaluacion_datos_personales: false
+    dueno_negocio: Dirección médica
+    responsable_ti: Área de desarrollo
+    personas_que_lo_conocen: 2
+    salidas_previstas: 0
+    supuestos: [modo_degradado_probado, nube, evaluacion_datos_personales, responsable_ti, personas_que_lo_conocen]
+
+  - nombre: PORTAL-B2B
+    proposito: Entrega de resultados a IPS clientes del laboratorio. Construido por la unidad de laboratorio.
+    asistencial: false
+    crea_pacientes: false
+    capacidades: [Entrega de resultados a clientes]
+    nube: Nube A
+    datos_sensibles: true
+    evaluacion_datos_personales: false
+    dueno_negocio: Unidad de diagnóstico
+    responsable_ti: null            # TI se enteró de su existencia en 2024
+    personas_que_lo_conocen: 1
+    salidas_previstas: 0
+    supuestos: [nube, evaluacion_datos_personales, personas_que_lo_conocen]
+
+  - nombre: APP-PACIENTE
+    proposito: Aplicación móvil de consulta de resultados. Desarrollo de un tercero, 2022.
+    asistencial: false
+    crea_pacientes: false
+    capacidades: [Consulta de resultados por el paciente]
+    nube: null
+    datos_sensibles: true
+    evaluacion_datos_personales: true
+    dueno_negocio: Operaciones
+    responsable_ti: null            # sin equipo asignado desde 2024
+    personas_que_lo_conocen: 0
+    salidas_previstas: 0
+    supuestos: [nube, evaluacion_datos_personales, dueno_negocio]
+
+  - nombre: CRM-CC
+    proposito: Gestión del contacto en el call center. Sin integración con HIS-CORE.
+    asistencial: false
+    crea_pacientes: true
+    capacidades: [Atención del call center]
+    nube: null
+    datos_sensibles: true
+    evaluacion_datos_personales: true
+    dueno_negocio: Operaciones
+    responsable_ti: Área de desarrollo
+    personas_que_lo_conocen: 3
+    salidas_previstas: 0
+    supuestos: [nube, evaluacion_datos_personales, responsable_ti, personas_que_lo_conocen]
+
+  - nombre: BI-ANDINA
+    proposito: Tablero de indicadores de dirección. Se alimenta de extracciones nocturnas.
+    asistencial: false
+    crea_pacientes: false
+    capacidades: [Indicadores de dirección]
+    nube: null
+    datos_sensibles: false
+    dueno_negocio: Planeación
+    responsable_ti: Área de infraestructura
+    personas_que_lo_conocen: 3
+    salidas_previstas: 0
+    supuestos: [nube, dueno_negocio, responsable_ti, personas_que_lo_conocen]
